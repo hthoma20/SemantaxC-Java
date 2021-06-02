@@ -1,0 +1,37 @@
+Program {
+   ModuleList [ (1:13)
+      main module Main { (1:13)
+         ModuleList [] (null)
+         StatementList [ (2:6)
+            Statement { (2:6)
+               @bind (2:6)
+               ExpressionList [ (2:11)
+                  IntLit 1 (2:11)
+                  int (2:14)
+               ]
+            }
+            Statement { (3:6)
+               @bind (3:6)
+               ExpressionList [ (3:11)
+                  IntLit 2 (3:11)
+                  string (3:14)
+               ]
+            }
+            Statement { (4:6)
+               @bind (4:6)
+               ExpressionList [ (4:11)
+                  IntLit 3 (4:11)
+                  type (4:14)
+               ]
+            }
+            Statement { (5:6)
+               @bind (5:6)
+               ExpressionList [ (5:11)
+                  IntLit 4 (5:11)
+                  bool (5:14)
+               ]
+            }
+         ]
+      }
+   ]
+}

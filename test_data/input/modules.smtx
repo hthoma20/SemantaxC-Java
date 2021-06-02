@@ -1,0 +1,13 @@
+module thing {
+    module stuff {}
+}
+
+main module foo
+uses thing {
+    public module bar {}
+
+    module baz
+    uses bar, foo {
+        public module foobarbaz{}
+    }
+}

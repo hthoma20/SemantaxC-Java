@@ -1,0 +1,14 @@
+main module Main {
+    @addint(1, 2);
+    @addint(1, @addint(1,2));
+    @addint(@addint(1,2), 3);
+    @addint(
+        @addint(1,2),
+        @addint(3,4)
+    );
+
+    @not(false);
+    @not(true);
+
+    @addint(());
+}

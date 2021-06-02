@@ -1,0 +1,348 @@
+
+options {
+    DEBUG_PARSER = false;
+    DEBUG_TOKEN_MANAGER = false;
+
+    STATIC = false;
+}
+
+PARSER_BEGIN(SymantaxParser)
+package com.symantax.parser.generated;
+
+import com.symantax.ast.factory.*;
+import com.symantax.ast.node.*;
+import com.symantax.ast.node.list.*;
+import com.symantax.ast.node.literal.*;
+import com.symantax.ast.node.literal.type.*;
+
+public class SymantaxParser {}
+
+PARSER_END(SymantaxParser)
+
+SKIP: {
+    " " | "\t " | "\n" | "\r"
+}
+
+// symbols
+TOKEN : {
+    < BACK_TICK: "`" >
+    |
+    < TILDE: "~" >
+    |
+    < BANG: "!" >
+    |
+    < AT: "@" >
+    |
+    < HASH: "#" >
+    |
+    < DOLLAR: "$" >
+    |
+    < PERCENT: "%" >
+    |
+    < CARET: "^" >
+    |
+    < AMPERSAND: "&" >
+    |
+    < STAR: "*" >
+    |
+    < DASH: "-" >
+    |
+    < PLUS: "+" >
+    |
+    < EQUALS: "=" >
+    |
+    < L_PAREN: "(" >
+    |
+    < R_PAREN: ")" >
+    |
+    < L_BRACE: "{" >
+    |
+    < R_BRACE: "}" >
+    |
+    < L_BRACKET: "[" >
+    |
+    < R_BRACKET: "]" >
+    |
+    < L_ANGLE: "<" >
+    |
+    < R_ANGLE: ">" >
+    |
+    < SEMI_COLON: ";" >
+    |
+    < COLON: ":" >
+    |
+    < DOUBLE_QUOTE: "\"" >
+    |
+    < SINGLE_QUOTE: "'" >
+    |
+    < COMMA: "," >
+    |
+    < DOT: "." >
+}
+
+// type literals
+TOKEN: {
+    < TYPE: "type" >
+    |
+    < INT: "int" >
+    |
+    < STRING: "string" >
+    |
+    < BOOL: "bool" >
+}
+
+// keywords
+TOKEN: {
+    < MODULE: "module" >
+    |
+    < MODULE_MODIFIER: "public" | "main" >
+    |
+    < USES: "uses" >
+}
+
+// int literals
+TOKEN: {
+    < DECIMAL_LIT: (["0"-"9"])+ >
+    |
+    < DOZENAL_LIT: "0d" (["0"-"9", "x", "X", "e", "E"])+ >
+}
+
+// bool literals
+TOKEN: {
+    < TRUE: "true" >
+    |
+    < FALSE: "false" >
+}
+
+// string literals
+TOKEN: {
+    // A string lit is any escaped character, or anything other than a " or \
+    <DOUBLE_QUOTED_STRING: "\"" ("\\" ~[] | ~["\"", "\\"])* "\"" >
+    |
+    <SINGLE_QUOTED_STRING: "'" ("\\" ~[] | ~["'", "\\"])* "'" >
+}
+
+
+// word
+TOKEN: {
+    < WORD: <LETTER> (<LETTER> | <DIGIT>)* >
+    |
+    < #LETTER: ["a"-"z", "A"-"Z"] >
+    |
+    < #DIGIT: ["0"-"9"] >
+}
+
+
+/** Root production. */
+Program Program() :
+{
+    Module module;
+    ModuleList modules = new ModuleList();
+}
+{
+  (module = ModuleDefinition()
+    {modules.add(module);}
+  )* <EOF>
+  {return new Program(modules);}
+}
+
+Module ModuleDefinition() :
+{
+    Token t;
+    Word moduleName;
+    WordList uses;
+    Module subModule;
+    ModuleList subModules = new ModuleList();
+    Statement statement;
+    StatementList statements = new StatementList();
+    Module.ModuleBuilder moduleBuilder = Module.builder();
+}
+{
+    [t = <MODULE_MODIFIER>
+     {moduleBuilder.modifier(t.image);}
+    ]
+    <MODULE>
+    moduleName = Word()
+    {moduleBuilder.name(moduleName.getValue());}
+    [uses = UsesClause()
+     {moduleBuilder.modulesUsed(uses);}
+    ]
+    <L_BRACE>
+    (subModule = ModuleDefinition()
+     {subModules.add(subModule);}
+     |
+     statement = Statement()
+     {statements.add(statement);}
+    )*
+    {moduleBuilder.subModules(subModules);
+     moduleBuilder.statements(statements);}
+    <R_BRACE>
+    {Module module = moduleBuilder.build();
+     module.setFilePos(moduleName.getFilePos());
+     return module;}
+}
+
+WordList UsesClause() :
+{
+    WordList wordList;
+}
+{
+    <USES>
+    wordList = WordList()
+    {return wordList;}
+}
+
+WordList WordList() :
+{
+    Word word;
+    WordList words = new WordList();
+}
+{
+    word = Word()
+    {words.add(word);
+     words.setFilePos(word.getFilePos());}
+    (<COMMA> word = Word()
+     {words.add(word);}
+    )*
+    {return words;}
+}
+
+Word Word() :
+{
+    Token t;
+}
+{
+    t = <WORD>
+    {return WordFactory.fromToken(t);}
+}
+
+void Symbol() :
+{}
+{
+    <PLUS> | <EQUALS>
+}
+
+Statement Statement() :
+{
+    Expression exp;
+}
+{
+    exp = Expression() <SEMI_COLON>
+    {Statement statement = Statement.builder().expression(exp).build();
+     statement.setFilePos(exp.getFilePos());
+     return statement;}
+}
+
+ExpressionList ExpressionList() :
+{
+    Expression exp;
+    ExpressionList expressionList = new ExpressionList();
+}
+{
+    exp = Expression()
+    {expressionList.add(exp);
+     expressionList.setFilePos(exp.getFilePos());}
+
+    (<COMMA> exp = Expression()
+     {expressionList.add(exp);}
+    )*
+    {return expressionList;}
+}
+
+Expression Expression() :
+{
+    Expression exp;
+}
+{
+    (exp = IntLit()
+    |
+    exp = StringLit()
+    |
+    exp = BoolLit()
+    |
+    exp = ProgCall()
+    |
+    exp = EmptyRecord()
+    |
+    exp = TypeLit()
+    )
+    {return exp;}
+}
+
+ProgCall ProgCall() :
+{
+    Word name;
+    ExpressionList subExpressions;
+    ProgCall.ProgCallBuilder builder = ProgCall.builder();
+}
+{
+    <AT>
+    name = Word()
+    {builder.name(name.getValue());}
+    <L_PAREN>
+    [subExpressions = ExpressionList()
+     {builder.subExpressions(subExpressions);}
+    ]
+    <R_PAREN>
+    {ProgCall progCall = builder.build();
+     progCall.setFilePos(name.getFilePos());
+     return progCall;}
+}
+
+StringLit StringLit() :
+{
+    Token t;
+}
+{
+    (t = <DOUBLE_QUOTED_STRING>
+    |
+    t = <SINGLE_QUOTED_STRING>)
+    {return StringLitFactory.fromToken(t);}
+}
+
+IntLit IntLit() :
+{
+    Token t;
+}
+{
+    (t = <DECIMAL_LIT>
+    |
+    t = <DOZENAL_LIT>)
+    {return IntLitFactory.fromToken(t);}
+}
+
+BoolLit BoolLit() :
+{
+    Token t;
+}
+{
+    (t = <TRUE>
+    |
+    t = <FALSE>)
+    {return BoolLitFactory.fromToken(t);}
+}
+
+TypeLit TypeLit() :
+{
+    Token t;
+}
+{
+    (t = <TYPE>
+    |
+    t = <INT>
+    |
+    t = <STRING>
+    |
+    t = <BOOL>)
+    {return TypeLitFactory.fromToken(t);}
+}
+
+
+EmptyRecord EmptyRecord() :
+{
+    Token t;
+}
+{
+    t = <L_PAREN> <R_PAREN>
+    {return EmptyRecordFactory.fromToken(t);}
+}

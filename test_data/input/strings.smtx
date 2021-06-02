@@ -1,0 +1,7 @@
+main module Main {
+    "hello"; "goodbye";
+    "then he said \"i hate you\"";
+    'then he said "i hate you"';
+    "what happens
+        with a multiline string?";
+}

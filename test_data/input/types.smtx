@@ -1,0 +1,6 @@
+main module Main {
+    @bind(1, int);
+    @bind(2, string);
+    @bind(3, type);
+    @bind(4, bool);
+}
