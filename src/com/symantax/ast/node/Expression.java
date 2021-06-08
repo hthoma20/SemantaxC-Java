@@ -9,4 +9,9 @@ public abstract class Expression extends AstNode implements PhraseElement {
     @Getter
     @Setter
     private Type type;
+
+    @Override
+    public <T> T accept(ASTVisitor<T> visitor) {
+        return visitor.visit(this);
+    }
 }

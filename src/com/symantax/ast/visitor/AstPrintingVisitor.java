@@ -172,7 +172,14 @@ public class AstPrintingVisitor extends TraversalVisitor<Void> {
     @Override
     public Void visit(ArrayTypeLit arrayTypeLit) {
         indent();
-        output.printf("array[%s] (%s)%n", arrayTypeLit.getSubType(), arrayTypeLit.getFilePos());
+        output.printf("array[ (%s)%n", arrayTypeLit.getFilePos());
+
+        depth++;
+        super.visit(arrayTypeLit);
+        depth--;
+        indent();
+        output.println("]");
+
         return null;
     }
 

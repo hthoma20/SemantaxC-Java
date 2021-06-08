@@ -3,4 +3,7 @@ main module Main {
     @bind(2, string);
     @bind(3, type);
     @bind(4, bool);
+    @bind(5, array(int));
+    @bind(6, array(string));
+    @bind(7, array(array(int)));
 }

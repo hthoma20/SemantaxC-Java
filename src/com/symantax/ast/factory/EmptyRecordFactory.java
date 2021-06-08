@@ -1,6 +1,6 @@
 package com.symantax.ast.factory;
 
-import com.symantax.ast.node.EmptyRecord;
+import com.symantax.ast.node.literal.EmptyRecord;
 import com.symantax.ast.util.FilePos;
 import com.symantax.exception.UnexpectedTokenException;
 import com.symantax.parser.generated.Token;

@@ -84,6 +84,7 @@ public class TraversalVisitor<T> implements ASTVisitor<T> {
 
     @Override
     public T visit(ArrayTypeLit arrayTypeLit) {
+        arrayTypeLit.getSubType().accept(this);
         return null;
     }
 

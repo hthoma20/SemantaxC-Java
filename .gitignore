@@ -1,3 +1,6 @@
 # IDE files
 *.iml
 out
+
+# Generated parser files
+src/com/symantax/parser/generated

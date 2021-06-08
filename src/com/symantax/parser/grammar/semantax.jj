@@ -14,6 +14,7 @@ import com.symantax.ast.node.*;
 import com.symantax.ast.node.list.*;
 import com.symantax.ast.node.literal.*;
 import com.symantax.ast.node.literal.type.*;
+import com.symantax.ast.util.FilePos;
 
 public class SymantaxParser {}
 
@@ -89,6 +90,10 @@ TOKEN: {
     < STRING: "string" >
     |
     < BOOL: "bool" >
+    |
+    < ARRAY: "array" >
+    |
+    < RECORD: "record" >
 }
 
 // keywords
@@ -254,17 +259,9 @@ Expression Expression() :
     Expression exp;
 }
 {
-    (exp = IntLit()
+    (exp = ProgCall()
     |
-    exp = StringLit()
-    |
-    exp = BoolLit()
-    |
-    exp = ProgCall()
-    |
-    exp = EmptyRecord()
-    |
-    exp = TypeLit()
+    exp = Literal()
     )
     {return exp;}
 }
@@ -288,6 +285,25 @@ ProgCall ProgCall() :
      progCall.setFilePos(name.getFilePos());
      return progCall;}
 }
+
+Literal Literal() :
+{
+    Literal lit;
+}
+{
+    (lit = IntLit()
+    |
+    lit = StringLit()
+    |
+    lit = BoolLit()
+    |
+    lit = EmptyRecord()
+    |
+    lit = TypeLit()
+    )
+    {return lit;}
+}
+
 
 StringLit StringLit() :
 {
@@ -322,7 +338,27 @@ BoolLit BoolLit() :
     {return BoolLitFactory.fromToken(t);}
 }
 
+EmptyRecord EmptyRecord() :
+{
+    Token t;
+}
+{
+    t = <L_PAREN> <R_PAREN>
+    {return EmptyRecordFactory.fromToken(t);}
+}
+
 TypeLit TypeLit() :
+{
+    TypeLit t;
+}
+{
+    (t = SimpleTypeLit()
+    |
+    t = CompoundTypeLit())
+    {return t;}
+}
+
+TypeLit SimpleTypeLit() :
 {
     Token t;
 }
@@ -337,12 +373,30 @@ TypeLit TypeLit() :
     {return TypeLitFactory.fromToken(t);}
 }
 
+TypeLit CompoundTypeLit() :
+{
+    TypeLit t;
+}
+{
+    (t = ArrayTypeLit())
+    {return t;}
+}
 
-EmptyRecord EmptyRecord() :
+ArrayTypeLit ArrayTypeLit() :
 {
-    Token t;
+    Token identifier;
+    TypeLit subType;
 }
 {
-    t = <L_PAREN> <R_PAREN>
-    {return EmptyRecordFactory.fromToken(t);}
+    (identifier = <ARRAY>)
+    <L_PAREN>
+    (subType = TypeLit())
+    <R_PAREN>
+    {ArrayTypeLit arrayTypeLit = ArrayTypeLit.builder()
+        .subType(subType)
+        .build();
+     arrayTypeLit.setFilePos(FilePos.from(identifier));
+     return arrayTypeLit;}
 }
+
+
