@@ -60,6 +60,55 @@ Program {
                   ]
                ]
             }
+            Statement { (9:6)
+               @bind (9:6)
+               ExpressionList [ (9:11)
+                  IntLit 8 (9:11)
+                  record( (9:14)
+                  )
+               ]
+            }
+            Statement { (10:6)
+               @bind (10:6)
+               ExpressionList [ (10:11)
+                  IntLit 9 (10:11)
+                  record( (10:14)
+                     x: (10:21)
+                     int (10:24)
+                  )
+               ]
+            }
+            Statement { (11:6)
+               @bind (11:6)
+               ExpressionList [ (11:11)
+                  IntLit 10 (11:11)
+                  record( (11:15)
+                     x: (11:22)
+                     array[ (11:25)
+                        int (11:31)
+                     ]
+                  )
+               ]
+            }
+            Statement { (12:6)
+               @bind (12:6)
+               ExpressionList [ (12:11)
+                  IntLit 11 (12:11)
+                  record( (12:15)
+                     x: (13:9)
+                     int (13:12)
+                     y: (14:9)
+                     record( (14:12)
+                        a: (15:13)
+                        string (15:16)
+                        b: (16:13)
+                        array[ (16:16)
+                           bool (16:22)
+                        ]
+                     )
+                  )
+               ]
+            }
          ]
       }
    ]

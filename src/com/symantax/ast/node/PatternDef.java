@@ -1,4 +1,4 @@
-package com.symantax.ast.node.list;
+package com.symantax.ast.node;
 
 import com.symantax.ast.node.AstNode;
 import com.symantax.ast.visitor.ASTVisitor;

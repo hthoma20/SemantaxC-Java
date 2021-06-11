@@ -6,4 +6,14 @@ main module Main {
     @bind(5, array(int));
     @bind(6, array(string));
     @bind(7, array(array(int)));
+    @bind(8, record());
+    @bind(9, record(x: int));
+    @bind(10, record(x: array(int)));
+    @bind(11, record(
+        x: int,
+        y: record(
+            a: string,
+            b: array(bool)
+        )
+    ));
 }

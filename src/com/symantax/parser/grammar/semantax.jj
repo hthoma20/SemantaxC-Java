@@ -378,7 +378,9 @@ TypeLit CompoundTypeLit() :
     TypeLit t;
 }
 {
-    (t = ArrayTypeLit())
+    (t = ArrayTypeLit()
+    |
+    t = RecordTypeLit())
     {return t;}
 }
 
@@ -398,5 +400,56 @@ ArrayTypeLit ArrayTypeLit() :
      arrayTypeLit.setFilePos(FilePos.from(identifier));
      return arrayTypeLit;}
 }
+
+RecordTypeLit RecordTypeLit() :
+{
+    Token identifier;
+    NameTypePairList nameTypePairs = new NameTypePairList(); // overwrite this if there is a non-empty list
+}
+{
+    identifier = <RECORD>
+    <L_PAREN>
+    [nameTypePairs = NameTypePairList()]
+    <R_PAREN>
+    {RecordTypeLit recordTypeLit = RecordTypeLit.builder()
+        .nameTypePairs(nameTypePairs)
+        .build();
+     recordTypeLit.setFilePos(FilePos.from(identifier));
+     return recordTypeLit;}
+}
+
+NameTypePair NameTypePair() :
+{
+    Word name;
+    TypeLit type;
+}
+{
+    name = Word()
+    <COLON>
+    type = TypeLit()
+    {NameTypePair nameTypePair = NameTypePair.builder()
+        .name(name.getValue())
+        .type(type)
+        .build();
+     nameTypePair.setFilePos(name.getFilePos());
+     return nameTypePair;}
+}
+
+NameTypePairList NameTypePairList() :
+{
+    NameTypePair nameTypePair;
+    NameTypePairList nameTypePairList = new NameTypePairList();
+}
+{
+    nameTypePair = NameTypePair()
+    {nameTypePairList.add(nameTypePair);
+     nameTypePairList.setFilePos(nameTypePair.getFilePos());}
+
+    (<COMMA> nameTypePair = NameTypePair()
+     {nameTypePairList.add(nameTypePair);}
+    )*
+    {return nameTypePairList;}
+}
+
 
 

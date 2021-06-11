@@ -22,6 +22,9 @@ public interface ASTVisitor<T> {
     T visit(BoolTypeLit boolTypeLiteral);
     T visit(StringTypeLit stringTypeLiteral);
     T visit(ArrayTypeLit arrayTypeLit);
+    T visit(RecordTypeLit recordTypeLit);
+
+    T visit(NameTypePair nameTypePair);
 
     T visit(EmptyRecord emptyRecord);
 
