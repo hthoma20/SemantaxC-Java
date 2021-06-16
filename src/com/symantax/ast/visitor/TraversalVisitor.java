@@ -97,6 +97,13 @@ public class TraversalVisitor<T> implements ASTVisitor<T> {
     }
 
     @Override
+    public T visit(FuncTypeLit funcTypeLit) {
+        funcTypeLit.getInputType().accept(this);
+        funcTypeLit.getOutputType().accept(this);
+        return null;
+    }
+
+    @Override
     public T visit(NameTypePair nameTypePair) {
         nameTypePair.getType().accept(this);
         return null;
@@ -104,6 +111,11 @@ public class TraversalVisitor<T> implements ASTVisitor<T> {
 
     @Override
     public T visit(EmptyRecord emptyRecord) {
+        return null;
+    }
+
+    @Override
+    public T visit(VoidTypeLit voidTypeLit) {
         return null;
     }
 

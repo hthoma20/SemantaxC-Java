@@ -1,19 +1,28 @@
 main module Main {
-    @bind(1, int);
-    @bind(2, string);
-    @bind(3, type);
-    @bind(4, bool);
-    @bind(5, array(int));
-    @bind(6, array(string));
-    @bind(7, array(array(int)));
-    @bind(8, record());
-    @bind(9, record(x: int));
-    @bind(10, record(x: array(int)));
-    @bind(11, record(
+    @bind(0, int);
+    @bind(1, string);
+    @bind(2, type);
+    @bind(3, bool);
+
+    @bind(4, array(int));
+    @bind(5, array(string));
+    @bind(6, array(array(int)));
+
+    @bind(7, record());
+    @bind(8, record(x: int));
+    @bind(9, record(x: array(int)));
+    @bind(10, record(
         x: int,
         y: record(
             a: string,
             b: array(bool)
         )
     ));
+
+    @bind(11, func{});
+    @bind(12, func{->});
+    @bind(13, func{string});
+    @bind(14, func{string->});
+    @bind(15, func{->int});
+    @bind(16, func{string->int});
 }

@@ -79,6 +79,8 @@ TOKEN : {
     < COMMA: "," >
     |
     < DOT: "." >
+    |
+    < ARROW: "->" >
 }
 
 // type literals
@@ -94,6 +96,8 @@ TOKEN: {
     < ARRAY: "array" >
     |
     < RECORD: "record" >
+    |
+    < FUNC: "func" >
 }
 
 // keywords
@@ -160,7 +164,7 @@ Module ModuleDefinition() :
     ModuleList subModules = new ModuleList();
     Statement statement;
     StatementList statements = new StatementList();
-    Module.ModuleBuilder moduleBuilder = Module.builder();
+    Module.Builder moduleBuilder = Module.builder();
 }
 {
     [t = <MODULE_MODIFIER>
@@ -270,7 +274,7 @@ ProgCall ProgCall() :
 {
     Word name;
     ExpressionList subExpressions;
-    ProgCall.ProgCallBuilder builder = ProgCall.builder();
+    ProgCall.Builder builder = ProgCall.builder();
 }
 {
     <AT>
@@ -380,8 +384,36 @@ TypeLit CompoundTypeLit() :
 {
     (t = ArrayTypeLit()
     |
-    t = RecordTypeLit())
+    t = RecordTypeLit()
+    |
+    t = FuncTypeLit())
     {return t;}
+}
+
+// func{} func{->}
+// func{A} func{A->}
+// func{->B}
+// func{A->B}
+FuncTypeLit FuncTypeLit() :
+{
+    Token t;
+    TypeLit inputType = null;
+    TypeLit outputType = null;
+}
+{
+    t = <FUNC>
+    <L_BRACE>
+    (
+        (<R_BRACE>)
+        |
+        (<ARROW> [outputType = TypeLit()] <R_BRACE> )
+        |
+        (inputType = TypeLit() (<R_BRACE> | <ARROW> [outputType = TypeLit()] <R_BRACE> ))
+    )
+    {FuncTypeLit.Builder builder = FuncTypeLit.builder();
+     if (outputType != null) builder.outputType(outputType);
+     if (inputType != null) builder.inputType(inputType);
+     return builder.buildWith(FilePos.from(t));}
 }
 
 ArrayTypeLit ArrayTypeLit() :
@@ -450,6 +482,5 @@ NameTypePairList NameTypePairList() :
     )*
     {return nameTypePairList;}
 }
-
 
 

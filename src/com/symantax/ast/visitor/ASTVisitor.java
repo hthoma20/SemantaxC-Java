@@ -1,5 +1,6 @@
 package com.symantax.ast.visitor;
 
+import com.sun.org.apache.xalan.internal.xsltc.compiler.util.VoidType;
 import com.symantax.ast.node.*;
 import com.symantax.ast.node.list.*;
 import com.symantax.ast.node.literal.*;
@@ -23,10 +24,12 @@ public interface ASTVisitor<T> {
     T visit(StringTypeLit stringTypeLiteral);
     T visit(ArrayTypeLit arrayTypeLit);
     T visit(RecordTypeLit recordTypeLit);
+    T visit(FuncTypeLit funcTypeLit);
 
     T visit(NameTypePair nameTypePair);
 
     T visit(EmptyRecord emptyRecord);
+    T visit(VoidTypeLit voidTypeLit);
 
     <N extends AstNode> T visit(AstNodeList<N> nodes);
 }

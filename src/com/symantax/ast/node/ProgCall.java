@@ -5,7 +5,7 @@ import com.symantax.ast.visitor.ASTVisitor;
 import lombok.Builder;
 import lombok.Getter;
 
-@Builder
+@Builder(builderClassName = "Builder")
 @Getter
 public class ProgCall extends Expression {
     private String name;
