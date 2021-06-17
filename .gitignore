@@ -3,4 +3,4 @@
 out
 
 # Generated parser files
-src/com/symantax/parser/generated
+src/com/semantax/parser/generated
