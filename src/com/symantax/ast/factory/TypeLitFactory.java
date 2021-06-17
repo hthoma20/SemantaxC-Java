@@ -36,9 +36,4 @@ public class TypeLitFactory {
         }
     }
 
-    public static ArrayTypeLit arrayTypeLitOf(Token token, Word subType) {
-        //todo idk?
-        return null;
-    }
-
 }
