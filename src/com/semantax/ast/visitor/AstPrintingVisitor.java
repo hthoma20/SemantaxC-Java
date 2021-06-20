@@ -216,6 +216,18 @@ public class AstPrintingVisitor extends TraversalVisitor<Void> {
     }
 
     @Override
+    public Void visit(ArrayLit arrayLit) {
+        indent();
+        output.printf("ArrayLit (%s) [%n", arrayLit.getFilePos());
+        depth++;
+        super.visit(arrayLit);
+        depth--;
+        indent();
+        output.println("]");
+        return null;
+    }
+
+    @Override
     public Void visit(EmptyRecord emptyRecord) {
         indent();
         output.printf("EmptyRecord (%s)%n", emptyRecord.getFilePos());

@@ -110,6 +110,12 @@ public class TraversalVisitor<T> implements ASTVisitor<T> {
     }
 
     @Override
+    public T visit(ArrayLit arrayLit) {
+        arrayLit.getValues().accept(this);
+        return null;
+    }
+
+    @Override
     public T visit(EmptyRecord emptyRecord) {
         return null;
     }

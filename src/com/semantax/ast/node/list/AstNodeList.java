@@ -22,6 +22,12 @@ public abstract class AstNodeList<NodeType extends AstNode> extends AstNode
         nodes.add(node);
     }
 
+    public void addAll(AstNodeList<NodeType> astNodeList) {
+        for (NodeType node : astNodeList) {
+            add(node);
+        }
+    }
+
     public int size() {
         return nodes.size();
     }

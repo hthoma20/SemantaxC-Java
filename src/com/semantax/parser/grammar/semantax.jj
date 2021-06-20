@@ -7,14 +7,14 @@ options {
 }
 
 PARSER_BEGIN(SymantaxParser)
-package com.symantax.parser.generated;
+package com.semantax.parser.generated;
 
-import com.symantax.ast.factory.*;
-import com.symantax.ast.node.*;
-import com.symantax.ast.node.list.*;
-import com.symantax.ast.node.literal.*;
-import com.symantax.ast.node.literal.type.*;
-import com.symantax.ast.util.FilePos;
+import com.semantax.ast.factory.*;
+import com.semantax.ast.node.*;
+import com.semantax.ast.node.list.*;
+import com.semantax.ast.node.literal.*;
+import com.semantax.ast.node.literal.type.*;
+import com.semantax.ast.util.FilePos;
 
 public class SymantaxParser {}
 
@@ -258,6 +258,22 @@ ExpressionList ExpressionList() :
     {return expressionList;}
 }
 
+// A single expression followed by a comma, or multiple comma separated expressions
+ExpressionList EnforcedExpressionList() :
+{
+    Expression head;
+    ExpressionList tail = null;
+    ExpressionList expList = new ExpressionList();
+}
+{
+    head = Expression()
+    {expList.add(head);}
+    <COMMA>
+    [tail = ExpressionList()
+    {expList.addAll(tail);}]
+    {return expList;}
+}
+
 Expression Expression() :
 {
     Expression exp;
@@ -295,19 +311,27 @@ Literal Literal() :
     Literal lit;
 }
 {
-    (lit = IntLit()
+    (lit = PrimitiveLiteral()
     |
-    lit = StringLit()
-    |
-    lit = BoolLit()
-    |
-    lit = EmptyRecord()
+    lit = CompoundLiteral()
     |
     lit = TypeLit()
     )
     {return lit;}
 }
 
+Literal PrimitiveLiteral() :
+{
+    Literal lit;
+}
+{
+    (lit = IntLit()
+    |
+    lit = StringLit()
+    |
+    lit = BoolLit())
+    {return lit;}
+}
 
 StringLit StringLit() :
 {
@@ -483,4 +507,27 @@ NameTypePairList NameTypePairList() :
     {return nameTypePairList;}
 }
 
+Literal CompoundLiteral() :
+{
+    Literal lit;
+}
+{
+    (lit = ArrayLit()
+    |
+    lit = EmptyRecord() )
+    {return lit;}
+}
 
+ArrayLit ArrayLit() :
+{
+    Token t;
+    ExpressionList expressions = new ExpressionList();
+}
+{
+    t = <L_BRACKET>
+    [expressions = EnforcedExpressionList()]
+    <R_BRACKET>
+    {return ArrayLit.builder()
+                .values(expressions)
+                .buildWith(FilePos.from(t));}
+}
