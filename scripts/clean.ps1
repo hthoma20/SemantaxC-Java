@@ -1,3 +1,3 @@
-$generatedSrcRoot = "src/com/symantax/parser/generated"
+$generatedSrcRoot = "src/com/semantax/parser/generated"
 
 Remove-Item $generatedSrcRoot"/*"
