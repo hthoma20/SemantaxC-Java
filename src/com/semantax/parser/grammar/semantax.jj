@@ -366,15 +366,6 @@ BoolLit BoolLit() :
     {return BoolLitFactory.fromToken(t);}
 }
 
-EmptyRecord EmptyRecord() :
-{
-    Token t;
-}
-{
-    t = <L_PAREN> <R_PAREN>
-    {return EmptyRecordFactory.fromToken(t);}
-}
-
 TypeLit TypeLit() :
 {
     TypeLit t;
@@ -507,6 +498,37 @@ NameTypePairList NameTypePairList() :
     {return nameTypePairList;}
 }
 
+NameExpressionPair NameExpressionPair() :
+{
+    Word name;
+    Expression exp;
+}
+{
+    name = Word()
+    <COLON>
+    exp = Expression()
+    {return NameExpressionPair.builder()
+        .name(name.getValue())
+        .expression(exp)
+        .buildWith(name.getFilePos());}
+}
+
+NameExpressionPairList NameExpressionPairList() :
+{
+    NameExpressionPair nameExpressionPair;
+    NameExpressionPairList nameExpressionPairList = new NameExpressionPairList();
+}
+{
+    nameExpressionPair = NameExpressionPair()
+    {nameExpressionPairList.add(nameExpressionPair);
+     nameExpressionPairList.setFilePos(nameExpressionPair.getFilePos());}
+
+    (<COMMA> nameExpressionPair = NameExpressionPair()
+     {nameExpressionPairList.add(nameExpressionPair);}
+    )*
+    {return nameExpressionPairList;}
+}
+
 Literal CompoundLiteral() :
 {
     Literal lit;
@@ -514,7 +536,7 @@ Literal CompoundLiteral() :
 {
     (lit = ArrayLit()
     |
-    lit = EmptyRecord() )
+    lit = RecordLit())
     {return lit;}
 }
 
@@ -530,4 +552,18 @@ ArrayLit ArrayLit() :
     {return ArrayLit.builder()
                 .values(expressions)
                 .buildWith(FilePos.from(t));}
+}
+
+RecordLit RecordLit() :
+{
+    Token t;
+    NameExpressionPairList nameExpressionPairs = new NameExpressionPairList();
+}
+{
+    t = <L_PAREN>
+    [nameExpressionPairs = NameExpressionPairList()]
+    <R_PAREN>
+    {return RecordLit.builder()
+        .nameExpressionPairs(nameExpressionPairs)
+        .buildWith(FilePos.from(t));}
 }

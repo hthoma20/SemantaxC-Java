@@ -26,10 +26,11 @@ public interface ASTVisitor<T> {
     T visit(FuncTypeLit funcTypeLit);
 
     T visit(NameTypePair nameTypePair);
+    T visit(NameExpressionPair nameExpressionPair);
 
     T visit(ArrayLit arrayLit);
+    T visit(RecordLit recordLit);
 
-    T visit(EmptyRecord emptyRecord);
     T visit(VoidTypeLit voidTypeLit);
 
     <N extends AstNode> T visit(AstNodeList<N> nodes);

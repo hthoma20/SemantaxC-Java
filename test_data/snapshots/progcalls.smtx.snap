@@ -62,7 +62,8 @@ Program {
             Statement { (13:6)
                @addint (13:6)
                ExpressionList [ (13:13)
-                  EmptyRecord (13:13)
+                  RecordLit ( (13:13)
+                  )
                ]
             }
          ]

@@ -25,7 +25,7 @@ public class SnapshotTestUtil {
 
         String snapshotString = readSnapshot(snapshotName);
 
-        Assertions.assertEquals(snapshotString, nodeString);
+        Assertions.assertEquals(snapshotString, nodeString, String.format("Snapshot mismatch for: %s", snapshotName));
     }
 
     private static boolean snapshotExists(String snapshotName) {

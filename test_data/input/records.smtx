@@ -1,0 +1,10 @@
+main module Main {
+    @bind(0, ());
+    @bind(1, (a: 4) );
+    @bind(2, (a: 4, b: 50) );
+    @bind(3, (ar: [1,2], rec: (a: "hi", b: 5)) );
+    @bind(4, (
+        text: "this is a multiline record",
+        value: @addint(1,2)
+    ));
+}

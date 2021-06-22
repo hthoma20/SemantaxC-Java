@@ -110,13 +110,22 @@ public class TraversalVisitor<T> implements ASTVisitor<T> {
     }
 
     @Override
+    public T visit(NameExpressionPair nameExpressionPair) {
+        nameExpressionPair.getExpression().accept(this);
+        return null;
+    }
+
+    @Override
     public T visit(ArrayLit arrayLit) {
         arrayLit.getValues().accept(this);
         return null;
     }
 
     @Override
-    public T visit(EmptyRecord emptyRecord) {
+    public T visit(RecordLit recordLit) {
+        for (NameExpressionPair nameExpressionPair : recordLit.getNameExpressionPairs()) {
+            nameExpressionPair.accept(this);
+        }
         return null;
     }
 
