@@ -1,0 +1,16 @@
+main module Main {
+    @bind(0, {} );
+    @bind(1, (){} );
+    @bind(2, (a: int, b: int){} );
+    @bind(3, (a: int, b: string) {
+        @addint(4, 5)
+    });
+    @bind(4, (a: int, b: string) {
+        @printint(4);
+        @printstring("hello");
+    });
+    @bind(4, (a: int, b: string) -> int {
+        @printint(4);
+        @printstring("hello");
+    });
+}

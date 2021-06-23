@@ -30,6 +30,7 @@ public interface ASTVisitor<T> {
 
     T visit(ArrayLit arrayLit);
     T visit(RecordLit recordLit);
+    T visit(FunctionLit functionLit);
 
     T visit(VoidTypeLit voidTypeLit);
 

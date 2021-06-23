@@ -9,6 +9,8 @@ options {
 PARSER_BEGIN(SymantaxParser)
 package com.semantax.parser.generated;
 
+import java.util.Optional;
+
 import com.semantax.ast.factory.*;
 import com.semantax.ast.node.*;
 import com.semantax.ast.node.list.*;
@@ -237,9 +239,7 @@ Statement Statement() :
 }
 {
     exp = Expression() <SEMI_COLON>
-    {Statement statement = Statement.builder().expression(exp).build();
-     statement.setFilePos(exp.getFilePos());
-     return statement;}
+    {return StatementFactory.fromExpression(exp);}
 }
 
 ExpressionList ExpressionList() :
@@ -482,6 +482,9 @@ NameTypePair NameTypePair() :
      return nameTypePair;}
 }
 
+// A non-empty list of name type pairs separated by commas
+// A single pair has no comma
+// <WORD> : TypeLit(), ...
 NameTypePairList NameTypePairList() :
 {
     NameTypePair nameTypePair;
@@ -536,7 +539,11 @@ Literal CompoundLiteral() :
 {
     (lit = ArrayLit()
     |
-    lit = RecordLit())
+    LOOKAHEAD([FunctionLitPrefix(FunctionLit.builder())] <L_BRACE>)
+    lit = FunctionLit()
+    |
+    lit = RecordLit()
+     )
     {return lit;}
 }
 
@@ -567,3 +574,69 @@ RecordLit RecordLit() :
         .nameExpressionPairs(nameExpressionPairs)
         .buildWith(FilePos.from(t));}
 }
+
+// Match the prefix of a function, up to (not including) the L_BRACE ('{')
+// add input and output types to the builder as found
+void FunctionLitPrefix(FunctionLit.Builder builder) :
+{
+    Token t;
+    NameTypePairList inputTypes;
+    TypeLit outputType;
+}
+{
+    t = <L_PAREN>
+    [inputTypes = NameTypePairList()
+    {builder.input(RecordTypeLit.builder()
+                .nameTypePairs(inputTypes)
+                .buildWith(FilePos.from(t)));}]
+    <R_PAREN>
+
+    [
+        <ARROW>
+        outputType = TypeLit()
+        {builder.output(Optional.of(outputType));}
+    ]
+}
+
+// Match the (non-empty) body of the function, that is
+// everything between (not including) the braces
+void FunctionLitBody(FunctionLit.Builder builder) :
+{
+    Expression firstExpression;
+    Statement statement;
+    StatementList statements = new StatementList();
+}
+{
+    // A return expression
+    firstExpression = Expression()
+    {builder.returnExpression(Optional.of(firstExpression));}
+
+    [
+        <SEMI_COLON> // if there is a semi-colon, this means that the expression was actually a statement
+        {builder.returnExpression(Optional.empty());
+         statements.add(StatementFactory.fromExpression(firstExpression));}
+
+        (statement = Statement()
+         {statements.add(statement);})*
+
+        {builder.statements(Optional.of(statements));}
+    ]
+}
+
+// (){...}
+//
+FunctionLit FunctionLit() :
+{
+    Token t;
+    FunctionLit.Builder builder = FunctionLit.builder();
+}
+{
+    // Optional input/output type
+    [FunctionLitPrefix(builder)]
+    t = <L_BRACE>
+    // Optional body
+    [FunctionLitBody(builder)]
+    <R_BRACE>
+    {return builder.buildWith(FilePos.from(t));}
+}
+

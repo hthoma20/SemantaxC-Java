@@ -14,6 +14,11 @@ import lombok.Getter;
  */
 @Builder(builderClassName = "Builder")
 public class RecordTypeLit extends TypeLit {
+
+    public static RecordTypeLit EMPTY_RECORD = RecordTypeLit.builder()
+            .nameTypePairs(new NameTypePairList())
+            .buildWith(new FilePos(-1, -1));
+
     @Getter
     private NameTypePairList nameTypePairs;
 

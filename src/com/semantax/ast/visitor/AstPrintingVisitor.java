@@ -250,6 +250,50 @@ public class AstPrintingVisitor extends TraversalVisitor<Void> {
     }
 
     @Override
+    public Void visit(FunctionLit functionLit) {
+        indent();
+        output.printf("FunctionLit (%s)%n", functionLit.getFilePos());
+
+        depth++;
+
+        indent();
+        output.println("input:");
+        depth++;
+        functionLit.getInput().accept(this);
+        depth--;
+
+        if (functionLit.getOutput().isPresent()) {
+            indent();
+            output.println("output:");
+            depth++;
+            functionLit.getOutput().get().accept(this);
+            depth--;
+        }
+
+        if (functionLit.getReturnExpression().isPresent()) {
+            indent();
+            output.println("expression:");
+            depth++;
+            functionLit.getReturnExpression().get().accept(this);
+            depth--;
+        }
+
+        if (functionLit.getStatements().isPresent()) {
+            indent();
+            output.println("statements:");
+            depth++;
+            functionLit.getStatements().get().accept(this);
+            depth--;
+        }
+
+        depth--;
+        indent();
+        output.println(")");
+
+        return null;
+    }
+
+    @Override
     public Void visit(VoidTypeLit voidTypeLit) {
         indent();
         output.println("VoidTypeLit");

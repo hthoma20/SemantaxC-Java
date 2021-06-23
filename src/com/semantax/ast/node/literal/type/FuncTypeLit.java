@@ -10,12 +10,8 @@ import lombok.Getter;
 @Getter
 public class FuncTypeLit extends TypeLit {
 
-    private static TypeLit EMPTY_RECORD = RecordTypeLit.builder()
-            .nameTypePairs(new NameTypePairList())
-            .buildWith(new FilePos(-1, -1));
-
     @lombok.Builder.Default
-    private TypeLit inputType = EMPTY_RECORD;
+    private TypeLit inputType = RecordTypeLit.EMPTY_RECORD;
     @lombok.Builder.Default
     private TypeLit outputType = VoidTypeLit.VOID_TYPE_LIT;
 
