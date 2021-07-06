@@ -12,7 +12,7 @@ import java.util.Optional;
 @Builder(builderClassName = "Builder")
 public class Statement extends AstNode {
     @Getter
-    private Expression expression;
+    private Phrase phrase;
 
     @Override
     public <T> T accept(ASTVisitor<T> visitor) {

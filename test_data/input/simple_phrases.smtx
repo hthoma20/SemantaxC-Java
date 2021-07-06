@@ -1,0 +1,5 @@
+main module Main {
+
+    let firstElement = x[0];
+}
+

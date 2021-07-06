@@ -53,7 +53,7 @@ public class TraversalVisitor<T> implements ASTVisitor<T> {
 
     @Override
     public T visit(Statement statement) {
-        statement.getExpression().accept(this);
+        statement.getPhrase().accept(this);
         return null;
     }
 
@@ -147,6 +147,16 @@ public class TraversalVisitor<T> implements ASTVisitor<T> {
     public <N extends AstNode> T visit(AstNodeList<N> nodes) {
         for (N node : nodes) {
             node.accept(this);
+        }
+        return null;
+    }
+
+    @Override
+    public T visit(Phrase phrase) {
+        for (PhraseElement phraseElement : phrase.getPhrase()) {
+            if (phraseElement instanceof AstNode) {
+                ((AstNode) phraseElement).accept(this);
+            }
         }
         return null;
     }

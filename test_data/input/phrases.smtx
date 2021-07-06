@@ -1,0 +1,10 @@
+main module Main {
+    [1,2,3] + "abc" is a phrase;
+    [4 + 5, "a" maps to "C"];
+
+    let x = 4 + (2 is even);
+    there are 3 (nested (parens in ("he" + "re") that) arent logical);
+
+    let myRecord = ( sum: 4 + x, list: 4 * [1,2]);
+}
+

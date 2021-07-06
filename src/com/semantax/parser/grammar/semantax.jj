@@ -28,31 +28,9 @@ SKIP: {
 
 // symbols
 TOKEN : {
-    < BACK_TICK: "`" >
-    |
-    < TILDE: "~" >
-    |
-    < BANG: "!" >
-    |
     < AT: "@" >
     |
-    < HASH: "#" >
-    |
     < DOLLAR: "$" >
-    |
-    < PERCENT: "%" >
-    |
-    < CARET: "^" >
-    |
-    < AMPERSAND: "&" >
-    |
-    < STAR: "*" >
-    |
-    < DASH: "-" >
-    |
-    < PLUS: "+" >
-    |
-    < EQUALS: "=" >
     |
     < L_PAREN: "(" >
     |
@@ -66,10 +44,6 @@ TOKEN : {
     |
     < R_BRACKET: "]" >
     |
-    < L_ANGLE: "<" >
-    |
-    < R_ANGLE: ">" >
-    |
     < SEMI_COLON: ";" >
     |
     < COLON: ":" >
@@ -80,9 +54,9 @@ TOKEN : {
     |
     < COMMA: "," >
     |
-    < DOT: "." >
-    |
     < ARROW: "->" >
+    |
+    < SYMBOL: ["!","#","%","&","*","+","-",".","/","<"-"?","^","-","`","|","~"] > // Symbols other than ' " , $ ( ) { } [ ] :
 }
 
 // type literals
@@ -227,51 +201,84 @@ Word Word() :
     {return WordFactory.fromToken(t);}
 }
 
-void Symbol() :
-{}
+Word Symbol() :
 {
-    <PLUS> | <EQUALS>
+    Token t;
+}
+{
+    // [] and : are not included in the symbol token, since they are tokens in thier own right
+    t = <SYMBOL>
+    {return Word.fromToken(t);}
 }
 
 Statement Statement() :
 {
-    Expression exp;
+    Phrase phrase;
 }
 {
-    exp = Expression() <SEMI_COLON>
-    {return StatementFactory.fromExpression(exp);}
+    phrase = Phrase() <SEMI_COLON>
+    {return Statement.builder()
+        .phrase(phrase)
+        .buildWith(phrase.getFilePos());}
 }
 
-ExpressionList ExpressionList() :
+Phrase Phrase() :
 {
-    Expression exp;
-    ExpressionList expressionList = new ExpressionList();
+    PhraseElement element;
+    Phrase.Builder builder = Phrase.builder();
 }
 {
-    exp = Expression()
-    {expressionList.add(exp);
-     expressionList.setFilePos(exp.getFilePos());}
+    (element = PhraseElement()
+     {builder.element(element);})+
+    {return builder.build();}
+}
 
-    (<COMMA> exp = Expression()
-     {expressionList.add(exp);}
+PhraseElement PhraseElement() :
+{
+    PhraseElement element;
+}
+{
+    (element = Word()
+    |
+    element = Symbol()
+    |
+    LOOKAHEAD(3) // resolves conflict with parenthesized phrase - this picks a record literal if there is a colon
+    element = Expression()
+    |
+    (<L_PAREN> element = Phrase() <R_PAREN>) )
+    {return element;}
+}
+
+ExpressionList PhraseList() :
+{
+    Phrase phrase;
+    ExpressionList phraseList = new ExpressionList();
+}
+{
+    phrase = Phrase()
+    {phraseList.add(phrase);
+     phraseList.setFilePos(phrase.getFilePos());}
+
+    (<COMMA> phrase = Phrase()
+     {phraseList.add(phrase);}
     )*
-    {return expressionList;}
+    {return phraseList;}
 }
 
-// A single expression followed by a comma, or multiple comma separated expressions
-ExpressionList EnforcedExpressionList() :
+// A single phrase followed by a comma, or multiple comma separated expressions
+ExpressionList EnforcedPhraseList() :
 {
-    Expression head;
+    Phrase head;
     ExpressionList tail = null;
-    ExpressionList expList = new ExpressionList();
+    ExpressionList phraseList = new ExpressionList();
 }
 {
-    head = Expression()
-    {expList.add(head);}
+    head = Phrase()
+    {phraseList.add(head);}
     <COMMA>
-    [tail = ExpressionList()
-    {expList.addAll(tail);}]
-    {return expList;}
+    [tail = PhraseList()
+    {phraseList.addAll(tail);}]
+    {return phraseList;}
 }
 
 Expression Expression() :
@@ -289,7 +296,7 @@ Expression Expression() :
 ProgCall ProgCall() :
 {
     Word name;
-    ExpressionList subExpressions;
+    ExpressionList subPhrases;
     ProgCall.Builder builder = ProgCall.builder();
 }
 {
@@ -297,8 +304,8 @@ ProgCall ProgCall() :
     name = Word()
     {builder.name(name.getValue());}
     <L_PAREN>
-    [subExpressions = ExpressionList()
-     {builder.subExpressions(subExpressions);}
+    [subPhrases = PhraseList()
+     {builder.subExpressions(subPhrases);}
     ]
     <R_PAREN>
     {ProgCall progCall = builder.build();
@@ -501,35 +508,35 @@ NameTypePairList NameTypePairList() :
     {return nameTypePairList;}
 }
 
-NameExpressionPair NameExpressionPair() :
+NameExpressionPair NamePhrasePair() :
 {
     Word name;
-    Expression exp;
+    Expression phrase;
 }
 {
     name = Word()
     <COLON>
-    exp = Expression()
+    phrase = Phrase()
     {return NameExpressionPair.builder()
         .name(name.getValue())
-        .expression(exp)
+        .expression(phrase)
         .buildWith(name.getFilePos());}
 }
 
-NameExpressionPairList NameExpressionPairList() :
+NameExpressionPairList NamePhrasePairList() :
 {
-    NameExpressionPair nameExpressionPair;
-    NameExpressionPairList nameExpressionPairList = new NameExpressionPairList();
+    NameExpressionPair namePhrasePair;
+    NameExpressionPairList namePhrasePairList = new NameExpressionPairList();
 }
 {
-    nameExpressionPair = NameExpressionPair()
-    {nameExpressionPairList.add(nameExpressionPair);
-     nameExpressionPairList.setFilePos(nameExpressionPair.getFilePos());}
+    namePhrasePair = NamePhrasePair()
+    {namePhrasePairList.add(namePhrasePair);
+     namePhrasePairList.setFilePos(namePhrasePair.getFilePos());}
 
-    (<COMMA> nameExpressionPair = NameExpressionPair()
-     {nameExpressionPairList.add(nameExpressionPair);}
+    (<COMMA> namePhrasePair = NamePhrasePair()
+     {namePhrasePairList.add(namePhrasePair);}
     )*
-    {return nameExpressionPairList;}
+    {return namePhrasePairList;}
 }
 
 Literal CompoundLiteral() :
@@ -554,7 +561,7 @@ ArrayLit ArrayLit() :
 }
 {
     t = <L_BRACKET>
-    [expressions = EnforcedExpressionList()]
+    [expressions = EnforcedPhraseList()]
     <R_BRACKET>
     {return ArrayLit.builder()
                 .values(expressions)
@@ -564,14 +571,14 @@ ArrayLit ArrayLit() :
 RecordLit RecordLit() :
 {
     Token t;
-    NameExpressionPairList nameExpressionPairs = new NameExpressionPairList();
+    NameExpressionPairList namePhrasePairs = new NameExpressionPairList();
 }
 {
     t = <L_PAREN>
-    [nameExpressionPairs = NameExpressionPairList()]
+    [namePhrasePairs = NamePhrasePairList()]
     <R_PAREN>
     {return RecordLit.builder()
-        .nameExpressionPairs(nameExpressionPairs)
+        .nameExpressionPairs(namePhrasePairs)
         .buildWith(FilePos.from(t));}
 }
 

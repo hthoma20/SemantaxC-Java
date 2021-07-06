@@ -4,123 +4,179 @@ Program {
          ModuleList [] (null)
          StatementList [ (2:6)
             Statement { (2:6)
-               @bind (2:6)
-               ExpressionList [ (2:11)
-                  IntLit 0 (2:11)
-                  FunctionLit (2:14)
-                     input:
-                        record( (-1:-1)
+               Phrase: [ (2:6)
+                  @bind (2:6)
+                  ExpressionList [ (2:11)
+                     Phrase: [ (2:11)
+                        IntLit 0 (2:11)
+                     ]
+                     Phrase: [ (2:14)
+                        FunctionLit (2:14)
+                           input:
+                              record( (-1:-1)
+                              )
                         )
-                  )
+                     ]
+                  ]
                ]
             }
             Statement { (3:6)
-               @bind (3:6)
-               ExpressionList [ (3:11)
-                  IntLit 1 (3:11)
-                  FunctionLit (3:16)
-                     input:
-                        record( (-1:-1)
+               Phrase: [ (3:6)
+                  @bind (3:6)
+                  ExpressionList [ (3:11)
+                     Phrase: [ (3:11)
+                        IntLit 1 (3:11)
+                     ]
+                     Phrase: [ (3:16)
+                        FunctionLit (3:16)
+                           input:
+                              record( (-1:-1)
+                              )
                         )
-                  )
+                     ]
+                  ]
                ]
             }
             Statement { (4:6)
-               @bind (4:6)
-               ExpressionList [ (4:11)
-                  IntLit 2 (4:11)
-                  FunctionLit (4:30)
-                     input:
-                        record( (4:14)
-                           a: (4:15)
-                           int (4:18)
-                           b: (4:23)
-                           int (4:26)
+               Phrase: [ (4:6)
+                  @bind (4:6)
+                  ExpressionList [ (4:11)
+                     Phrase: [ (4:11)
+                        IntLit 2 (4:11)
+                     ]
+                     Phrase: [ (4:30)
+                        FunctionLit (4:30)
+                           input:
+                              record( (4:14)
+                                 a: (4:15)
+                                 int (4:18)
+                                 b: (4:23)
+                                 int (4:26)
+                              )
                         )
-                  )
+                     ]
+                  ]
                ]
             }
             Statement { (5:6)
-               @bind (5:6)
-               ExpressionList [ (5:11)
-                  IntLit 3 (5:11)
-                  FunctionLit (5:34)
-                     input:
-                        record( (5:14)
-                           a: (5:15)
-                           int (5:18)
-                           b: (5:23)
-                           string (5:26)
+               Phrase: [ (5:6)
+                  @bind (5:6)
+                  ExpressionList [ (5:11)
+                     Phrase: [ (5:11)
+                        IntLit 3 (5:11)
+                     ]
+                     Phrase: [ (5:34)
+                        FunctionLit (5:34)
+                           input:
+                              record( (5:14)
+                                 a: (5:15)
+                                 int (5:18)
+                                 b: (5:23)
+                                 string (5:26)
+                              )
+                           expression:
+                              @addint (6:10)
+                              ExpressionList [ (6:17)
+                                 Phrase: [ (6:17)
+                                    IntLit 4 (6:17)
+                                 ]
+                                 Phrase: [ (6:20)
+                                    IntLit 5 (6:20)
+                                 ]
+                              ]
                         )
-                     expression:
-                        @addint (6:10)
-                        ExpressionList [ (6:17)
-                           IntLit 4 (6:17)
-                           IntLit 5 (6:20)
-                        ]
-                  )
+                     ]
+                  ]
                ]
             }
             Statement { (8:6)
-               @bind (8:6)
-               ExpressionList [ (8:11)
-                  IntLit 4 (8:11)
-                  FunctionLit (8:34)
-                     input:
-                        record( (8:14)
-                           a: (8:15)
-                           int (8:18)
-                           b: (8:23)
-                           string (8:26)
+               Phrase: [ (8:6)
+                  @bind (8:6)
+                  ExpressionList [ (8:11)
+                     Phrase: [ (8:11)
+                        IntLit 4 (8:11)
+                     ]
+                     Phrase: [ (8:34)
+                        FunctionLit (8:34)
+                           input:
+                              record( (8:14)
+                                 a: (8:15)
+                                 int (8:18)
+                                 b: (8:23)
+                                 string (8:26)
+                              )
+                           statements:
+                              StatementList [ (9:10)
+                                 Statement { (9:10)
+                                    Phrase: [ (9:10)
+                                       @printint (9:10)
+                                       ExpressionList [ (9:19)
+                                          Phrase: [ (9:19)
+                                             IntLit 4 (9:19)
+                                          ]
+                                       ]
+                                    ]
+                                 }
+                                 Statement { (10:10)
+                                    Phrase: [ (10:10)
+                                       @printstring (10:10)
+                                       ExpressionList [ (10:22)
+                                          Phrase: [ (10:22)
+                                             StringLit hello (10:22)
+                                          ]
+                                       ]
+                                    ]
+                                 }
+                              ]
                         )
-                     statements:
-                        StatementList [ (9:10)
-                           Statement { (9:10)
-                              @printint (9:10)
-                              ExpressionList [ (9:19)
-                                 IntLit 4 (9:19)
-                              ]
-                           }
-                           Statement { (10:10)
-                              @printstring (10:10)
-                              ExpressionList [ (10:22)
-                                 StringLit hello (10:22)
-                              ]
-                           }
-                        ]
-                  )
+                     ]
+                  ]
                ]
             }
             Statement { (12:6)
-               @bind (12:6)
-               ExpressionList [ (12:11)
-                  IntLit 4 (12:11)
-                  FunctionLit (12:41)
-                     input:
-                        record( (12:14)
-                           a: (12:15)
-                           int (12:18)
-                           b: (12:23)
-                           string (12:26)
+               Phrase: [ (12:6)
+                  @bind (12:6)
+                  ExpressionList [ (12:11)
+                     Phrase: [ (12:11)
+                        IntLit 4 (12:11)
+                     ]
+                     Phrase: [ (12:41)
+                        FunctionLit (12:41)
+                           input:
+                              record( (12:14)
+                                 a: (12:15)
+                                 int (12:18)
+                                 b: (12:23)
+                                 string (12:26)
+                              )
+                           output:
+                              int (12:37)
+                           statements:
+                              StatementList [ (13:10)
+                                 Statement { (13:10)
+                                    Phrase: [ (13:10)
+                                       @printint (13:10)
+                                       ExpressionList [ (13:19)
+                                          Phrase: [ (13:19)
+                                             IntLit 4 (13:19)
+                                          ]
+                                       ]
+                                    ]
+                                 }
+                                 Statement { (14:10)
+                                    Phrase: [ (14:10)
+                                       @printstring (14:10)
+                                       ExpressionList [ (14:22)
+                                          Phrase: [ (14:22)
+                                             StringLit hello (14:22)
+                                          ]
+                                       ]
+                                    ]
+                                 }
+                              ]
                         )
-                     output:
-                        int (12:37)
-                     statements:
-                        StatementList [ (13:10)
-                           Statement { (13:10)
-                              @printint (13:10)
-                              ExpressionList [ (13:19)
-                                 IntLit 4 (13:19)
-                              ]
-                           }
-                           Statement { (14:10)
-                              @printstring (14:10)
-                              ExpressionList [ (14:22)
-                                 StringLit hello (14:22)
-                              ]
-                           }
-                        ]
-                  )
+                     ]
+                  ]
                ]
             }
          ]

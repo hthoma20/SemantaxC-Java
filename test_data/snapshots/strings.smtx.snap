@@ -4,20 +4,30 @@ Program {
          ModuleList [] (null)
          StatementList [ (2:5)
             Statement { (2:5)
-               StringLit hello (2:5)
+               Phrase: [ (2:5)
+                  StringLit hello (2:5)
+               ]
             }
             Statement { (2:14)
-               StringLit goodbye (2:14)
+               Phrase: [ (2:14)
+                  StringLit goodbye (2:14)
+               ]
             }
             Statement { (3:5)
-               StringLit then he said \"i hate you\" (3:5)
+               Phrase: [ (3:5)
+                  StringLit then he said \"i hate you\" (3:5)
+               ]
             }
             Statement { (4:5)
-               StringLit then he said "i hate you" (4:5)
+               Phrase: [ (4:5)
+                  StringLit then he said "i hate you" (4:5)
+               ]
             }
             Statement { (5:5)
-               StringLit what happens
+               Phrase: [ (5:5)
+                  StringLit what happens
         with a multiline string? (5:5)
+               ]
             }
          ]
       }

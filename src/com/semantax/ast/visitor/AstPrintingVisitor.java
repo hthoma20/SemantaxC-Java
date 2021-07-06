@@ -299,4 +299,18 @@ public class AstPrintingVisitor extends TraversalVisitor<Void> {
         output.println("VoidTypeLit");
         return null;
     }
+
+    @Override
+    public Void visit(Phrase phrase) {
+        indent();
+        output.printf("Phrase: [ (%s)%n", phrase.getFilePos());
+
+        depth++;
+        super.visit(phrase);
+        depth--;
+
+        indent();
+        output.println("]");
+        return null;
+    }
 }

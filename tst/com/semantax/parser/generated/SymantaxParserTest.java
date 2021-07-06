@@ -2,6 +2,8 @@ package com.semantax.parser.generated;
 
 import com.semantax.ast.node.Program;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -10,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static com.semantax.parser.generated.snapshot.SnapshotTestUtil.*;
 
 class SymantaxParserTest {
+
     /**
      * @param input the string to parse
      * @return a parser for the given string
@@ -28,6 +31,17 @@ class SymantaxParserTest {
         return new SymantaxParser(fis);
     }
 
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "arrays.smtx",
+            "functions.smtx",
+            "modules.smtx",
+            "phrases.smtx",
+            "progcalls.smtx",
+            "records.smtx",
+            "strings.smtx",
+            "types.smtx"
+    })
     public void test_snapshot(String filename) throws FileNotFoundException, ParseException {
         SymantaxParser parser = getFileParser(String.format("././test_data/input/%s", filename));
 
@@ -40,16 +54,6 @@ class SymantaxParserTest {
             throw parseException;
         }
     }
-
-    @Test
-    public void test_allSnapshots() throws FileNotFoundException, ParseException {
-        File testData = new File("./test_data/input");
-
-        for (String fileName : testData.list()) {
-            test_snapshot(fileName);
-        }
-    }
-
 
     @Test
     public void test_InvalidFuncTypeLit() {
