@@ -55,7 +55,7 @@ public class SnapshotTestUtil {
     }
 
     private String getFileName(String snapshotName) {
-        return String.format("%s/%s.snap", testDataRoot, snapshotName);
+        return String.format("%s/snapshots/%s.snap", testDataRoot, snapshotName);
     }
 
 }
