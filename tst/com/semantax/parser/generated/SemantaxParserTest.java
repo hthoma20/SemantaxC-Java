@@ -1,6 +1,7 @@
 package com.semantax.parser.generated;
 
 import com.semantax.ast.node.Program;
+import com.semantax.parser.generated.snapshot.SnapshotTestUtil;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -9,9 +10,11 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static com.semantax.parser.generated.snapshot.SnapshotTestUtil.*;
 
-class SymantaxParserTest {
+class SemantaxParserTest {
+
+    private static final String TEST_DATA_ROOT = "./tst/test_data";
+    private SnapshotTestUtil snapshotTestUtil = new SnapshotTestUtil(TEST_DATA_ROOT);
 
     /**
      * @param input the string to parse
@@ -43,11 +46,11 @@ class SymantaxParserTest {
             "types.smtx"
     })
     public void test_snapshot(String filename) throws FileNotFoundException, ParseException {
-        SymantaxParser parser = getFileParser(String.format("././test_data/input/%s", filename));
+        SymantaxParser parser = getFileParser(String.format("%s/input/%s", TEST_DATA_ROOT, filename));
 
         try {
             Program program = parser.Program();
-            assertMatchesSnapshot(filename, program);
+            snapshotTestUtil.assertMatchesSnapshot(filename, program);
         }
         catch (ParseException parseException) {
             System.err.printf("Encountered ParseException while parsing %s%n", filename);

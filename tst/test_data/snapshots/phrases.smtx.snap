@@ -1,0 +1,116 @@
+Program {
+   ModuleList [ (1:13)
+      main module Main { (1:13)
+         ModuleList [] (null)
+         StatementList [ (2:5)
+            Statement { (2:5)
+               Phrase: [ (2:5)
+                  ArrayLit (2:5) [
+                     ExpressionList [ (2:6)
+                        Phrase: [ (2:6)
+                           IntLit 1 (2:6)
+                        ]
+                        Phrase: [ (2:8)
+                           IntLit 2 (2:8)
+                        ]
+                        Phrase: [ (2:10)
+                           IntLit 3 (2:10)
+                        ]
+                     ]
+                  ]
+                  Word: + (2:13)
+                  StringLit abc (2:15)
+                  Word: is (2:21)
+                  Word: a (2:24)
+                  Word: phrase (2:26)
+               ]
+            }
+            Statement { (3:5)
+               Phrase: [ (3:5)
+                  ArrayLit (3:5) [
+                     ExpressionList [ (3:6)
+                        Phrase: [ (3:6)
+                           IntLit 4 (3:6)
+                           Word: + (3:8)
+                           IntLit 5 (3:10)
+                        ]
+                        Phrase: [ (3:13)
+                           StringLit a (3:13)
+                           Word: maps (3:17)
+                           Word: to (3:22)
+                           StringLit C (3:25)
+                        ]
+                     ]
+                  ]
+               ]
+            }
+            Statement { (5:5)
+               Phrase: [ (5:5)
+                  Word: let (5:5)
+                  Word: x (5:9)
+                  Word: = (5:11)
+                  IntLit 4 (5:13)
+                  Word: + (5:15)
+                  Phrase: [ (5:18)
+                     IntLit 2 (5:18)
+                     Word: is (5:20)
+                     Word: even (5:23)
+                  ]
+               ]
+            }
+            Statement { (6:5)
+               Phrase: [ (6:5)
+                  Word: there (6:5)
+                  Word: are (6:11)
+                  IntLit 3 (6:15)
+                  Phrase: [ (6:18)
+                     Word: nested (6:18)
+                     Phrase: [ (6:26)
+                        Word: parens (6:26)
+                        Word: in (6:33)
+                        Phrase: [ (6:37)
+                           StringLit he (6:37)
+                           Word: + (6:42)
+                           StringLit re (6:44)
+                        ]
+                        Word: that (6:50)
+                     ]
+                     Word: arent (6:56)
+                     Word: logical (6:62)
+                  ]
+               ]
+            }
+            Statement { (8:5)
+               Phrase: [ (8:5)
+                  Word: let (8:5)
+                  Word: myRecord (8:9)
+                  Word: = (8:18)
+                  RecordLit ( (8:20)
+                     sum: (8:22)
+                     Phrase: [ (8:27)
+                        IntLit 4 (8:27)
+                        Word: + (8:29)
+                        Word: x (8:31)
+                     ]
+                     list: (8:34)
+                     Phrase: [ (8:40)
+                        IntLit 4 (8:40)
+                        Word: * (8:42)
+                        ArrayLit (8:44) [
+                           ExpressionList [ (8:45)
+                              Phrase: [ (8:45)
+                                 IntLit 1 (8:45)
+                              ]
+                              Phrase: [ (8:47)
+                                 IntLit 2 (8:47)
+                              ]
+                           ]
+                        ]
+                     ]
+                  )
+               ]
+            }
+         ]
+      }
+   ]
+}

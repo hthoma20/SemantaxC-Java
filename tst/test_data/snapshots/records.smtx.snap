@@ -1,0 +1,133 @@
+Program {
+   ModuleList [ (1:13)
+      main module Main { (1:13)
+         ModuleList [] (null)
+         StatementList [ (2:6)
+            Statement { (2:6)
+               Phrase: [ (2:6)
+                  @bind (2:6)
+                  ExpressionList [ (2:11)
+                     Phrase: [ (2:11)
+                        IntLit 0 (2:11)
+                     ]
+                     Phrase: [ (2:14)
+                        RecordLit ( (2:14)
+                        )
+                     ]
+                  ]
+               ]
+            }
+            Statement { (3:6)
+               Phrase: [ (3:6)
+                  @bind (3:6)
+                  ExpressionList [ (3:11)
+                     Phrase: [ (3:11)
+                        IntLit 1 (3:11)
+                     ]
+                     Phrase: [ (3:14)
+                        RecordLit ( (3:14)
+                           a: (3:15)
+                           Phrase: [ (3:18)
+                              IntLit 4 (3:18)
+                           ]
+                        )
+                     ]
+                  ]
+               ]
+            }
+            Statement { (4:6)
+               Phrase: [ (4:6)
+                  @bind (4:6)
+                  ExpressionList [ (4:11)
+                     Phrase: [ (4:11)
+                        IntLit 2 (4:11)
+                     ]
+                     Phrase: [ (4:14)
+                        RecordLit ( (4:14)
+                           a: (4:15)
+                           Phrase: [ (4:18)
+                              IntLit 4 (4:18)
+                           ]
+                           b: (4:21)
+                           Phrase: [ (4:24)
+                              IntLit 50 (4:24)
+                           ]
+                        )
+                     ]
+                  ]
+               ]
+            }
+            Statement { (5:6)
+               Phrase: [ (5:6)
+                  @bind (5:6)
+                  ExpressionList [ (5:11)
+                     Phrase: [ (5:11)
+                        IntLit 3 (5:11)
+                     ]
+                     Phrase: [ (5:14)
+                        RecordLit ( (5:14)
+                           ar: (5:15)
+                           Phrase: [ (5:19)
+                              ArrayLit (5:19) [
+                                 ExpressionList [ (5:20)
+                                    Phrase: [ (5:20)
+                                       IntLit 1 (5:20)
+                                    ]
+                                    Phrase: [ (5:22)
+                                       IntLit 2 (5:22)
+                                    ]
+                                 ]
+                              ]
+                           ]
+                           rec: (5:26)
+                           Phrase: [ (5:31)
+                              RecordLit ( (5:31)
+                                 a: (5:32)
+                                 Phrase: [ (5:35)
+                                    StringLit hi (5:35)
+                                 ]
+                                 b: (5:41)
+                                 Phrase: [ (5:44)
+                                    IntLit 5 (5:44)
+                                 ]
+                              )
+                           ]
+                        )
+                     ]
+                  ]
+               ]
+            }
+            Statement { (6:6)
+               Phrase: [ (6:6)
+                  @bind (6:6)
+                  ExpressionList [ (6:11)
+                     Phrase: [ (6:11)
+                        IntLit 4 (6:11)
+                     ]
+                     Phrase: [ (6:14)
+                        RecordLit ( (6:14)
+                           text: (7:9)
+                           Phrase: [ (7:15)
+                              StringLit this is a multiline record (7:15)
+                           ]
+                           value: (8:9)
+                           Phrase: [ (8:17)
+                              @addint (8:17)
+                              ExpressionList [ (8:24)
+                                 Phrase: [ (8:24)
+                                    IntLit 1 (8:24)
+                                 ]
+                                 Phrase: [ (8:26)
+                                    IntLit 2 (8:26)
+                                 ]
+                              ]
+                           ]
+                        )
+                     ]
+                  ]
+               ]
+            }
+         ]
+      }
+   ]
+}

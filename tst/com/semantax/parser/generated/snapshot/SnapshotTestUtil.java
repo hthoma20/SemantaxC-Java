@@ -9,11 +9,15 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.Assertions;
 
+@AllArgsConstructor
 public class SnapshotTestUtil {
 
-    public static void assertMatchesSnapshot(String snapshotName, AstNode node) {
+    private String testDataRoot;
+
+    public void assertMatchesSnapshot(String snapshotName, AstNode node) {
 
         String nodeString = new AstToStringVisitor().visit(node);
 
@@ -28,11 +32,11 @@ public class SnapshotTestUtil {
         Assertions.assertEquals(snapshotString, nodeString, String.format("Snapshot mismatch for: %s", snapshotName));
     }
 
-    private static boolean snapshotExists(String snapshotName) {
+    private boolean snapshotExists(String snapshotName) {
         return new File(getFileName(snapshotName)).exists();
     }
 
-    private static String readSnapshot(String snapshotName) {
+    private String readSnapshot(String snapshotName) {
         try {
             return new String(Files.readAllBytes(Paths.get(getFileName(snapshotName))));
         } catch (IOException e) {
@@ -40,7 +44,7 @@ public class SnapshotTestUtil {
         }
     }
 
-    private static void writeSnapshot(String snapshotName, String snapshot) {
+    private void writeSnapshot(String snapshotName, String snapshot) {
         File file = new File(getFileName(snapshotName));
         try (FileOutputStream out = new FileOutputStream(file)) {
             out.write(snapshot.getBytes());
@@ -50,8 +54,8 @@ public class SnapshotTestUtil {
         }
     }
 
-    private static String getFileName(String snapshotName) {
-        return String.format("./test_data/snapshots/%s.snap", snapshotName);
+    private String getFileName(String snapshotName) {
+        return String.format("%s/%s.snap", testDataRoot, snapshotName);
     }
 
 }
