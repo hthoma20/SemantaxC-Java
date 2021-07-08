@@ -14,14 +14,14 @@ public class SemantaxParserErrorTest {
      * @param input the string to parse
      * @return a parser for the given string
      */
-    private SymantaxParser getStringParser(String input) {
+    private SemantaxParser getStringParser(String input) {
         InputStream stream = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
-        return new SymantaxParser(stream);
+        return new SemantaxParser(stream, StandardCharsets.UTF_8);
     }
 
     @Test
     public void test_InvalidFuncTypeLit() {
-        SymantaxParser parser = getStringParser("func{int string}");
+        SemantaxParser parser = getStringParser("func{int string}");
         assertThrows(ParseException.class, () -> parser.FuncTypeLit());
     }
 }

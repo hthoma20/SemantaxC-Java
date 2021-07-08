@@ -5,8 +5,8 @@ import com.semantax.ast.node.literal.IntLit;
 import com.semantax.exception.UnexpectedTokenException;
 import com.semantax.parser.generated.Token;
 
-import static com.semantax.parser.generated.SymantaxParserConstants.DECIMAL_LIT;
-import static com.semantax.parser.generated.SymantaxParserConstants.DOZENAL_LIT;
+import static com.semantax.parser.generated.SemantaxParserConstants.DECIMAL_LIT;
+import static com.semantax.parser.generated.SemantaxParserConstants.DOZENAL_LIT;
 
 public class IntLitFactory {
 

@@ -5,8 +5,8 @@ import com.semantax.ast.node.literal.StringLit;
 import com.semantax.exception.UnexpectedTokenException;
 import com.semantax.parser.generated.Token;
 
-import static com.semantax.parser.generated.SymantaxParserConstants.DOUBLE_QUOTED_STRING;
-import static com.semantax.parser.generated.SymantaxParserConstants.SINGLE_QUOTED_STRING;
+import static com.semantax.parser.generated.SemantaxParserConstants.DOUBLE_QUOTED_STRING;
+import static com.semantax.parser.generated.SemantaxParserConstants.SINGLE_QUOTED_STRING;
 
 public class StringLitFactory {
 

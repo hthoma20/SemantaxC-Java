@@ -5,7 +5,7 @@ import com.semantax.ast.util.FilePos;
 import com.semantax.exception.UnexpectedTokenException;
 import com.semantax.parser.generated.Token;
 
-import static com.semantax.parser.generated.SymantaxParserConstants.WORD;
+import static com.semantax.parser.generated.SemantaxParserConstants.WORD;
 
 public class WordFactory {
     public static Word fromToken(Token token) {

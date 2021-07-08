@@ -13,8 +13,6 @@ import java.util.Collection;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import static org.junit.Assert.assertThrows;
-
 @RunWith(Parameterized.class)
 @RequiredArgsConstructor
 public class SemantaxParserSnapshotTest {
@@ -29,14 +27,14 @@ public class SemantaxParserSnapshotTest {
      * @param filePath path of the file to parse, absolute or relative to the content root
      * @return a parser for the contents of the given file
      */
-    private SymantaxParser getFileParser(String filePath) throws FileNotFoundException {
+    private SemantaxParser getFileParser(String filePath) throws FileNotFoundException {
         FileInputStream fis = new FileInputStream(filePath);
-        return new SymantaxParser(fis);
+        return new SemantaxParser(fis, StandardCharsets.UTF_8);
     }
 
     @Test
     public void test_snapshot() throws FileNotFoundException, ParseException {
-        SymantaxParser parser = getFileParser(String.format("%s/input/%s", TEST_DATA_ROOT, testFile));
+        SemantaxParser parser = getFileParser(String.format("%s/input/%s", TEST_DATA_ROOT, testFile));
 
         try {
             Program program = parser.Program();

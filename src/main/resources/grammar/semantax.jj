@@ -4,7 +4,7 @@ options {
     DEBUG_TOKEN_MANAGER = false;
 }
 
-PARSER_BEGIN(SymantaxParser)
+PARSER_BEGIN(SemantaxParser)
 package com.semantax.parser.generated;
 
 import java.util.Optional;
@@ -17,9 +17,9 @@ import com.semantax.ast.node.literal.type.*;
 import com.semantax.ast.util.FilePos;
 
 @SuppressWarnings("unchecked")
-public class SymantaxParser {}
+public class SemantaxParser {}
 
-PARSER_END(SymantaxParser)
+PARSER_END(SemantaxParser)
 
 SKIP: {
     " " | "\t " | "\n" | "\r"

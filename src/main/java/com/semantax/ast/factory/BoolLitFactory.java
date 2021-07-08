@@ -5,7 +5,7 @@ import com.semantax.ast.node.literal.BoolLit;
 import com.semantax.exception.UnexpectedTokenException;
 import com.semantax.parser.generated.Token;
 
-import static com.semantax.parser.generated.SymantaxParserConstants.*;
+import static com.semantax.parser.generated.SemantaxParserConstants.*;
 
 public class BoolLitFactory {
 
