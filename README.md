@@ -4,7 +4,7 @@ Semantax programming language.
 
 #Testing
 
-Tests for phase 1 of the parser are found in test/com.semantax.parser.generated.SemantaxParserTest.java.
+Tests for phase 1 of the parser are found in test/com.com.semantax.SemantaxParserTest.java.
 This class contains tests for positive an negative cases. For positive cases,
 a snapshot approach is used (inspired by jest). In the `test_data` directory,
 there is a collection of Semantax programs that are syntactically correct,

@@ -2,5 +2,6 @@
 *.iml
 out
 
-# Generated parser files
-src/com/semantax/parser/generated
+# Maven generated files
+target
+
