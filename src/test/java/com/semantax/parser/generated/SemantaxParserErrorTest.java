@@ -1,5 +1,6 @@
 package com.semantax.parser.generated;
 
+import junit.framework.TestCase;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
@@ -8,7 +9,7 @@ import java.nio.charset.StandardCharsets;
 
 import static org.junit.Assert.assertThrows;
 
-public class SemantaxParserErrorTest {
+public class SemantaxParserErrorTest extends TestCase {
 
     /**
      * @param input the string to parse

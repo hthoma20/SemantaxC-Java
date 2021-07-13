@@ -2,6 +2,7 @@ package com.semantax.parser.generated;
 
 import com.semantax.ast.node.Program;
 import com.semantax.parser.generated.snapshot.SnapshotTestUtil;
+import junit.framework.TestCase;
 import lombok.RequiredArgsConstructor;
 import org.junit.Test;
 
@@ -15,10 +16,10 @@ import org.junit.runners.Parameterized;
 
 @RunWith(Parameterized.class)
 @RequiredArgsConstructor
-public class SemantaxParserSnapshotTest {
+public class SemantaxParserSnapshotTest extends TestCase {
 
     private static final String TEST_DATA_ROOT = "./src/test/resources/test_data";
-    private SnapshotTestUtil snapshotTestUtil = new SnapshotTestUtil(TEST_DATA_ROOT);
+    private final SnapshotTestUtil snapshotTestUtil = new SnapshotTestUtil(TEST_DATA_ROOT);
 
     // Parameter for test
     private final String testFile;
@@ -48,7 +49,8 @@ public class SemantaxParserSnapshotTest {
 
     @Parameterized.Parameters
     public static Collection<String> testFiles() {
-        return Arrays.asList("arrays.smtx",
+        return Arrays.asList(
+                "arrays.smtx",
                 "functions.smtx",
                 "modules.smtx",
                 "phrases.smtx",
