@@ -9,14 +9,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
 public class AstToStringVisitor extends TraversalVisitor<String> {
 
     @Builder.Default
-    private int depth = 0;
+    private final int depth = 0;
     @Builder.Default
-    private String indent = "   ";
+    private final String indent = "   ";
 
     @Override
     public String visit(AstNode node) {

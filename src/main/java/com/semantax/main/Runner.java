@@ -1,23 +1,21 @@
 package com.semantax.main;
 
-import com.semantax.ast.visitor.AstPrintingVisitor;
 import com.semantax.exception.InvalidArgumentsException;
 import com.semantax.exception.ProgramErrorException;
 import com.semantax.main.args.SemantaxCArgParser;
 import com.semantax.main.args.SemantaxCArgs;
-import lombok.AllArgsConstructor;
 
-@AllArgsConstructor
-public class Main {
+import javax.inject.Inject;
+
+public class Runner {
 
     private final SemantaxC semantaxC;
     private final SemantaxCArgParser argParser;
 
-    public static void main(String[] args) {
-        Main main = new Main(new SemantaxC(AstPrintingVisitor.builder()
-                .output(System.out)
-                .build()), new SemantaxCArgParser());
-        main.run(args);
+    @Inject
+    public Runner(SemantaxC semantaxC, SemantaxCArgParser argParser) {
+        this.semantaxC = semantaxC;
+        this.argParser = argParser;
     }
 
     public void run(String[] args) {
@@ -33,6 +31,5 @@ public class Main {
             System.err.printf("Compile error:%n%s%n", exc.getMessage());
         }
     }
-
 
 }

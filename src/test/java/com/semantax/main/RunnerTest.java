@@ -7,12 +7,12 @@ import org.junit.Test;
 
 import static org.mockito.Mockito.*;
 
-public class MainTest extends TestCase {
+public class RunnerTest extends TestCase {
 
     private final SemantaxC semantaxCMock = mock(SemantaxC.class);
     private final SemantaxCArgParser argParserMock = mock(SemantaxCArgParser.class);
 
-    private final Main main = new Main(semantaxCMock, argParserMock);
+    private final Runner runner = new Runner(semantaxCMock, argParserMock);
 
     public void test_runDelegates() {
 
@@ -21,7 +21,7 @@ public class MainTest extends TestCase {
 
         when(argParserMock.parse(args)).thenReturn(parsedArgs);
 
-        main.run(args);
+        runner.run(args);
 
         verify(argParserMock).parse(args);
         verify(semantaxCMock).execute(parsedArgs);

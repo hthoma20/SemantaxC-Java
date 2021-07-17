@@ -1,12 +1,18 @@
 package com.semantax.main.args;
 
 import com.semantax.exception.InvalidArgumentsException;
+import lombok.NoArgsConstructor;
 
+import javax.inject.Inject;
 import java.util.regex.Pattern;
 
 public class SemantaxCArgParser {
 
-    private static Pattern SEMANTAX_FILE_PATTERN = Pattern.compile("([\\w./\\\\]*[/\\\\])?\\p{Alpha}\\w*\\.smtx");
+    private static final Pattern SEMANTAX_FILE_PATTERN = Pattern.compile("([\\w./\\\\]*[/\\\\])?\\p{Alpha}\\w*\\.smtx");
+
+    @Inject
+    public SemantaxCArgParser() {
+    }
 
     /**
      * Parse command line arguments into a SemantaxCArgs object.

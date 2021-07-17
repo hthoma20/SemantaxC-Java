@@ -10,14 +10,19 @@ import com.semantax.parser.generated.SemantaxParser;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
+import javax.inject.Inject;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.nio.charset.StandardCharsets;
 
-@AllArgsConstructor
 public class SemantaxC {
 
     private final AstPrintingVisitor printer;
+
+    @Inject
+    public SemantaxC(AstPrintingVisitor printer) {
+        this.printer = printer;
+    }
 
     /**
      * Execute the compiler

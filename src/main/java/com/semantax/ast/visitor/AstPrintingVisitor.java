@@ -17,17 +17,15 @@ import com.semantax.ast.node.literal.type.*;
 import java.io.PrintStream;
 
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class AstPrintingVisitor extends TraversalVisitor<Void> {
 
     @Builder.Default
     private int depth = 0;
     @Builder.Default
-    private String indent = "   ";
+    private final String indent = "   ";
 
     @Builder.Default
-    private PrintStream output = System.out;
+    private final PrintStream output = System.out;
 
     private void indent() {
         for (int i = 0; i < depth; i++) {

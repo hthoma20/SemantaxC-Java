@@ -16,11 +16,11 @@ import static org.junit.Assert.assertEquals;
 @AllArgsConstructor
 public class SnapshotTestUtil {
 
-    private String testDataRoot;
+    private final String testDataRoot;
 
     public void assertMatchesSnapshot(String snapshotName, AstNode node) {
 
-        String nodeString = new AstToStringVisitor().visit(node);
+        String nodeString = AstToStringVisitor.builder().build().visit(node);
 
         if (!snapshotExists(snapshotName)) {
             System.out.printf("Snapshot [%s] doesn't exist, saving it%n", snapshotName);
