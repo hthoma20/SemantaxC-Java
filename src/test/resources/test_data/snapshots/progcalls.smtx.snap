@@ -1,9 +1,9 @@
 Program {
    ModuleList [ (1:13)
       main module Main { (1:13)
-         Statement { (2:6)
-            Phrase: [ (2:6)
-               @addint (2:6)
+         Statement { (2:5)
+            Phrase: [ (2:5)
+               @addint (2:5)
                ExpressionList [ (2:13)
                   Phrase: [ (2:13)
                      IntLit 1 (2:13)
@@ -14,15 +14,15 @@ Program {
                ]
             ]
          }
-         Statement { (3:6)
-            Phrase: [ (3:6)
-               @addint (3:6)
+         Statement { (3:5)
+            Phrase: [ (3:5)
+               @addint (3:5)
                ExpressionList [ (3:13)
                   Phrase: [ (3:13)
                      IntLit 1 (3:13)
                   ]
-                  Phrase: [ (3:17)
-                     @addint (3:17)
+                  Phrase: [ (3:16)
+                     @addint (3:16)
                      ExpressionList [ (3:24)
                         Phrase: [ (3:24)
                            IntLit 1 (3:24)
@@ -35,12 +35,12 @@ Program {
                ]
             ]
          }
-         Statement { (4:6)
-            Phrase: [ (4:6)
-               @addint (4:6)
-               ExpressionList [ (4:14)
-                  Phrase: [ (4:14)
-                     @addint (4:14)
+         Statement { (4:5)
+            Phrase: [ (4:5)
+               @addint (4:5)
+               ExpressionList [ (4:13)
+                  Phrase: [ (4:13)
+                     @addint (4:13)
                      ExpressionList [ (4:21)
                         Phrase: [ (4:21)
                            IntLit 1 (4:21)
@@ -56,12 +56,12 @@ Program {
                ]
             ]
          }
-         Statement { (5:6)
-            Phrase: [ (5:6)
-               @addint (5:6)
-               ExpressionList [ (6:10)
-                  Phrase: [ (6:10)
-                     @addint (6:10)
+         Statement { (5:5)
+            Phrase: [ (5:5)
+               @addint (5:5)
+               ExpressionList [ (6:9)
+                  Phrase: [ (6:9)
+                     @addint (6:9)
                      ExpressionList [ (6:17)
                         Phrase: [ (6:17)
                            IntLit 1 (6:17)
@@ -71,8 +71,8 @@ Program {
                         ]
                      ]
                   ]
-                  Phrase: [ (7:10)
-                     @addint (7:10)
+                  Phrase: [ (7:9)
+                     @addint (7:9)
                      ExpressionList [ (7:17)
                         Phrase: [ (7:17)
                            IntLit 3 (7:17)
@@ -85,9 +85,9 @@ Program {
                ]
             ]
          }
-         Statement { (10:6)
-            Phrase: [ (10:6)
-               @not (10:6)
+         Statement { (10:5)
+            Phrase: [ (10:5)
+               @not (10:5)
                ExpressionList [ (10:10)
                   Phrase: [ (10:10)
                      BoolLit false (10:10)
@@ -95,9 +95,9 @@ Program {
                ]
             ]
          }
-         Statement { (11:6)
-            Phrase: [ (11:6)
-               @not (11:6)
+         Statement { (11:5)
+            Phrase: [ (11:5)
+               @not (11:5)
                ExpressionList [ (11:10)
                   Phrase: [ (11:10)
                      BoolLit true (11:10)
@@ -105,9 +105,9 @@ Program {
                ]
             ]
          }
-         Statement { (13:6)
-            Phrase: [ (13:6)
-               @addint (13:6)
+         Statement { (13:5)
+            Phrase: [ (13:5)
+               @addint (13:5)
                ExpressionList [ (13:13)
                   Phrase: [ (13:13)
                      RecordLit ( (13:13)

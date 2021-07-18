@@ -1,9 +1,9 @@
 Program {
    ModuleList [ (1:13)
       main module Main { (1:13)
-         Statement { (2:6)
-            Phrase: [ (2:6)
-               @bind (2:6)
+         Statement { (2:5)
+            Phrase: [ (2:5)
+               @bind (2:5)
                ExpressionList [ (2:11)
                   Phrase: [ (2:11)
                      IntLit 0 (2:11)
@@ -18,9 +18,9 @@ Program {
                ]
             ]
          }
-         Statement { (3:6)
-            Phrase: [ (3:6)
-               @bind (3:6)
+         Statement { (3:5)
+            Phrase: [ (3:5)
+               @bind (3:5)
                ExpressionList [ (3:11)
                   Phrase: [ (3:11)
                      IntLit 1 (3:11)
@@ -35,9 +35,9 @@ Program {
                ]
             ]
          }
-         Statement { (4:6)
-            Phrase: [ (4:6)
-               @bind (4:6)
+         Statement { (4:5)
+            Phrase: [ (4:5)
+               @bind (4:5)
                ExpressionList [ (4:11)
                   Phrase: [ (4:11)
                      IntLit 2 (4:11)
@@ -56,9 +56,9 @@ Program {
                ]
             ]
          }
-         Statement { (5:6)
-            Phrase: [ (5:6)
-               @bind (5:6)
+         Statement { (5:5)
+            Phrase: [ (5:5)
+               @bind (5:5)
                ExpressionList [ (5:11)
                   Phrase: [ (5:11)
                      IntLit 3 (5:11)
@@ -73,8 +73,8 @@ Program {
                               string (5:26)
                            )
                         expression:
-                           Phrase: [ (6:10)
-                              @addint (6:10)
+                           Phrase: [ (6:9)
+                              @addint (6:9)
                               ExpressionList [ (6:17)
                                  Phrase: [ (6:17)
                                     IntLit 4 (6:17)
@@ -89,9 +89,9 @@ Program {
                ]
             ]
          }
-         Statement { (8:6)
-            Phrase: [ (8:6)
-               @bind (8:6)
+         Statement { (8:5)
+            Phrase: [ (8:5)
+               @bind (8:5)
                ExpressionList [ (8:11)
                   Phrase: [ (8:11)
                      IntLit 4 (8:11)
@@ -106,10 +106,10 @@ Program {
                               string (8:26)
                            )
                         statements:
-                           StatementList [ (9:10)
-                              Statement { (9:10)
-                                 Phrase: [ (9:10)
-                                    @printint (9:10)
+                           StatementList [ (9:9)
+                              Statement { (9:9)
+                                 Phrase: [ (9:9)
+                                    @printint (9:9)
                                     ExpressionList [ (9:19)
                                        Phrase: [ (9:19)
                                           IntLit 4 (9:19)
@@ -117,9 +117,9 @@ Program {
                                     ]
                                  ]
                               }
-                              Statement { (10:10)
-                                 Phrase: [ (10:10)
-                                    @printstring (10:10)
+                              Statement { (10:9)
+                                 Phrase: [ (10:9)
+                                    @printstring (10:9)
                                     ExpressionList [ (10:22)
                                        Phrase: [ (10:22)
                                           StringLit hello (10:22)
@@ -133,9 +133,9 @@ Program {
                ]
             ]
          }
-         Statement { (12:6)
-            Phrase: [ (12:6)
-               @bind (12:6)
+         Statement { (12:5)
+            Phrase: [ (12:5)
+               @bind (12:5)
                ExpressionList [ (12:11)
                   Phrase: [ (12:11)
                      IntLit 4 (12:11)
@@ -152,10 +152,10 @@ Program {
                         output:
                            int (12:37)
                         statements:
-                           StatementList [ (13:10)
-                              Statement { (13:10)
-                                 Phrase: [ (13:10)
-                                    @printint (13:10)
+                           StatementList [ (13:9)
+                              Statement { (13:9)
+                                 Phrase: [ (13:9)
+                                    @printint (13:9)
                                     ExpressionList [ (13:19)
                                        Phrase: [ (13:19)
                                           IntLit 4 (13:19)
@@ -163,9 +163,9 @@ Program {
                                     ]
                                  ]
                               }
-                              Statement { (14:10)
-                                 Phrase: [ (14:10)
-                                    @printstring (14:10)
+                              Statement { (14:9)
+                                 Phrase: [ (14:9)
+                                    @printstring (14:9)
                                     ExpressionList [ (14:22)
                                        Phrase: [ (14:22)
                                           StringLit hello (14:22)

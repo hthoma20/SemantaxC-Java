@@ -1,18 +1,11 @@
 package com.semantax.ast.visitor;
 
 import com.semantax.ast.node.*;
-import com.semantax.ast.node.*;
 import com.semantax.ast.node.list.AstNodeList;
 import com.semantax.ast.node.literal.*;
 import com.semantax.ast.node.literal.type.*;
-import lombok.AllArgsConstructor;
+import com.semantax.ast.node.progcall.ProgCall;
 import lombok.Builder;
-import lombok.NoArgsConstructor;
-import com.semantax.ast.node.literal.*;
-import com.semantax.ast.node.literal.type.*;
-import com.semantax.ast.node.*;
-import com.semantax.ast.node.literal.*;
-import com.semantax.ast.node.literal.type.*;
 
 import java.io.PrintStream;
 

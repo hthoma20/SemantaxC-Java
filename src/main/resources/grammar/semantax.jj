@@ -14,6 +14,7 @@ import com.semantax.ast.node.*;
 import com.semantax.ast.node.list.*;
 import com.semantax.ast.node.literal.*;
 import com.semantax.ast.node.literal.type.*;
+import com.semantax.ast.node.progcall.ProgCall;
 import com.semantax.ast.util.FilePos;
 
 @SuppressWarnings("unchecked")
@@ -317,22 +318,18 @@ Expression Expression() :
 
 ProgCall ProgCall() :
 {
+    Token t;
     Word name;
-    ExpressionList subPhrases;
-    ProgCall.Builder builder = ProgCall.builder();
+    // Will be overwritten if there are subexpressions
+    ExpressionList subPhrases = new ExpressionList();
 }
 {
-    <AT>
+    t = <AT>
     name = Word()
-    {builder.name(name.getValue());}
     <L_PAREN>
-    [subPhrases = PhraseList()
-     {builder.subExpressions(subPhrases);}
-    ]
+    [subPhrases = PhraseList()]
     <R_PAREN>
-    {ProgCall progCall = builder.build();
-     progCall.setFilePos(name.getFilePos());
-     return progCall;}
+    {return ProgCallFactory.from(t, name, subPhrases);}
 }
 
 Literal Literal() :

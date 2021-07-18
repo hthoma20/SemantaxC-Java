@@ -1,15 +1,10 @@
 package com.semantax.ast.visitor;
 
 import com.semantax.ast.node.*;
-import com.semantax.ast.node.*;
 import com.semantax.ast.node.list.AstNodeList;
 import com.semantax.ast.node.literal.*;
 import com.semantax.ast.node.literal.type.*;
-import com.semantax.ast.node.literal.*;
-import com.semantax.ast.node.literal.type.*;
-import com.semantax.ast.node.*;
-import com.semantax.ast.node.literal.*;
-import com.semantax.ast.node.literal.type.*;
+import com.semantax.ast.node.progcall.ProgCall;
 
 public class TraversalVisitor<T> implements ASTVisitor<T> {
     @Override
