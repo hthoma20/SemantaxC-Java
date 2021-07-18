@@ -10,6 +10,8 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -50,13 +52,6 @@ public class SemantaxParserSnapshotTest extends TestCase {
     @Parameterized.Parameters
     public static Collection<String> testFiles() {
         return Arrays.asList(
-                "arrays.smtx",
-                "functions.smtx",
-                "modules.smtx",
-                "phrases.smtx",
-                "progcalls.smtx",
-                "records.smtx",
-                "strings.smtx",
-                "types.smtx");
+                new File("./src/test/resources/test_data/input").list());
     }
 }

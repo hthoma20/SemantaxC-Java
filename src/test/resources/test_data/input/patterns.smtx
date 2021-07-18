@@ -1,0 +1,18 @@
+main module Main {
+
+    $three word pattern$
+    (word: int) -> int {
+        @return(54);
+    }
+
+    $a pattern with no args$
+    {
+        42
+    }
+
+    $another pattern with no args$
+    () {
+        "hello"
+    }
+
+}

@@ -139,6 +139,8 @@ Module ModuleDefinition() :
     ModuleList subModules = new ModuleList();
     Statement statement;
     StatementList statements = new StatementList();
+    PatternDefinition pattern;
+    PatternDefinitionList patterns = new PatternDefinitionList();
     Module.Builder moduleBuilder = Module.builder();
 }
 {
@@ -157,9 +159,13 @@ Module ModuleDefinition() :
      |
      statement = Statement()
      {statements.add(statement);}
+     |
+     pattern = PatternDef()
+     {patterns.add(pattern);}
     )*
     {moduleBuilder.subModules(subModules);
-     moduleBuilder.statements(statements);}
+     moduleBuilder.statements(statements);
+     moduleBuilder.patterns(patterns);}
     <R_BRACE>
     {Module module = moduleBuilder.build();
      module.setFilePos(moduleName.getFilePos());
@@ -172,11 +178,12 @@ WordList UsesClause() :
 }
 {
     <USES>
-    wordList = WordList()
+    wordList = CommaDelimitedWordList()
     {return wordList;}
 }
 
-WordList WordList() :
+// list of one or more words separated by commas
+WordList CommaDelimitedWordList() :
 {
     Word word;
     WordList words = new WordList();
@@ -188,6 +195,21 @@ WordList WordList() :
     (<COMMA> word = Word()
      {words.add(word);}
     )*
+    {return words;}
+}
+
+// list of two or more words separated by whitespace
+WordList SpaceDelimitedWordList() :
+{
+    Word word;
+    WordList words = new WordList();
+}
+{
+    word = Word()
+    {words.add(word);}
+    (word = Word()
+     {words.add(word);}
+    )+
     {return words;}
 }
 
@@ -629,8 +651,6 @@ void FunctionLitBody(FunctionLit.Builder builder) :
     ]
 }
 
-// (){...}
-//
 FunctionLit FunctionLit() :
 {
     Token t;
@@ -646,3 +666,21 @@ FunctionLit FunctionLit() :
     {return builder.buildWith(FilePos.from(t));}
 }
 
+PatternDefinition PatternDef() :
+{
+    Token t;
+    WordList syntax;
+    FunctionLit semantics;
+    PatternDefinition.Builder builder = PatternDefinition.builder();
+}
+{
+    t = <DOLLAR>
+    syntax = SpaceDelimitedWordList()
+    {builder.syntax(syntax);}
+    <DOLLAR>
+    semantics = FunctionLit()
+    {return PatternDefinition.builder()
+                .syntax(syntax)
+                .semantics(semantics)
+                .buildWith(FilePos.from(t));}
+}

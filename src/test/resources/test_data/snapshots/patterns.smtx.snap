@@ -1,0 +1,8 @@
+Program {
+   ModuleList [ (1:13)
+      main module Main { (1:13)
+         ModuleList [] (null)
+         StatementList [] (null)
+      }
+   ]
+}

@@ -7,7 +7,7 @@ import lombok.Getter;
 public class Program extends AstNode {
 
     @Getter
-    private ModuleList modules;
+    private final ModuleList modules;
 
     public Program(ModuleList modules) {
         super(null);
