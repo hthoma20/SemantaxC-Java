@@ -317,4 +317,16 @@ public class AstPrintingVisitor extends TraversalVisitor<Void> {
         output.println("]");
         return null;
     }
+
+    @Override
+    public Void visit(PatternDefinition patternDefinition) {
+        indent();
+        output.printf("Pattern: $%s$ [ (%s)%n", patternDefinition.getSyntax(), patternDefinition.getFilePos());
+        depth++;
+        super.visit(patternDefinition);
+        depth--;
+        indent();
+        output.println("]");
+        return null;
+    }
 }

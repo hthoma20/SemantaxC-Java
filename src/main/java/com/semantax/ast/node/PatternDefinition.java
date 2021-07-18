@@ -1,13 +1,14 @@
 package com.semantax.ast.node;
 
-import com.semantax.ast.node.list.NameTypePairList;
 import com.semantax.ast.node.list.WordList;
 import com.semantax.ast.node.literal.FunctionLit;
 import com.semantax.ast.util.FilePos;
 import com.semantax.ast.visitor.ASTVisitor;
 import lombok.Builder;
+import lombok.Getter;
 
 @Builder(builderClassName = "Builder")
+@Getter
 public class PatternDefinition extends AstNode {
 
     private final WordList syntax;

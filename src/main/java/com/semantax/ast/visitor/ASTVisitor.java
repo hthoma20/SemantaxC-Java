@@ -42,6 +42,7 @@ public interface ASTVisitor<T> {
     T visit(VoidTypeLit voidTypeLit);
 
     T visit(Phrase phrase);
+    T visit(PatternDefinition patternDefinition);
 
     <N extends AstNode> T visit(AstNodeList<N> nodes);
 }

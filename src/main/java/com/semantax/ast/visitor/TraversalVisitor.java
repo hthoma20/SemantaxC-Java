@@ -40,8 +40,7 @@ public class TraversalVisitor<T> implements ASTVisitor<T> {
 
     @Override
     public T visit(Module module) {
-        module.getSubModules().accept(this);
-        module.getStatements().accept(this);
+        module.subNodes().forEach(node -> node.accept(this));
         return null;
     }
 
@@ -164,6 +163,12 @@ public class TraversalVisitor<T> implements ASTVisitor<T> {
                 ((AstNode) phraseElement).accept(this);
             }
         }
+        return null;
+    }
+
+    @Override
+    public T visit(PatternDefinition patternDefinition) {
+        patternDefinition.getSemantics().accept(this);
         return null;
     }
 }

@@ -1,31 +1,16 @@
 Program {
    ModuleList [ (1:8)
       module thing { (1:8)
-         ModuleList [ (2:12)
-            module stuff { (2:12)
-               ModuleList [] (null)
-               StatementList [] (null)
-            }
-         ]
-         StatementList [] (null)
+         module stuff { (2:12)
+         }
       }
       main module foo uses thing { (5:13)
-         ModuleList [ (7:19)
-            public module bar { (7:19)
-               ModuleList [] (null)
-               StatementList [] (null)
+         public module bar { (7:19)
+         }
+         module baz uses bar foo { (9:12)
+            public module foobarbaz { (11:23)
             }
-            module baz uses bar foo { (9:12)
-               ModuleList [ (11:23)
-                  public module foobarbaz { (11:23)
-                     ModuleList [] (null)
-                     StatementList [] (null)
-                  }
-               ]
-               StatementList [] (null)
-            }
-         ]
-         StatementList [] (null)
+         }
       }
    ]
 }

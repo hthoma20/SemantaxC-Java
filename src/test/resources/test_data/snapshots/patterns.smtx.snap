@@ -1,8 +1,52 @@
 Program {
    ModuleList [ (1:13)
       main module Main { (1:13)
-         ModuleList [] (null)
-         StatementList [] (null)
+         Pattern: $three word pattern$ [ (3:5)
+            FunctionLit (4:24)
+               input:
+                  record( (4:5)
+                     word: (4:6)
+                     int (4:12)
+                  )
+               output:
+                  int (4:20)
+               statements:
+                  StatementList [ (5:10)
+                     Statement { (5:10)
+                        Phrase: [ (5:10)
+                           @return (5:10)
+                           ExpressionList [ (5:17)
+                              Phrase: [ (5:17)
+                                 IntLit 54 (5:17)
+                              ]
+                           ]
+                        ]
+                     }
+                  ]
+            )
+         ]
+         Pattern: $a pattern with no args$ [ (8:5)
+            FunctionLit (9:5)
+               input:
+                  record( (-1:-1)
+                  )
+               expression:
+                  Phrase: [ (10:9)
+                     IntLit 42 (10:9)
+                  ]
+            )
+         ]
+         Pattern: $another pattern with no args$ [ (13:5)
+            FunctionLit (14:8)
+               input:
+                  record( (-1:-1)
+                  )
+               expression:
+                  Phrase: [ (15:9)
+                     StringLit hello (15:9)
+                  ]
+            )
+         ]
       }
    ]
 }

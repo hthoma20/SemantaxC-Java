@@ -5,7 +5,11 @@ import com.semantax.dynamic.model.parsed.ParsedPhrase;
 import com.semantax.dynamic.model.phrase.PhraseElement;
 import lombok.Getter;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class Pattern implements Iterable<PatternElement> {
