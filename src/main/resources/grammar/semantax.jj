@@ -270,6 +270,7 @@ PhraseElement PhraseElement() :
     {return element;}
 }
 
+// list of one or more phrases, separated by commas
 ExpressionList PhraseList() :
 {
     Phrase phrase;
@@ -636,7 +637,7 @@ void FunctionLitBody(FunctionLit.Builder builder) :
 }
 {
     // A return expression
-    firstExpression = Expression()
+    firstExpression = Phrase()
     {builder.returnExpression(Optional.of(firstExpression));}
 
     [

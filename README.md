@@ -2,7 +2,7 @@ Semantax-Java is a Java implementation of a compiler for the
 Semantax programming language.
 
 
-#Testing
+# Testing
 
 Tests for phase 1 of the parser are found in test/com.com.semantax.SemantaxParserTest.java.
 This class contains tests for positive an negative cases. For positive cases,
@@ -24,6 +24,6 @@ This ensures that changes to the parser which affect the AST will
 be reviewed manually. If a snapshot does fail, the diff should be
 manually reviewed to confirm that the change is expected and correct.
 If it is, the existing snapshot should be deleted, and the test
-re-run so that new snapshot is written.
+re-run so that the new snapshot is written.
 When adding a new test file, no assertion will fail, but the snapshot should
 be reviewed for correctness.

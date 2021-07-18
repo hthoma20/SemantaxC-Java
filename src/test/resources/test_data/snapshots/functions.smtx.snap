@@ -75,13 +75,15 @@ Program {
                                  string (5:26)
                               )
                            expression:
-                              @addint (6:10)
-                              ExpressionList [ (6:17)
-                                 Phrase: [ (6:17)
-                                    IntLit 4 (6:17)
-                                 ]
-                                 Phrase: [ (6:20)
-                                    IntLit 5 (6:20)
+                              Phrase: [ (6:10)
+                                 @addint (6:10)
+                                 ExpressionList [ (6:17)
+                                    Phrase: [ (6:17)
+                                       IntLit 4 (6:17)
+                                    ]
+                                    Phrase: [ (6:20)
+                                       IntLit 5 (6:20)
+                                    ]
                                  ]
                               ]
                         )

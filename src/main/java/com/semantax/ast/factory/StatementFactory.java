@@ -7,6 +7,9 @@ import com.semantax.ast.node.Expression;
 public class StatementFactory {
 
     public static Statement fromExpression(Expression expression) {
+        if (expression instanceof Phrase) {
+            return fromPhrase((Phrase) expression);
+        }
         return Statement.builder()
                 .phrase(Phrase.builder().element(expression).build())
                 .buildWith(expression.getFilePos());

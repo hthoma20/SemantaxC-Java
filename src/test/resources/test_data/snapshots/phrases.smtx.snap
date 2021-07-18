@@ -110,6 +110,31 @@ Program {
                   )
                ]
             }
+            Statement { (10:5)
+               Phrase: [ (10:5)
+                  Word: let (10:5)
+                  Word: myFunction (10:9)
+                  Word: = (10:20)
+                  FunctionLit (10:31)
+                     input:
+                        record( (10:22)
+                           x: (10:23)
+                           int (10:26)
+                        )
+                     statements:
+                        StatementList [ (11:9)
+                           Statement { (11:9)
+                              Phrase: [ (11:9)
+                                 Word: return (11:9)
+                                 Word: x (11:16)
+                                 Word: + (11:18)
+                                 IntLit 4 (11:20)
+                              ]
+                           }
+                        ]
+                  )
+               ]
+            }
          ]
       }
    ]

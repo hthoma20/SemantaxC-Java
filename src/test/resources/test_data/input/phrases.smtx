@@ -6,5 +6,9 @@ main module Main {
     there are 3 (nested (parens in ("he" + "re") that) arent logical);
 
     let myRecord = ( sum: 4 + x, list: 4 * [1,2]);
+
+    let myFunction = (x: int) {
+        return x + 4;
+    };
 }
 
