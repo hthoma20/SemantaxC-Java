@@ -4,6 +4,7 @@ import com.semantax.ast.node.*;
 import com.semantax.ast.node.list.AstNodeList;
 import com.semantax.ast.node.literal.*;
 import com.semantax.ast.node.literal.type.*;
+import com.semantax.ast.node.progcall.DeclProgCall;
 import com.semantax.ast.node.progcall.ProgCall;
 import lombok.Builder;
 
@@ -80,6 +81,16 @@ public class AstPrintingVisitor extends TraversalVisitor<Void> {
         output.printf("@%s (%s)%n", progCall.getName(), progCall.getFilePos());
 
         super.visit(progCall);
+        return null;
+    }
+
+    @Override
+    public Void visit(DeclProgCall declProgCall) {
+        indent();
+
+        output.printf("Decl @%s (%s)%n", declProgCall.getName(), declProgCall.getFilePos());
+
+        super.visit(declProgCall);
         return null;
     }
 

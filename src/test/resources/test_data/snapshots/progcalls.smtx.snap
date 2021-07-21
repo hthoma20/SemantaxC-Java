@@ -116,6 +116,19 @@ Program {
                ]
             ]
          }
+         Statement { (15:5)
+            Phrase: [ (15:5)
+               Decl @decl (15:5)
+               ExpressionList [ (15:11)
+                  Phrase: [ (15:11)
+                     Word: thing (15:11)
+                  ]
+                  Phrase: [ (15:18)
+                     int (15:18)
+                  ]
+               ]
+            ]
+         }
       }
    ]
 }

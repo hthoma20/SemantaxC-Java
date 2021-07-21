@@ -4,6 +4,7 @@ import com.semantax.ast.node.*;
 import com.semantax.ast.node.literal.*;
 import com.semantax.ast.node.literal.type.*;
 import com.semantax.ast.node.list.AstNodeList;
+import com.semantax.ast.node.progcall.DeclProgCall;
 import com.semantax.ast.node.progcall.ProgCall;
 
 public interface ASTVisitor<T> {
@@ -13,10 +14,12 @@ public interface ASTVisitor<T> {
     T visit(BoolLit boolLit);
     T visit(StringLit stringLit);
     T visit(Module module);
-    T visit(ProgCall progCall);
     T visit(Program program);
     T visit(Statement statement);
     T visit(Word word);
+
+    T visit(ProgCall progCall);
+    T visit(DeclProgCall declProgCall);
 
     T visit(TypeTypeLit typeTypeLiteral);
     T visit(IntTypeLit intTypeLiteral);

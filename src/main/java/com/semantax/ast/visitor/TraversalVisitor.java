@@ -4,6 +4,7 @@ import com.semantax.ast.node.*;
 import com.semantax.ast.node.list.AstNodeList;
 import com.semantax.ast.node.literal.*;
 import com.semantax.ast.node.literal.type.*;
+import com.semantax.ast.node.progcall.DeclProgCall;
 import com.semantax.ast.node.progcall.ProgCall;
 
 public class TraversalVisitor<T> implements ASTVisitor<T> {
@@ -42,6 +43,12 @@ public class TraversalVisitor<T> implements ASTVisitor<T> {
     @Override
     public T visit(ProgCall progCall) {
         progCall.getSubExpressions().accept(this);
+        return null;
+    }
+
+    @Override
+    public T visit(DeclProgCall declProgCall) {
+        declProgCall.getSubExpressions().accept(this);
         return null;
     }
 
