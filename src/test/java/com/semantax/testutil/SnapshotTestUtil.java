@@ -1,4 +1,4 @@
-package com.semantax.parser.generated.snapshot;
+package com.semantax.testutil;
 
 import com.semantax.ast.node.AstNode;
 import com.semantax.ast.visitor.AstToStringVisitor;

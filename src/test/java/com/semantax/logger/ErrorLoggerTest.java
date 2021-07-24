@@ -6,6 +6,8 @@ import junit.framework.TestCase;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
+import static com.semantax.testutil.AssertionUtil.assertLessThan;
+
 public class ErrorLoggerTest extends TestCase {
 
     public void test_errorsEmmittedInOrder() {
@@ -43,10 +45,5 @@ public class ErrorLoggerTest extends TestCase {
         assertLessThan(e1Index, p2Index);
         assertLessThan(p1Index, e2Index);
         assertLessThan(p1Index, p2Index);
-    }
-
-    /** Assert a < b */
-    private void assertLessThan(int a, int b) {
-        assertTrue(String.format("Expected %d < %d", a, b), a < b);
     }
 }

@@ -1,7 +1,7 @@
 package com.semantax.parser.generated;
 
 import com.semantax.ast.node.Program;
-import com.semantax.parser.generated.snapshot.SnapshotTestUtil;
+import com.semantax.testutil.SnapshotTestUtil;
 import junit.framework.TestCase;
 import lombok.RequiredArgsConstructor;
 import org.junit.Test;
@@ -10,8 +10,6 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
