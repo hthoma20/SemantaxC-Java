@@ -89,7 +89,8 @@ public class AstPrintingVisitor extends TraversalVisitor<Void> {
         indent();
 
         output.printf("Decl @%s (%s)%n", declProgCall.getName(), declProgCall.getFilePos());
-
+        indent();
+        output.printf("name: %s%n", declProgCall.getDeclName());
         super.visit(declProgCall);
         return null;
     }
