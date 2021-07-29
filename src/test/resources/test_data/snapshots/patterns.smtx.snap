@@ -1,6 +1,6 @@
 Program {
    ModuleList [ (1:13)
-      main module Main { (1:13)
+      MAIN module Main { (1:13)
          Pattern: $three word pattern$ [ (3:5)
             FunctionLit (4:24)
                input:

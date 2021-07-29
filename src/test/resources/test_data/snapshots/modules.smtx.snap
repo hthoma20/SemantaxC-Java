@@ -4,11 +4,11 @@ Program {
          module stuff { (2:12)
          }
       }
-      main module foo uses thing { (5:13)
-         public module bar { (7:19)
+      MAIN module foo uses thing { (5:13)
+         PUBLIC module bar { (7:19)
          }
          module baz uses bar foo { (9:12)
-            public module foobarbaz { (11:23)
+            PUBLIC module foobarbaz { (11:23)
             }
          }
       }

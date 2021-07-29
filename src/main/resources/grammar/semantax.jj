@@ -146,7 +146,7 @@ Module ModuleDefinition() :
 }
 {
     [t = <MODULE_MODIFIER>
-     {moduleBuilder.modifier(t.image);}
+     {moduleBuilder.modifier(Module.Modifier.of(t));}
     ]
     <MODULE>
     moduleName = Word()

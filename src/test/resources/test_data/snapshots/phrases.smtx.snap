@@ -1,6 +1,6 @@
 Program {
    ModuleList [ (1:13)
-      main module Main { (1:13)
+      MAIN module Main { (1:13)
          Statement { (2:5)
             Phrase: [ (2:5)
                ArrayLit (2:5) [
