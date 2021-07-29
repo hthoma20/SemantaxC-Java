@@ -19,8 +19,8 @@ public class ErrorLoggerTest extends TestCase {
         // log in reverse order of how they should be emitted
         FilePos p1 = new FilePos(1,1);
         FilePos p2 = new FilePos(2,1);
-        errorLogger.error("e2", p2);
-        errorLogger.error("e1", p1);
+        errorLogger.error(p2, "e2");
+        errorLogger.error(p1, "e1");
 
         // assert nothing is yet printed
         assertEquals("", capture.toString());

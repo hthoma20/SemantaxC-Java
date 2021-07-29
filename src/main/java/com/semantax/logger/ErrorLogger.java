@@ -1,26 +1,36 @@
 package com.semantax.logger;
 
 import com.semantax.ast.util.FilePos;
+import com.semantax.module.UtilModule;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Value;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-@AllArgsConstructor
+@Singleton
 public class ErrorLogger {
 
     private final ArrayList<Error> errors = new ArrayList<>();
 
     private final PrintStream out;
 
-    public void error(String message, FilePos filePos) {
+    @Inject
+    public ErrorLogger(@Named(UtilModule.ERROR_LOGGING_PRINT_STREAM) PrintStream out) {
+        this.out = out;
+    }
+
+
+    public void error(FilePos filePos, String message, Object... args) {
         synchronized (errors) {
             errors.add(Error.builder()
-                        .message(message)
+                        .message(String.format(message, args))
                         .position(filePos)
                         .build());
         }
