@@ -12,6 +12,10 @@ public class FilePos implements Comparable<FilePos> {
         return new FilePos(token.beginLine, token.beginColumn);
     }
 
+    public static FilePos none() {
+        return new FilePos(-1, -1);
+    }
+
     @Override
     public String toString() {
         return String.format("%s:%s", line, column);
