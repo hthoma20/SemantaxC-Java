@@ -21,7 +21,7 @@ public class SemantaxParserSnapshotTest extends TestCase {
     private static final String TEST_DATA_ROOT = "./src/test/resources/test_data";
     private final SnapshotTestUtil snapshotTestUtil = new SnapshotTestUtil(TEST_DATA_ROOT);
 
-    // Parameter for test
+    // Parameter for test, populated in constructor
     private final String testFile;
 
     /**
