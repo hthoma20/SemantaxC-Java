@@ -15,6 +15,7 @@
         <project.resources.sourceEncoding>${encoding}</project.resources.sourceEncoding>
 
         <semantax.mainClass>com.semantax.module.Main</semantax.mainClass>
+
     </properties>
 
     <dependencies>
@@ -120,6 +121,8 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.2</version>
+
+
                 <executions>
                     <execution>
                         <goals>
@@ -133,6 +136,15 @@
                         <goals>
                             <goal>report</goal>
                         </goals>
+                        <configuration>
+                            <excludes>
+                                <exclude>**/*_MembersInjector.class</exclude>
+                                <exclude>**/Dagger*Component*.class</exclude>
+                                <exclude>**/Dagger*Subcomponent*.class</exclude>
+                                <exclude>**/*Subcomponent$Builder.class</exclude>
+                                <exclude>**/*_Factory.class</exclude>
+                            </excludes>
+                        </configuration>
                     </execution>
 
                 </executions>
