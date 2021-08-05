@@ -52,6 +52,21 @@ public class Module extends AstNode {
         return subNodes;
     }
 
+    /**
+     * Replace the given statement in the list with the statements in the given list.
+     * For example, if the current statements are [A, B, C] and
+     * `replace(B, [D, E])` is called, then this Module's updated statements will be
+     * [A, D, E, C]
+     *
+     * @param statement the statement to replace
+     * @param replacements the statements to substitute in
+     * @throws com.semantax.exception.CompilerException if the given statement is not
+     *          present in the current statements
+     */
+    public void replace(Statement statement, StatementList replacements) {
+        statements.replace(statement, replacements);
+    }
+
     public enum Modifier {
         MAIN, PUBLIC;
 
