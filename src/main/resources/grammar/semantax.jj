@@ -258,6 +258,7 @@ Phrase Phrase() :
 PhraseElement PhraseElement() :
 {
     PhraseElement element;
+    Phrase subPhrase;
 }
 {
     (element = Word()
@@ -267,37 +268,40 @@ PhraseElement PhraseElement() :
     LOOKAHEAD(3) // resolves conflict with parenthesized phrase - this picks a record literal if there is a colon
     element = Expression()
     |
-    (<L_PAREN> element = Phrase() <R_PAREN>) )
+    (<L_PAREN> subPhrase = Phrase() <R_PAREN>)
+        {element = ParsableExpression.fromPhrase(subPhrase);})
+
+
     {return element;}
 }
 
 // list of one or more phrases, separated by commas
-ExpressionList PhraseList() :
+ParsableExpressionList PhraseList() :
 {
     Phrase phrase;
-    ExpressionList phraseList = new ExpressionList();
+    ParsableExpressionList phraseList = new ParsableExpressionList();
 }
 {
     phrase = Phrase()
-    {phraseList.add(phrase);
+    {phraseList.add(ParsableExpression.fromPhrase(phrase));
      phraseList.setFilePos(phrase.getFilePos());}
 
     (<COMMA> phrase = Phrase()
-     {phraseList.add(phrase);}
+     {phraseList.add(ParsableExpression.fromPhrase(phrase));}
     )*
     {return phraseList;}
 }
 
 // A single phrase followed by a comma, or multiple comma separated expressions
-ExpressionList EnforcedPhraseList() :
+ParsableExpressionList EnforcedPhraseList() :
 {
     Phrase head;
-    ExpressionList tail = null;
-    ExpressionList phraseList = new ExpressionList();
+    ParsableExpressionList tail = null;
+    ParsableExpressionList phraseList = new ParsableExpressionList();
 }
 {
     head = Phrase()
-    {phraseList.add(head);}
+    {phraseList.add(ParsableExpression.fromPhrase(head));}
     <COMMA>
     [tail = PhraseList()
     {phraseList.addAll(tail);}]
@@ -321,7 +325,7 @@ ProgCall ProgCall() :
     Token t;
     Word name;
     // Will be overwritten if there are subexpressions
-    ExpressionList subPhrases = new ExpressionList();
+    ParsableExpressionList subPhrases = new ParsableExpressionList();
 }
 {
     t = <AT>
@@ -530,7 +534,7 @@ NameTypePairList NameTypePairList() :
 NameExpressionPair NamePhrasePair() :
 {
     Word name;
-    Expression phrase;
+    Phrase phrase;
 }
 {
     name = Word()
@@ -538,7 +542,7 @@ NameExpressionPair NamePhrasePair() :
     phrase = Phrase()
     {return NameExpressionPair.builder()
         .name(name.getValue())
-        .expression(phrase)
+        .expression(ParsableExpression.fromPhrase(phrase))
         .buildWith(name.getFilePos());}
 }
 
@@ -576,7 +580,7 @@ Literal CompoundLiteral() :
 ArrayLit ArrayLit() :
 {
     Token t;
-    ExpressionList expressions = new ExpressionList();
+    ParsableExpressionList expressions = new ParsableExpressionList();
 }
 {
     t = <L_BRACKET>
@@ -628,19 +632,19 @@ void FunctionLitPrefix(FunctionLit.Builder builder) :
 // everything between (not including) the braces
 void FunctionLitBody(FunctionLit.Builder builder) :
 {
-    Expression firstExpression;
+    Phrase firstExpression;
     Statement statement;
     StatementList statements = new StatementList();
 }
 {
     // A return expression
     firstExpression = Phrase()
-    {builder.returnExpression(Optional.of(firstExpression));}
+    {builder.returnExpression(Optional.of(ParsableExpression.fromPhrase(firstExpression)));}
 
     [
         <SEMI_COLON> // if there is a semi-colon, this means that the expression was actually a statement
         {builder.returnExpression(Optional.empty());
-         statements.add(StatementFactory.fromExpression(firstExpression));}
+         statements.add(StatementFactory.fromPhrase(firstExpression));}
 
         (statement = Statement()
          {statements.add(statement);})*

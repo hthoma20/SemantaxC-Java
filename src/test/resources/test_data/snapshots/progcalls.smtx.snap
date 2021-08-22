@@ -4,7 +4,7 @@ Program {
          Statement { (2:5)
             Phrase: [ (2:5)
                @addint (2:5)
-               ExpressionList [ (2:13)
+               ParsableExpressionList [ (2:13)
                   Phrase: [ (2:13)
                      IntLit 1 (2:13)
                   ]
@@ -17,13 +17,13 @@ Program {
          Statement { (3:5)
             Phrase: [ (3:5)
                @addint (3:5)
-               ExpressionList [ (3:13)
+               ParsableExpressionList [ (3:13)
                   Phrase: [ (3:13)
                      IntLit 1 (3:13)
                   ]
                   Phrase: [ (3:16)
                      @addint (3:16)
-                     ExpressionList [ (3:24)
+                     ParsableExpressionList [ (3:24)
                         Phrase: [ (3:24)
                            IntLit 1 (3:24)
                         ]
@@ -38,10 +38,10 @@ Program {
          Statement { (4:5)
             Phrase: [ (4:5)
                @addint (4:5)
-               ExpressionList [ (4:13)
+               ParsableExpressionList [ (4:13)
                   Phrase: [ (4:13)
                      @addint (4:13)
-                     ExpressionList [ (4:21)
+                     ParsableExpressionList [ (4:21)
                         Phrase: [ (4:21)
                            IntLit 1 (4:21)
                         ]
@@ -59,10 +59,10 @@ Program {
          Statement { (5:5)
             Phrase: [ (5:5)
                @addint (5:5)
-               ExpressionList [ (6:9)
+               ParsableExpressionList [ (6:9)
                   Phrase: [ (6:9)
                      @addint (6:9)
-                     ExpressionList [ (6:17)
+                     ParsableExpressionList [ (6:17)
                         Phrase: [ (6:17)
                            IntLit 1 (6:17)
                         ]
@@ -73,7 +73,7 @@ Program {
                   ]
                   Phrase: [ (7:9)
                      @addint (7:9)
-                     ExpressionList [ (7:17)
+                     ParsableExpressionList [ (7:17)
                         Phrase: [ (7:17)
                            IntLit 3 (7:17)
                         ]
@@ -88,7 +88,7 @@ Program {
          Statement { (10:5)
             Phrase: [ (10:5)
                @not (10:5)
-               ExpressionList [ (10:10)
+               ParsableExpressionList [ (10:10)
                   Phrase: [ (10:10)
                      BoolLit false (10:10)
                   ]
@@ -98,7 +98,7 @@ Program {
          Statement { (11:5)
             Phrase: [ (11:5)
                @not (11:5)
-               ExpressionList [ (11:10)
+               ParsableExpressionList [ (11:10)
                   Phrase: [ (11:10)
                      BoolLit true (11:10)
                   ]
@@ -108,7 +108,7 @@ Program {
          Statement { (13:5)
             Phrase: [ (13:5)
                @addint (13:5)
-               ExpressionList [ (13:13)
+               ParsableExpressionList [ (13:13)
                   Phrase: [ (13:13)
                      RecordLit ( (13:13)
                      )
@@ -120,7 +120,7 @@ Program {
             Phrase: [ (15:5)
                Decl @decl (15:5)
                name: Eventual.unfulfilled
-               ExpressionList [ (15:11)
+               ParsableExpressionList [ (15:11)
                   Phrase: [ (15:11)
                      Word: thing (15:11)
                   ]

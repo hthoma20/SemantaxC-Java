@@ -1,6 +1,6 @@
 package com.semantax.ast.node.literal;
 
-import com.semantax.ast.node.list.ExpressionList;
+import com.semantax.ast.node.list.ParsableExpressionList;
 import com.semantax.ast.util.FilePos;
 import com.semantax.ast.visitor.ASTVisitor;
 import lombok.Builder;
@@ -11,7 +11,7 @@ import lombok.ToString;
 @Builder(builderClassName = "Builder")
 public class ArrayLit extends Literal {
     @Getter
-    private ExpressionList values;
+    private ParsableExpressionList values;
 
     @Override
     public <T> T accept(ASTVisitor<T> visitor) {

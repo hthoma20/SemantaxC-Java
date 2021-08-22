@@ -10,7 +10,7 @@ import lombok.Singular;
 import java.util.List;
 
 @Builder(builderClassName = "Builder")
-public class Phrase extends Expression {
+public class Phrase extends AstNode {
     @Getter
     @Singular("element")
     private List<PhraseElement> phrase;

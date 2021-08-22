@@ -4,7 +4,7 @@ Program {
          Statement { (2:5)
             Phrase: [ (2:5)
                ArrayLit (2:5) [
-                  ExpressionList [ (2:6)
+                  ParsableExpressionList [ (2:6)
                      Phrase: [ (2:6)
                         IntLit 1 (2:6)
                      ]
@@ -26,7 +26,7 @@ Program {
          Statement { (3:5)
             Phrase: [ (3:5)
                ArrayLit (3:5) [
-                  ExpressionList [ (3:6)
+                  ParsableExpressionList [ (3:6)
                      Phrase: [ (3:6)
                         IntLit 4 (3:6)
                         Word: + (3:8)
@@ -95,7 +95,7 @@ Program {
                      IntLit 4 (8:40)
                      Word: * (8:42)
                      ArrayLit (8:44) [
-                        ExpressionList [ (8:45)
+                        ParsableExpressionList [ (8:45)
                            Phrase: [ (8:45)
                               IntLit 1 (8:45)
                            ]

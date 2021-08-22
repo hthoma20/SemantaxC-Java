@@ -1,9 +1,9 @@
 package com.semantax.ast.node.literal;
 
+import com.semantax.ast.node.ParsableExpression;
 import com.semantax.ast.util.FilePos;
 import com.semantax.ast.visitor.ASTVisitor;
 import com.semantax.ast.node.AstNode;
-import com.semantax.ast.node.Expression;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -16,7 +16,7 @@ import lombok.Getter;
 public class NameExpressionPair extends AstNode {
 
     private String name;
-    private Expression expression;
+    private ParsableExpression expression;
 
     @Override
     public <T> T accept(ASTVisitor<T> visitor) {

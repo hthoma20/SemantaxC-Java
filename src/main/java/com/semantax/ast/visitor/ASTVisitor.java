@@ -40,6 +40,7 @@ public interface ASTVisitor<T> {
 
     T visit(Phrase phrase);
     T visit(PatternDefinition patternDefinition);
+    T visit(ParsableExpression parsableExpression);
 
     <N extends AstNode> T visit(AstNodeList<N> nodes);
 }

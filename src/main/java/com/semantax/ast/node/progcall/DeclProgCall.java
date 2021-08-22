@@ -1,7 +1,7 @@
 package com.semantax.ast.node.progcall;
 
 
-import com.semantax.ast.node.list.ExpressionList;
+import com.semantax.ast.node.list.ParsableExpressionList;
 import com.semantax.ast.type.Type;
 import com.semantax.ast.util.eventual.Eventual;
 import com.semantax.ast.visitor.ASTVisitor;
@@ -13,8 +13,9 @@ public class DeclProgCall extends ProgCall {
     private final Eventual<String> declName = Eventual.unfulfilled();
     private final Eventual<Type> declType = Eventual.unfulfilled();
 
+    // Override builder class to allow for polymorphic building
     @lombok.Builder(builderClassName = "Builder")
-    DeclProgCall(String name, ExpressionList subExpressions) {
+    DeclProgCall(String name, ParsableExpressionList subExpressions) {
         super(name, subExpressions);
     }
 

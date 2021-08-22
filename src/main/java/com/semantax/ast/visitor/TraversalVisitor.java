@@ -173,4 +173,15 @@ public class TraversalVisitor<T> implements ASTVisitor<T> {
         patternDefinition.getSemantics().accept(this);
         return null;
     }
+
+    @Override
+    public T visit(ParsableExpression parsableExpression) {
+        if (parsableExpression.hasExpression()) {
+            parsableExpression.getExpression().accept(this);
+        }
+        else {
+            parsableExpression.getPhrase().accept(this);
+        }
+        return null;
+    }
 }

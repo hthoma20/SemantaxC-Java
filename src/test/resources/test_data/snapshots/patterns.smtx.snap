@@ -15,7 +15,7 @@ Program {
                      Statement { (5:9)
                         Phrase: [ (5:9)
                            @return (5:9)
-                           ExpressionList [ (5:17)
+                           ParsableExpressionList [ (5:17)
                               Phrase: [ (5:17)
                                  IntLit 54 (5:17)
                               ]

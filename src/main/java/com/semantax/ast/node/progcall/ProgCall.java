@@ -1,8 +1,7 @@
 package com.semantax.ast.node.progcall;
 
 import com.semantax.ast.node.Expression;
-import com.semantax.ast.node.Statement;
-import com.semantax.ast.node.list.ExpressionList;
+import com.semantax.ast.node.list.ParsableExpressionList;
 import com.semantax.ast.util.FilePos;
 import com.semantax.ast.visitor.ASTVisitor;
 import lombok.Builder;
@@ -15,7 +14,7 @@ import lombok.Getter;
 @Getter
 public class ProgCall extends Expression {
     private final String name;
-    private final ExpressionList subExpressions;
+    private final ParsableExpressionList subExpressions;
 
     @Override
     public <T> T accept(ASTVisitor<T> visitor) {

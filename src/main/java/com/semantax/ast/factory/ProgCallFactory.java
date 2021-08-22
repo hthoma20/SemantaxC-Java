@@ -1,7 +1,7 @@
 package com.semantax.ast.factory;
 
 import com.semantax.ast.node.Word;
-import com.semantax.ast.node.list.ExpressionList;
+import com.semantax.ast.node.list.ParsableExpressionList;
 import com.semantax.ast.node.progcall.DeclProgCall;
 import com.semantax.ast.node.progcall.ProgCall;
 import com.semantax.ast.util.FilePos;
@@ -13,7 +13,7 @@ import static com.semantax.parser.generated.SemantaxParserConstants.*;
 
 public class ProgCallFactory {
 
-    public static ProgCall from(Token at, Word name, ExpressionList subExpressions) {
+    public static ProgCall from(Token at, Word name, ParsableExpressionList subExpressions) {
 
         validateToken(at);
 
