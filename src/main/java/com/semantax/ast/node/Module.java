@@ -7,10 +7,10 @@ import com.semantax.ast.node.list.WordList;
 import com.semantax.ast.visitor.ASTVisitor;
 
 import com.semantax.exception.UnexpectedTokenException;
-import com.semantax.parser.generated.SemantaxParserConstants;
 import com.semantax.parser.generated.Token;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NonNull;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -24,11 +24,17 @@ import static com.semantax.parser.generated.SemantaxParserConstants.MODULE_MODIF
 public class Module extends AstNode {
 
     private final Modifier modifier;
+    @NonNull
     private final String name;
-    private final WordList modulesUsed;
-    private final ModuleList subModules;
-    private final StatementList statements;
-    private final PatternDefinitionList patterns;
+
+    @lombok.Builder.Default
+    private final WordList modulesUsed = new WordList();
+    @lombok.Builder.Default
+    private final ModuleList subModules = new ModuleList();
+    @lombok.Builder.Default
+    private final StatementList statements = new StatementList();
+    @lombok.Builder.Default
+    private final PatternDefinitionList patterns = new PatternDefinitionList();
 
     @Override
     public <T> T accept(ASTVisitor<T> visitor) {

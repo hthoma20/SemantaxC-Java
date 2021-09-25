@@ -53,6 +53,14 @@ public abstract class AstNodeList<NodeType extends AstNode> extends AstNode
         return nodes.stream();
     }
 
+    public NodeType get(int index) {
+        return nodes.get(index);
+    }
+
+    public boolean isEmpty() {
+        return size() == 0;
+    }
+
     @Override
     public FilePos getFilePos() {
 

@@ -12,7 +12,7 @@ public class ModuleTest extends TestCase {
 
     public void test_subNodes() {
         Statement first = Statement.builder().buildWith(new FilePos(1,1));
-        Module second = Module.builder().build();
+        Module second = Module.builder().name("testModule").build();
         second.setFilePos(new FilePos(2, 1));
         Statement third = Statement.builder().buildWith(new FilePos(3,1));
         PatternDefinition fourth = PatternDefinition.builder().buildWith(new FilePos(4, 1));
@@ -31,6 +31,7 @@ public class ModuleTest extends TestCase {
                     .statements(statements)
                     .subModules(modules)
                     .patterns(patterns)
+                    .name("testModule")
                     .build();
 
         List<AstNode> subNodes = module.subNodes();

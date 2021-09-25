@@ -62,7 +62,7 @@ public class AstPrintingVisitor extends TraversalVisitor<Void> {
     public Void visit(Module module) {
         indent();
         String modifierString = module.getModifier() == null ? "" : module.getModifier() + " ";
-        String usesString = module.getModulesUsed() == null ? "" : String.format("uses %s ", module.getModulesUsed());
+        String usesString = module.getModulesUsed().isEmpty() ? "" : String.format("uses %s ", module.getModulesUsed());
         output.printf("%smodule %s %s{ (%s)%n", modifierString, module.getName(), usesString, module.getFilePos());
 
         depth++;

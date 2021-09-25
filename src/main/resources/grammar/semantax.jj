@@ -239,9 +239,7 @@ Statement Statement() :
 }
 {
     phrase = Phrase() <SEMI_COLON>
-    {return Statement.builder()
-        .phrase(phrase)
-        .buildWith(phrase.getFilePos());}
+    {return StatementFactory.fromPhrase(phrase);}
 }
 
 Phrase Phrase() :

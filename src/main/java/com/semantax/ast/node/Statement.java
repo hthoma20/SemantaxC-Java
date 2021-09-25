@@ -7,12 +7,24 @@ import lombok.Getter;
 
 @Builder(builderClassName = "Builder")
 public class Statement extends AstNode {
+//    @Getter
+//    private Phrase phrase;
+//
+//    private final Eventual<Expression> expression = Eventual.unfulfilled();
     @Getter
-    private Phrase phrase;
+    private final ParsableExpression parsableExpression;
 
     @Override
     public <T> T accept(ASTVisitor<T> visitor) {
         return visitor.visit(this);
+    }
+
+    public Expression getExpression() {
+        return parsableExpression.getExpression();
+    }
+
+    public void setExpression(Expression expression) {
+        parsableExpression.parseTo(expression);
     }
 
     public static class Builder {
@@ -22,6 +34,5 @@ public class Statement extends AstNode {
             statement.setFilePos(filePos);
             return statement;
         }
-
     }
 }

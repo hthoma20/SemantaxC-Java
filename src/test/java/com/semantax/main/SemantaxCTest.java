@@ -5,7 +5,7 @@ import com.semantax.ast.visitor.AstPrintingVisitor;
 import com.semantax.logger.ErrorLogger;
 import com.semantax.main.args.SemantaxCArgs;
 import com.semantax.phase.GrammarPhase;
-import com.semantax.phase.SemanticPhase;
+import com.semantax.phase.ParsePhase;
 import junit.framework.TestCase;
 
 import java.util.Optional;
@@ -25,10 +25,10 @@ public class SemantaxCTest extends TestCase {
     private final AstPrintingVisitor mockPrinter = mock(AstPrintingVisitor.class);
     private final ErrorLogger mockErrorLogger = mock(ErrorLogger.class);
     private final GrammarPhase mockGrammarPhase = mock(GrammarPhase.class);
-    private final SemanticPhase mockSemanticPhase = mock(SemanticPhase.class);
+    private final ParsePhase mockParsePhase = mock(ParsePhase.class);
 
     private final SemantaxC semantaxC =
-            new SemantaxC(mockPrinter, mockErrorLogger, mockGrammarPhase, mockSemanticPhase);
+            new SemantaxC(mockPrinter, mockErrorLogger, mockGrammarPhase, mockParsePhase);
 
     public void test_execute_errorWhenTooManyFiles() {
         semantaxC.execute(SemantaxCArgs.builder()
@@ -60,21 +60,21 @@ public class SemantaxCTest extends TestCase {
         verify(mockGrammarPhase).process(any());
         verify(mockErrorLogger).error(any(), anyString(), anyVararg());
 
-        verifyZeroInteractions(mockSemanticPhase);
+        verifyZeroInteractions(mockParsePhase);
     }
 
     public void test_execute_errorWhenSemPhaseFails() {
 
         Program program = mock(Program.class);
         when(mockGrammarPhase.process(any())).thenReturn(Optional.of(program));
-        when(mockSemanticPhase.process(program)).thenReturn(Optional.empty());
+        when(mockParsePhase.process(program)).thenReturn(Optional.empty());
 
         semantaxC.execute(SemantaxCArgs.builder()
                 .inputFile(TEST_FILE)
                 .build());
 
         verify(mockGrammarPhase).process(any());
-        verify(mockSemanticPhase).process(program);
+        verify(mockParsePhase).process(program);
         verify(mockErrorLogger).error(any(), anyString(), anyVararg());
 
         verifyZeroInteractions(mockPrinter);
@@ -83,14 +83,14 @@ public class SemantaxCTest extends TestCase {
     public void test_execute_printsWhenAllSucceed() {
         Program program = mock(Program.class);
         when(mockGrammarPhase.process(any())).thenReturn(Optional.of(program));
-        when(mockSemanticPhase.process(program)).thenReturn(Optional.of(program));
+        when(mockParsePhase.process(program)).thenReturn(Optional.of(program));
 
         semantaxC.execute(SemantaxCArgs.builder()
                 .inputFile(TEST_FILE)
                 .build());
 
         verify(mockGrammarPhase).process(any());
-        verify(mockSemanticPhase).process(program);
+        verify(mockParsePhase).process(program);
         verify(mockPrinter).visit(program);
 
         verifyZeroInteractions(mockErrorLogger);

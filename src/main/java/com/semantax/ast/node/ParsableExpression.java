@@ -52,4 +52,11 @@ public class ParsableExpression extends AstNode implements PhraseElement {
         return expression.isFulfilled() ? expression.get().getFilePos() : phrase.getFilePos();
     }
 
+    @Override
+    public String toString() {
+        return String.format("%s(%s=%s)",
+                getClass().getSimpleName(),
+                hasExpression() ? "Expression" : "Phrase",
+                hasExpression() ? getExpression() : getPhrase());
+    }
 }

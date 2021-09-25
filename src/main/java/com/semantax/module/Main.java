@@ -10,7 +10,8 @@ public class Main {
     @Singleton
     @Component(modules = {
             VisitorModule.class,
-            UtilModule.class
+            UtilModule.class,
+            PhaseModule.class
     })
     public interface SemantaxComponent {
         Runner getRunner();

@@ -60,7 +60,7 @@ public class TraversalVisitor<T> implements ASTVisitor<T> {
 
     @Override
     public T visit(Statement statement) {
-        statement.getPhrase().accept(this);
+        statement.getParsableExpression().accept(this);
         return null;
     }
 

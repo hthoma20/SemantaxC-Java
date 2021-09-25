@@ -3,20 +3,15 @@ package com.semantax.main;
 import com.semantax.ast.node.Program;
 import com.semantax.ast.util.FilePos;
 import com.semantax.ast.visitor.AstPrintingVisitor;
-import com.semantax.exception.InvalidArgumentsException;
-import com.semantax.exception.ProgramErrorException;
 import com.semantax.logger.ErrorLogger;
 import com.semantax.main.args.SemantaxCArgs;
-import com.semantax.parser.generated.ParseException;
-import com.semantax.parser.generated.SemantaxParser;
 import com.semantax.phase.GrammarPhase;
-import com.semantax.phase.SemanticPhase;
+import com.semantax.phase.ParsePhase;
 
 import javax.inject.Inject;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 public class SemantaxC {
@@ -25,18 +20,18 @@ public class SemantaxC {
     private final ErrorLogger errorLogger;
 
     private final GrammarPhase grammarPhase;
-    private final SemanticPhase semanticPhase;
+    private final ParsePhase parsePhase;
 
     @Inject
     public SemantaxC(
             AstPrintingVisitor printer,
             ErrorLogger errorLogger,
             GrammarPhase grammarPhase,
-            SemanticPhase semanticPhase) {
+            ParsePhase parsePhase) {
         this.printer = printer;
         this.errorLogger = errorLogger;
         this.grammarPhase = grammarPhase;
-        this.semanticPhase = semanticPhase;
+        this.parsePhase = parsePhase;
     }
 
     /**
@@ -65,7 +60,7 @@ public class SemantaxC {
             return;
         }
 
-        program = semanticPhase.process(program.get());
+        program = parsePhase.process(program.get());
 
         if (!program.isPresent()) {
             errorLogger.error(FilePos.none(), "Error in file: %s", filePath);
