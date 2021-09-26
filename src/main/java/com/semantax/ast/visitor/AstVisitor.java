@@ -7,7 +7,7 @@ import com.semantax.ast.node.list.AstNodeList;
 import com.semantax.ast.node.progcall.DeclProgCall;
 import com.semantax.ast.node.progcall.ProgCall;
 
-public interface ASTVisitor<T> {
+public interface AstVisitor<T> {
     T visit(AstNode node);
     T visit(Expression exp);
     T visit(IntLit intLit);

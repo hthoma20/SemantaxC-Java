@@ -1,7 +1,7 @@
 package com.semantax.ast.node.literal.type;
 
 import com.semantax.ast.util.FilePos;
-import com.semantax.ast.visitor.ASTVisitor;
+import com.semantax.ast.visitor.AstVisitor;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -15,7 +15,7 @@ public class FuncTypeLit extends TypeLit {
     private TypeLit outputType = VoidTypeLit.VOID_TYPE_LIT;
 
     @Override
-    public <T> T accept(ASTVisitor<T> visitor) {
+    public <T> T accept(AstVisitor<T> visitor) {
         return visitor.visit(this);
     }
 

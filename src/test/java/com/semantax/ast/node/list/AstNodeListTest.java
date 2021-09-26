@@ -1,7 +1,7 @@
 package com.semantax.ast.node.list;
 
 import com.semantax.ast.node.AstNode;
-import com.semantax.ast.visitor.ASTVisitor;
+import com.semantax.ast.visitor.AstVisitor;
 import com.semantax.exception.CompilerException;
 import junit.framework.TestCase;
 import org.junit.Before;
@@ -128,7 +128,7 @@ public class AstNodeListTest extends TestCase {
         private final int id = nextId++;
 
         @Override
-        public <T> T accept(ASTVisitor<T> visitor) {
+        public <T> T accept(AstVisitor<T> visitor) {
             return null;
         }
 

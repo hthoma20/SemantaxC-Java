@@ -2,7 +2,7 @@ package com.semantax.ast.node.literal.type;
 
 import com.semantax.ast.node.list.NameTypePairList;
 import com.semantax.ast.util.FilePos;
-import com.semantax.ast.visitor.ASTVisitor;
+import com.semantax.ast.visitor.AstVisitor;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -23,7 +23,7 @@ public class RecordTypeLit extends TypeLit {
     private NameTypePairList nameTypePairs;
 
     @Override
-    public <T> T accept(ASTVisitor<T> visitor) {
+    public <T> T accept(AstVisitor<T> visitor) {
         return visitor.visit(this);
     }
 

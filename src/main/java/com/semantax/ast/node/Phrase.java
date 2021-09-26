@@ -1,7 +1,7 @@
 package com.semantax.ast.node;
 
 import com.semantax.ast.util.FilePos;
-import com.semantax.ast.visitor.ASTVisitor;
+import com.semantax.ast.visitor.AstVisitor;
 import com.semantax.exception.CompilerException;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,7 +17,7 @@ public class Phrase extends AstNode {
     private List<PhraseElement> phrase;
 
     @Override
-    public <T> T accept(ASTVisitor<T> visitor) {
+    public <T> T accept(AstVisitor<T> visitor) {
         return visitor.visit(this);
     }
 

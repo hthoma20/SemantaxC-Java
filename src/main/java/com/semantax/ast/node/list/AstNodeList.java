@@ -1,7 +1,7 @@
 package com.semantax.ast.node.list;
 
 import com.semantax.ast.util.FilePos;
-import com.semantax.ast.visitor.ASTVisitor;
+import com.semantax.ast.visitor.AstVisitor;
 import com.semantax.ast.node.AstNode;
 import com.semantax.exception.CompilerException;
 
@@ -75,7 +75,7 @@ public abstract class AstNodeList<NodeType extends AstNode> extends AstNode
 
 
     @Override
-    public <T> T accept(ASTVisitor<T> visitor) {
+    public <T> T accept(AstVisitor<T> visitor) {
         return visitor.visit(this);
     }
 }

@@ -3,7 +3,7 @@ package com.semantax.ast.node.literal;
 import com.semantax.ast.node.ParsableExpression;
 import com.semantax.ast.node.list.StatementList;
 import com.semantax.ast.util.FilePos;
-import com.semantax.ast.visitor.ASTVisitor;
+import com.semantax.ast.visitor.AstVisitor;
 import com.semantax.ast.node.literal.type.RecordTypeLit;
 import com.semantax.ast.node.literal.type.TypeLit;
 import lombok.Builder;
@@ -26,7 +26,7 @@ public class FunctionLit extends Literal {
     private Optional<ParsableExpression> returnExpression = Optional.empty();
 
     @Override
-    public <T> T accept(ASTVisitor<T> visitor) {
+    public <T> T accept(AstVisitor<T> visitor) {
         return visitor.visit(this);
     }
 

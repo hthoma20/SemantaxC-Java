@@ -4,7 +4,7 @@ import com.semantax.ast.node.list.ModuleList;
 import com.semantax.ast.node.list.PatternDefinitionList;
 import com.semantax.ast.node.list.StatementList;
 import com.semantax.ast.node.list.WordList;
-import com.semantax.ast.visitor.ASTVisitor;
+import com.semantax.ast.visitor.AstVisitor;
 
 import com.semantax.exception.UnexpectedTokenException;
 import com.semantax.parser.generated.Token;
@@ -37,7 +37,7 @@ public class Module extends AstNode {
     private final PatternDefinitionList patterns = new PatternDefinitionList();
 
     @Override
-    public <T> T accept(ASTVisitor<T> visitor) {
+    public <T> T accept(AstVisitor<T> visitor) {
         return visitor.visit(this);
     }
 

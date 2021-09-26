@@ -2,7 +2,7 @@ package com.semantax.ast.node.literal;
 
 import com.semantax.ast.node.list.NameExpressionPairList;
 import com.semantax.ast.util.FilePos;
-import com.semantax.ast.visitor.ASTVisitor;
+import com.semantax.ast.visitor.AstVisitor;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -12,7 +12,7 @@ public class RecordLit extends Literal {
     private NameExpressionPairList nameExpressionPairs;
 
     @Override
-    public <T> T accept(ASTVisitor<T> visitor) {
+    public <T> T accept(AstVisitor<T> visitor) {
         return visitor.visit(this);
     }
 

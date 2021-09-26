@@ -3,7 +3,7 @@ package com.semantax.ast.node;
 import com.semantax.ast.util.FilePos;
 import com.semantax.ast.util.eventual.Eventual;
 import com.semantax.ast.util.eventual.FulfilledException;
-import com.semantax.ast.visitor.ASTVisitor;
+import com.semantax.ast.visitor.AstVisitor;
 import lombok.Builder;
 
 /**
@@ -24,7 +24,7 @@ public class ParsableExpression extends AstNode implements PhraseElement {
     }
 
     @Override
-    public <T> T accept(ASTVisitor<T> visitor) {
+    public <T> T accept(AstVisitor<T> visitor) {
         return visitor.visit(this);
     }
 

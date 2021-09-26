@@ -1,6 +1,6 @@
 package com.semantax.ast.node.literal;
 
-import com.semantax.ast.visitor.ASTVisitor;
+import com.semantax.ast.visitor.AstVisitor;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -14,7 +14,7 @@ public class IntLit extends Literal {
     }
 
     @Override
-    public <T> T accept(ASTVisitor<T> visitor) {
+    public <T> T accept(AstVisitor<T> visitor) {
         return visitor.visit(this);
     }
 

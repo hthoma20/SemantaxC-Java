@@ -2,13 +2,13 @@ package com.semantax.ast.node;
 
 import com.semantax.ast.type.Type;
 import com.semantax.ast.util.eventual.Eventual;
-import com.semantax.ast.visitor.ASTVisitor;
+import com.semantax.ast.visitor.AstVisitor;
 
 public abstract class Expression extends AstNode implements PhraseElement {
     private final Eventual<Type> type = Eventual.unfulfilled();
 
     @Override
-    public <T> T accept(ASTVisitor<T> visitor) {
+    public <T> T accept(AstVisitor<T> visitor) {
         return visitor.visit(this);
     }
 

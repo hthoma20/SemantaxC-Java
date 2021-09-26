@@ -1,7 +1,7 @@
 package com.semantax.ast.node;
 
 import com.semantax.ast.util.FilePos;
-import com.semantax.ast.visitor.ASTVisitor;
+import com.semantax.ast.visitor.AstVisitor;
 import com.semantax.parser.generated.Token;
 import lombok.Getter;
 
@@ -26,7 +26,7 @@ public class Word extends AstNode implements PhraseElement {
 
 
     @Override
-    public <T> T accept(ASTVisitor<T> visitor) {
+    public <T> T accept(AstVisitor<T> visitor) {
         return visitor.visit(this);
     }
 }

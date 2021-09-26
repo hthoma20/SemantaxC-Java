@@ -1,6 +1,6 @@
 package com.semantax.ast.node.literal.type;
 
-import com.semantax.ast.visitor.ASTVisitor;
+import com.semantax.ast.visitor.AstVisitor;
 import com.semantax.ast.node.AstNode;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,7 +17,7 @@ public class NameTypePair extends AstNode {
     private TypeLit type;
 
     @Override
-    public <T> T accept(ASTVisitor<T> visitor) {
+    public <T> T accept(AstVisitor<T> visitor) {
         return visitor.visit(this);
     }
 }

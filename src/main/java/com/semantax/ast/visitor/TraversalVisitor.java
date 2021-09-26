@@ -7,7 +7,7 @@ import com.semantax.ast.node.literal.type.*;
 import com.semantax.ast.node.progcall.DeclProgCall;
 import com.semantax.ast.node.progcall.ProgCall;
 
-public class TraversalVisitor<T> implements ASTVisitor<T> {
+public class TraversalVisitor<T> implements AstVisitor<T> {
     @Override
     public T visit(AstNode node) {
         node.accept(this);

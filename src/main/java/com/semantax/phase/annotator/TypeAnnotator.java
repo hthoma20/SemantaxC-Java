@@ -1,10 +1,10 @@
 package com.semantax.phase.annotator;
 
 import com.semantax.ast.node.Expression;
-import com.semantax.ast.visitor.ASTVisitor;
+import com.semantax.ast.visitor.AstVisitor;
 
 
-public interface TypeAnnotator extends ASTVisitor<Boolean> {
+public interface TypeAnnotator extends AstVisitor<Boolean> {
 
     /**
      * Set the type attribute on the given expression, as well as all of its

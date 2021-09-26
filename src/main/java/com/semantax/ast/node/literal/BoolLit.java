@@ -1,6 +1,6 @@
 package com.semantax.ast.node.literal;
 
-import com.semantax.ast.visitor.ASTVisitor;
+import com.semantax.ast.visitor.AstVisitor;
 import lombok.ToString;
 
 @ToString
@@ -12,7 +12,7 @@ public class BoolLit extends Literal {
     }
 
     @Override
-    public <T> T accept(ASTVisitor<T> visitor) {
+    public <T> T accept(AstVisitor<T> visitor) {
         return visitor.visit(this);
     }
 

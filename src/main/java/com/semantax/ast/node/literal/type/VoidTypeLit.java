@@ -1,7 +1,7 @@
 package com.semantax.ast.node.literal.type;
 
 import com.semantax.ast.util.FilePos;
-import com.semantax.ast.visitor.ASTVisitor;
+import com.semantax.ast.visitor.AstVisitor;
 
 /**
  * Represents the "type" of a function that returns no value
@@ -15,7 +15,7 @@ public final class VoidTypeLit extends TypeLit {
     }
 
     @Override
-    public <T> T accept(ASTVisitor<T> visitor) {
+    public <T> T accept(AstVisitor<T> visitor) {
         return visitor.visit(this);
     }
 }

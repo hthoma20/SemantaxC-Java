@@ -4,7 +4,7 @@ package com.semantax.ast.node.progcall;
 import com.semantax.ast.node.list.ParsableExpressionList;
 import com.semantax.ast.type.Type;
 import com.semantax.ast.util.eventual.Eventual;
-import com.semantax.ast.visitor.ASTVisitor;
+import com.semantax.ast.visitor.AstVisitor;
 import lombok.Getter;
 
 @Getter
@@ -21,7 +21,7 @@ public class DeclProgCall extends ProgCall {
 
 
     @Override
-    public <T> T accept(ASTVisitor<T> visitor) {
+    public <T> T accept(AstVisitor<T> visitor) {
         return visitor.visit(this);
     }
 
