@@ -29,7 +29,7 @@ public interface AstVisitor<T> {
     T visit(RecordTypeLit recordTypeLit);
     T visit(FuncTypeLit funcTypeLit);
 
-    T visit(NameTypePair nameTypePair);
+    T visit(NameTypeLitPair nameTypeLitPair);
     T visit(NameExpressionPair nameExpressionPair);
 
     T visit(ArrayLit arrayLit);

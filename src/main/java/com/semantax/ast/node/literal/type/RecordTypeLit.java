@@ -1,6 +1,6 @@
 package com.semantax.ast.node.literal.type;
 
-import com.semantax.ast.node.list.NameTypePairList;
+import com.semantax.ast.node.list.NameTypeLitPairList;
 import com.semantax.ast.util.FilePos;
 import com.semantax.ast.visitor.AstVisitor;
 import lombok.Builder;
@@ -16,11 +16,11 @@ import lombok.Getter;
 public class RecordTypeLit extends TypeLit {
 
     public static RecordTypeLit EMPTY_RECORD = RecordTypeLit.builder()
-            .nameTypePairs(new NameTypePairList())
+            .nameTypeLitPairs(new NameTypeLitPairList())
             .buildWith(new FilePos(-1, -1));
 
     @Getter
-    private NameTypePairList nameTypePairs;
+    private NameTypeLitPairList nameTypeLitPairs;
 
     @Override
     public <T> T accept(AstVisitor<T> visitor) {

@@ -97,8 +97,8 @@ public class TraversalVisitor<T> implements AstVisitor<T> {
 
     @Override
     public T visit(RecordTypeLit recordTypeLit) {
-        for (NameTypePair nameTypePair : recordTypeLit.getNameTypePairs()) {
-            nameTypePair.accept(this);
+        for (NameTypeLitPair nameTypeLitPair : recordTypeLit.getNameTypeLitPairs()) {
+            nameTypeLitPair.accept(this);
         }
         return null;
     }
@@ -111,8 +111,8 @@ public class TraversalVisitor<T> implements AstVisitor<T> {
     }
 
     @Override
-    public T visit(NameTypePair nameTypePair) {
-        nameTypePair.getType().accept(this);
+    public T visit(NameTypeLitPair nameTypeLitPair) {
+        nameTypeLitPair.getType().accept(this);
         return null;
     }
 

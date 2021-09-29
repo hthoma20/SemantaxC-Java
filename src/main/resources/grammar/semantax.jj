@@ -479,21 +479,21 @@ ArrayTypeLit ArrayTypeLit() :
 RecordTypeLit RecordTypeLit() :
 {
     Token identifier;
-    NameTypePairList nameTypePairs = new NameTypePairList(); // overwrite this if there is a non-empty list
+    NameTypeLitPairList nameTypeLitPairs = new NameTypeLitPairList(); // overwrite this if there is a non-empty list
 }
 {
     identifier = <RECORD>
     <L_PAREN>
-    [nameTypePairs = NameTypePairList()]
+    [nameTypeLitPairs = NameTypeLitPairList()]
     <R_PAREN>
     {RecordTypeLit recordTypeLit = RecordTypeLit.builder()
-        .nameTypePairs(nameTypePairs)
+        .nameTypeLitPairs(nameTypeLitPairs)
         .build();
      recordTypeLit.setFilePos(FilePos.from(identifier));
      return recordTypeLit;}
 }
 
-NameTypePair NameTypePair() :
+NameTypeLitPair NameTypeLitPair() :
 {
     Word name;
     TypeLit type;
@@ -502,31 +502,31 @@ NameTypePair NameTypePair() :
     name = Word()
     <COLON>
     type = TypeLit()
-    {NameTypePair nameTypePair = NameTypePair.builder()
+    {NameTypeLitPair nameTypeLitPair = NameTypeLitPair.builder()
         .name(name.getValue())
         .type(type)
         .build();
-     nameTypePair.setFilePos(name.getFilePos());
-     return nameTypePair;}
+     nameTypeLitPair.setFilePos(name.getFilePos());
+     return nameTypeLitPair;}
 }
 
 // A non-empty list of name type pairs separated by commas
 // A single pair has no comma
 // <WORD> : TypeLit(), ...
-NameTypePairList NameTypePairList() :
+NameTypeLitPairList NameTypeLitPairList() :
 {
-    NameTypePair nameTypePair;
-    NameTypePairList nameTypePairList = new NameTypePairList();
+    NameTypeLitPair nameTypeLitPair;
+    NameTypeLitPairList nameTypeLitPairList = new NameTypeLitPairList();
 }
 {
-    nameTypePair = NameTypePair()
-    {nameTypePairList.add(nameTypePair);
-     nameTypePairList.setFilePos(nameTypePair.getFilePos());}
+    nameTypeLitPair = NameTypeLitPair()
+    {nameTypeLitPairList.add(nameTypeLitPair);
+     nameTypeLitPairList.setFilePos(nameTypeLitPair.getFilePos());}
 
-    (<COMMA> nameTypePair = NameTypePair()
-     {nameTypePairList.add(nameTypePair);}
+    (<COMMA> nameTypeLitPair = NameTypeLitPair()
+     {nameTypeLitPairList.add(nameTypeLitPair);}
     )*
-    {return nameTypePairList;}
+    {return nameTypeLitPairList;}
 }
 
 NameExpressionPair NamePhrasePair() :
@@ -608,14 +608,14 @@ RecordLit RecordLit() :
 void FunctionLitPrefix(FunctionLit.Builder builder) :
 {
     Token t;
-    NameTypePairList inputTypes;
+    NameTypeLitPairList inputTypes;
     TypeLit outputType;
 }
 {
     t = <L_PAREN>
-    [inputTypes = NameTypePairList()
+    [inputTypes = NameTypeLitPairList()
     {builder.input(RecordTypeLit.builder()
-                .nameTypePairs(inputTypes)
+                .nameTypeLitPairs(inputTypes)
                 .buildWith(FilePos.from(t)));}]
     <R_PAREN>
 
