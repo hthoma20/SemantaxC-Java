@@ -11,7 +11,7 @@ import lombok.Getter;
  */
 @Builder
 @Getter
-public class NameTypePair extends AstNode {
+public class NameTypeLitPair extends AstNode {
 
     private String name;
     private TypeLit type;
