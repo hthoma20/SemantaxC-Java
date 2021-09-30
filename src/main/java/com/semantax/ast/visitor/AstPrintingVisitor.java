@@ -6,6 +6,14 @@ import com.semantax.ast.node.literal.*;
 import com.semantax.ast.node.literal.type.*;
 import com.semantax.ast.node.progcall.DeclProgCall;
 import com.semantax.ast.node.progcall.ProgCall;
+import com.semantax.ast.type.ArrayType;
+import com.semantax.ast.type.BoolType;
+import com.semantax.ast.type.IntType;
+import com.semantax.ast.type.RecordType;
+import com.semantax.ast.type.StringType;
+import com.semantax.ast.type.Type;
+import com.semantax.ast.type.TypeType;
+import com.semantax.ast.type.VoidType;
 import lombok.Builder;
 
 import java.io.PrintStream;
@@ -332,6 +340,55 @@ public class AstPrintingVisitor extends TraversalVisitor<Void> {
         depth--;
         indent();
         output.println("]");
+        return null;
+    }
+
+    @Override
+    public Void visit(Type type) {
+        return null;
+    }
+
+    @Override
+    public Void visit(TypeType typeType) {
+        output.print("type");
+        return null;
+    }
+
+    @Override
+    public Void visit(IntType intType) {
+        output.print("int");
+        return null;
+    }
+
+    @Override
+    public Void visit(BoolType boolType) {
+        output.print("bool");
+        return null;
+    }
+
+    @Override
+    public Void visit(StringType stringType) {
+        output.print("string");
+        return null;
+    }
+
+    @Override
+    public Void visit(ArrayType arrayType) {
+        output.print("array(");
+        arrayType.getSubType().accept(this);
+        output.print(")");
+        return null;
+    }
+
+    @Override
+    public Void visit(RecordType recordType) {
+        output.print("record");
+        return null;
+    }
+
+    @Override
+    public Void visit(VoidType voidType) {
+        output.print("void");
         return null;
     }
 }

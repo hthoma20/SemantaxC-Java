@@ -6,6 +6,14 @@ import com.semantax.ast.node.literal.*;
 import com.semantax.ast.node.literal.type.*;
 import com.semantax.ast.node.progcall.DeclProgCall;
 import com.semantax.ast.node.progcall.ProgCall;
+import com.semantax.ast.type.ArrayType;
+import com.semantax.ast.type.BoolType;
+import com.semantax.ast.type.IntType;
+import com.semantax.ast.type.RecordType;
+import com.semantax.ast.type.StringType;
+import com.semantax.ast.type.Type;
+import com.semantax.ast.type.TypeType;
+import com.semantax.ast.type.VoidType;
 
 public class TraversalVisitor<T> implements AstVisitor<T> {
     @Override
@@ -182,6 +190,48 @@ public class TraversalVisitor<T> implements AstVisitor<T> {
         else {
             parsableExpression.getPhrase().accept(this);
         }
+        return null;
+    }
+
+    @Override
+    public T visit(Type type) {
+        type.accept(this);
+        return null;
+    }
+
+    @Override
+    public T visit(TypeType typeType) {
+        return null;
+    }
+
+    @Override
+    public T visit(IntType intType) {
+        return null;
+    }
+
+    @Override
+    public T visit(BoolType boolType) {
+        return null;
+    }
+
+    @Override
+    public T visit(StringType stringType) {
+        return null;
+    }
+
+    @Override
+    public T visit(ArrayType arrayType) {
+        arrayType.getSubType().accept(this);
+        return null;
+    }
+
+    @Override
+    public T visit(RecordType recordType) {
+        return null;
+    }
+
+    @Override
+    public T visit(VoidType voidType) {
         return null;
     }
 }

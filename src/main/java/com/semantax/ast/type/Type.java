@@ -1,4 +1,6 @@
 package com.semantax.ast.type;
 
-public class Type {
+import com.semantax.ast.node.AstNode;
+
+public abstract class Type extends AstNode {
 }

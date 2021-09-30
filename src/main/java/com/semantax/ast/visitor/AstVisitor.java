@@ -6,6 +6,14 @@ import com.semantax.ast.node.literal.type.*;
 import com.semantax.ast.node.list.AstNodeList;
 import com.semantax.ast.node.progcall.DeclProgCall;
 import com.semantax.ast.node.progcall.ProgCall;
+import com.semantax.ast.type.ArrayType;
+import com.semantax.ast.type.BoolType;
+import com.semantax.ast.type.IntType;
+import com.semantax.ast.type.RecordType;
+import com.semantax.ast.type.StringType;
+import com.semantax.ast.type.Type;
+import com.semantax.ast.type.TypeType;
+import com.semantax.ast.type.VoidType;
 
 public interface AstVisitor<T> {
     T visit(AstNode node);
@@ -43,4 +51,13 @@ public interface AstVisitor<T> {
     T visit(ParsableExpression parsableExpression);
 
     <N extends AstNode> T visit(AstNodeList<N> nodes);
+
+    T visit(Type type);
+    T visit(TypeType typeType);
+    T visit(IntType intType);
+    T visit(BoolType boolType);
+    T visit(StringType stringType);
+    T visit(ArrayType arrayType);
+    T visit(RecordType recordType);
+    T visit(VoidType voidType);
 }

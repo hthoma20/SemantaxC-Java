@@ -2,8 +2,8 @@ package com.semantax.ast.type;
 
 import com.semantax.ast.visitor.AstVisitor;
 
-public class IntType extends Type {
-    public static final IntType INT_TYPE = new IntType();
+public class StringType extends Type {
+    public static final StringType STRING_TYPE = new StringType();
 
     @Override
     public <T> T accept(AstVisitor<T> visitor) {
