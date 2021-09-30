@@ -9,6 +9,7 @@ import com.semantax.ast.node.progcall.ProgCall;
 import com.semantax.ast.type.ArrayType;
 import com.semantax.ast.type.BoolType;
 import com.semantax.ast.type.IntType;
+import com.semantax.ast.type.NameTypePair;
 import com.semantax.ast.type.RecordType;
 import com.semantax.ast.type.StringType;
 import com.semantax.ast.type.Type;
@@ -232,6 +233,12 @@ public class TraversalVisitor<T> implements AstVisitor<T> {
 
     @Override
     public T visit(VoidType voidType) {
+        return null;
+    }
+
+    @Override
+    public T visit(NameTypePair nameTypePair) {
+        nameTypePair.getType().accept(this);
         return null;
     }
 }

@@ -9,6 +9,7 @@ import com.semantax.ast.node.progcall.ProgCall;
 import com.semantax.ast.type.ArrayType;
 import com.semantax.ast.type.BoolType;
 import com.semantax.ast.type.IntType;
+import com.semantax.ast.type.NameTypePair;
 import com.semantax.ast.type.RecordType;
 import com.semantax.ast.type.StringType;
 import com.semantax.ast.type.Type;
@@ -389,6 +390,14 @@ public class AstPrintingVisitor extends TraversalVisitor<Void> {
     @Override
     public Void visit(VoidType voidType) {
         output.print("void");
+        return null;
+    }
+
+    @Override
+    public Void visit(NameTypePair nameTypePair) {
+        indent();
+        output.printf("%s: ", nameTypePair.getName());
+        super.visit(nameTypePair);
         return null;
     }
 }

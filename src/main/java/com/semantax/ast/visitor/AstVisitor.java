@@ -9,6 +9,7 @@ import com.semantax.ast.node.progcall.ProgCall;
 import com.semantax.ast.type.ArrayType;
 import com.semantax.ast.type.BoolType;
 import com.semantax.ast.type.IntType;
+import com.semantax.ast.type.NameTypePair;
 import com.semantax.ast.type.RecordType;
 import com.semantax.ast.type.StringType;
 import com.semantax.ast.type.Type;
@@ -60,4 +61,5 @@ public interface AstVisitor<T> {
     T visit(ArrayType arrayType);
     T visit(RecordType recordType);
     T visit(VoidType voidType);
+    T visit(NameTypePair nameTypePair);
 }
