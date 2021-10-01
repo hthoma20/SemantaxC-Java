@@ -8,6 +8,7 @@ import com.semantax.ast.node.progcall.DeclProgCall;
 import com.semantax.ast.node.progcall.ProgCall;
 import com.semantax.ast.type.ArrayType;
 import com.semantax.ast.type.BoolType;
+import com.semantax.ast.type.FuncType;
 import com.semantax.ast.type.IntType;
 import com.semantax.ast.type.NameTypePair;
 import com.semantax.ast.type.RecordType;
@@ -384,6 +385,16 @@ public class AstPrintingVisitor extends TraversalVisitor<Void> {
     @Override
     public Void visit(RecordType recordType) {
         output.print("record");
+        return null;
+    }
+
+    @Override
+    public Void visit(FuncType funcType) {
+        output.print("func{");
+        super.visit(funcType.getInputType());
+        output.print(" -> ");
+        funcType.getOutputType().ifPresent(super::visit);
+        output.print("}");
         return null;
     }
 
