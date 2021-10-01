@@ -7,8 +7,11 @@ import com.semantax.ast.node.Program;
 import com.semantax.ast.node.Statement;
 import com.semantax.ast.node.Word;
 import com.semantax.ast.node.list.ModuleList;
+import com.semantax.ast.node.list.NameTypePairList;
 import com.semantax.ast.node.list.StatementList;
 import com.semantax.ast.node.literal.IntLit;
+import com.semantax.ast.type.NameTypePair;
+import com.semantax.ast.type.Type;
 import com.semantax.ast.util.FilePos;
 
 import java.util.Arrays;
@@ -40,6 +43,13 @@ public class AstUtil {
         return list;
     }
 
+    public static NameTypePairList asList(NameTypePair... elements) {
+        NameTypePairList list = new NameTypePairList();
+        Arrays.stream(elements)
+                .forEach(list::add);
+        return list;
+    }
+
     public static Word word(String text) {
         return new Word(FilePos.none(), text);
     }
@@ -48,6 +58,13 @@ public class AstUtil {
         IntLit intLit = new IntLit(val);
         intLit.setFilePos(FilePos.none());
         return intLit;
+    }
+
+    public static NameTypePair pair(String name, Type type) {
+        return NameTypePair.builder()
+                .name(name)
+                .type(type)
+                .build();
     }
 
 }
