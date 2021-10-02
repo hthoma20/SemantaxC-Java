@@ -40,7 +40,7 @@ public interface AstVisitor<T> {
     T visit(FuncTypeLit funcTypeLit);
 
     T visit(NameTypeLitPair nameTypeLitPair);
-    T visit(NameExpressionPair nameExpressionPair);
+    T visit(NameParsableExpressionPair nameParsableExpressionPair);
 
     T visit(ArrayLit arrayLit);
     T visit(RecordLit recordLit);

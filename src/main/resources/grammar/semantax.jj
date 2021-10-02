@@ -529,7 +529,7 @@ NameTypeLitPairList NameTypeLitPairList() :
     {return nameTypeLitPairList;}
 }
 
-NameExpressionPair NamePhrasePair() :
+NameParsableExpressionPair NamePhrasePair() :
 {
     Word name;
     Phrase phrase;
@@ -538,16 +538,16 @@ NameExpressionPair NamePhrasePair() :
     name = Word()
     <COLON>
     phrase = Phrase()
-    {return NameExpressionPair.builder()
+    {return NameParsableExpressionPair.builder()
         .name(name.getValue())
         .expression(ParsableExpression.fromPhrase(phrase))
         .buildWith(name.getFilePos());}
 }
 
-NameExpressionPairList NamePhrasePairList() :
+NameParsableExpressionPairList NamePhrasePairList() :
 {
-    NameExpressionPair namePhrasePair;
-    NameExpressionPairList namePhrasePairList = new NameExpressionPairList();
+    NameParsableExpressionPair namePhrasePair;
+    NameParsableExpressionPairList namePhrasePairList = new NameParsableExpressionPairList();
 }
 {
     namePhrasePair = NamePhrasePair()
@@ -592,14 +592,14 @@ ArrayLit ArrayLit() :
 RecordLit RecordLit() :
 {
     Token t;
-    NameExpressionPairList namePhrasePairs = new NameExpressionPairList();
+    NameParsableExpressionPairList namePhrasePairs = new NameParsableExpressionPairList();
 }
 {
     t = <L_PAREN>
     [namePhrasePairs = NamePhrasePairList()]
     <R_PAREN>
     {return RecordLit.builder()
-        .nameExpressionPairs(namePhrasePairs)
+        .nameParsableExpressionPairs(namePhrasePairs)
         .buildWith(FilePos.from(t));}
 }
 

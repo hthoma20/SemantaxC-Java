@@ -14,7 +14,7 @@ import com.semantax.ast.node.literal.ArrayLit;
 import com.semantax.ast.node.literal.BoolLit;
 import com.semantax.ast.node.literal.FunctionLit;
 import com.semantax.ast.node.literal.IntLit;
-import com.semantax.ast.node.literal.NameExpressionPair;
+import com.semantax.ast.node.literal.NameParsableExpressionPair;
 import com.semantax.ast.node.literal.RecordLit;
 import com.semantax.ast.node.literal.StringLit;
 import com.semantax.ast.node.literal.type.ArrayTypeLit;
@@ -144,7 +144,7 @@ public class BaseAstVisitor<T> implements AstVisitor<T> {
     }
 
     @Override
-    public T visit(NameExpressionPair nameExpressionPair) {
+    public T visit(NameParsableExpressionPair nameParsableExpressionPair) {
         throw CompilerException.of(message);
     }
 

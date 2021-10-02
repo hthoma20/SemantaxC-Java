@@ -235,10 +235,10 @@ public class AstPrintingVisitor extends TraversalVisitor<Void> {
     }
 
     @Override
-    public Void visit(NameExpressionPair nameExpressionPair) {
+    public Void visit(NameParsableExpressionPair nameParsableExpressionPair) {
         indent();
-        output.printf("%s: (%s)%n", nameExpressionPair.getName(), nameExpressionPair.getFilePos());
-        super.visit(nameExpressionPair);
+        output.printf("%s: (%s)%n", nameParsableExpressionPair.getName(), nameParsableExpressionPair.getFilePos());
+        super.visit(nameParsableExpressionPair);
         return null;
     }
 

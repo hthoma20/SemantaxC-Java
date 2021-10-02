@@ -13,7 +13,7 @@ import lombok.Getter;
  */
 @Builder(builderClassName = "Builder")
 @Getter
-public class NameExpressionPair extends AstNode {
+public class NameParsableExpressionPair extends AstNode {
 
     private String name;
     private ParsableExpression expression;
@@ -25,10 +25,10 @@ public class NameExpressionPair extends AstNode {
 
     public static class Builder {
 
-        public NameExpressionPair buildWith(FilePos filePos) {
-            NameExpressionPair nameExpressionPair = build();
-            nameExpressionPair.setFilePos(filePos);
-            return nameExpressionPair;
+        public NameParsableExpressionPair buildWith(FilePos filePos) {
+            NameParsableExpressionPair nameParsableExpressionPair = build();
+            nameParsableExpressionPair.setFilePos(filePos);
+            return nameParsableExpressionPair;
         }
 
     }

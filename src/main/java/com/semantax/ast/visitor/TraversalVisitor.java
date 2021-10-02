@@ -127,8 +127,8 @@ public class TraversalVisitor<T> implements AstVisitor<T> {
     }
 
     @Override
-    public T visit(NameExpressionPair nameExpressionPair) {
-        nameExpressionPair.getExpression().accept(this);
+    public T visit(NameParsableExpressionPair nameParsableExpressionPair) {
+        nameParsableExpressionPair.getExpression().accept(this);
         return null;
     }
 
@@ -140,8 +140,8 @@ public class TraversalVisitor<T> implements AstVisitor<T> {
 
     @Override
     public T visit(RecordLit recordLit) {
-        for (NameExpressionPair nameExpressionPair : recordLit.getNameExpressionPairs()) {
-            nameExpressionPair.accept(this);
+        for (NameParsableExpressionPair nameParsableExpressionPair : recordLit.getNameParsableExpressionPairs()) {
+            nameParsableExpressionPair.accept(this);
         }
         return null;
     }
