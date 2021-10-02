@@ -22,11 +22,9 @@ import com.semantax.ast.node.literal.type.BoolTypeLit;
 import com.semantax.ast.node.literal.type.FuncTypeLit;
 import com.semantax.ast.node.literal.type.IntTypeLit;
 import com.semantax.ast.node.literal.type.NameTypeLitPair;
-import com.semantax.ast.node.literal.type.NameTypeLitPair;
 import com.semantax.ast.node.literal.type.RecordTypeLit;
 import com.semantax.ast.node.literal.type.StringTypeLit;
 import com.semantax.ast.node.literal.type.TypeTypeLit;
-import com.semantax.ast.node.literal.type.VoidTypeLit;
 import com.semantax.ast.node.progcall.DeclProgCall;
 import com.semantax.ast.node.progcall.ProgCall;
 import com.semantax.ast.type.ArrayType;
@@ -160,11 +158,6 @@ public class BaseAstVisitor<T> implements AstVisitor<T> {
 
     @Override
     public T visit(FunctionLit functionLit) {
-        throw CompilerException.of(message);
-    }
-
-    @Override
-    public T visit(VoidTypeLit voidTypeLit) {
         throw CompilerException.of(message);
     }
 

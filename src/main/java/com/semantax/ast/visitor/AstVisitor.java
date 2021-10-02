@@ -46,8 +46,6 @@ public interface AstVisitor<T> {
     T visit(RecordLit recordLit);
     T visit(FunctionLit functionLit);
 
-    T visit(VoidTypeLit voidTypeLit);
-
     T visit(Phrase phrase);
     T visit(PatternDefinition patternDefinition);
     T visit(ParsableExpression parsableExpression);

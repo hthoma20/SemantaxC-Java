@@ -116,7 +116,7 @@ public class TraversalVisitor<T> implements AstVisitor<T> {
     @Override
     public T visit(FuncTypeLit funcTypeLit) {
         funcTypeLit.getInputType().accept(this);
-        funcTypeLit.getOutputType().accept(this);
+        funcTypeLit.getOutputType().ifPresent(outputType -> outputType.accept(this));
         return null;
     }
 
@@ -152,11 +152,6 @@ public class TraversalVisitor<T> implements AstVisitor<T> {
         functionLit.getOutput().ifPresent(output -> output.accept(this));
         functionLit.getStatements().ifPresent(statements -> statements.accept(this));
         functionLit.getReturnExpression().ifPresent(expression -> expression.accept(this));
-        return null;
-    }
-
-    @Override
-    public T visit(VoidTypeLit voidTypeLit) {
         return null;
     }
 

@@ -184,7 +184,6 @@ Program {
                      func (22:15)
                         record( (-1:-1)
                         )
-                        VoidTypeLit
                   ]
                ]
             ]
@@ -200,7 +199,6 @@ Program {
                      func (23:15)
                         record( (-1:-1)
                         )
-                        VoidTypeLit
                   ]
                ]
             ]
@@ -215,7 +213,6 @@ Program {
                   Phrase: [ (24:15)
                      func (24:15)
                         string (24:20)
-                        VoidTypeLit
                   ]
                ]
             ]
@@ -230,7 +227,6 @@ Program {
                   Phrase: [ (25:15)
                      func (25:15)
                         string (25:20)
-                        VoidTypeLit
                   ]
                ]
             ]

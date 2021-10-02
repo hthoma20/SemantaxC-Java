@@ -313,13 +313,6 @@ public class AstPrintingVisitor extends TraversalVisitor<Void> {
     }
 
     @Override
-    public Void visit(VoidTypeLit voidTypeLit) {
-        indent();
-        output.println("VoidTypeLit");
-        return null;
-    }
-
-    @Override
     public Void visit(Phrase phrase) {
         indent();
         output.printf("Phrase: [ (%s)%n", phrase.getFilePos());

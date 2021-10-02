@@ -454,7 +454,7 @@ FuncTypeLit FuncTypeLit() :
         (inputType = TypeLit() (<R_BRACE> | <ARROW> [outputType = TypeLit()] <R_BRACE> ))
     )
     {FuncTypeLit.Builder builder = FuncTypeLit.builder();
-     if (outputType != null) builder.outputType(outputType);
+     if (outputType != null) builder.outputType(Optional.of(outputType));
      if (inputType != null) builder.inputType(inputType);
      return builder.buildWith(FilePos.from(t));}
 }
