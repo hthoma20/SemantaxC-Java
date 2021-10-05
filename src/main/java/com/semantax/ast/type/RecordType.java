@@ -7,6 +7,11 @@ import lombok.Getter;
 
 @Builder(builderClassName = "Builder")
 public class RecordType extends Type {
+
+    public static final RecordType EMPTY_TYPE = RecordType.builder()
+            .nameTypePairs(new NameTypePairList())
+            .build();
+
     @Getter
     private final NameTypePairList nameTypePairs;
 

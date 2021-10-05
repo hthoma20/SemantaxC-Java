@@ -14,7 +14,13 @@ import com.semantax.ast.visitor.BaseAstVisitor;
 import com.semantax.exception.CompilerException;
 import lombok.AllArgsConstructor;
 
+import javax.inject.Inject;
+
 public class DefaultTypeAssignabilityChecker implements TypeAssignabilityChecker {
+
+    @Inject
+    public DefaultTypeAssignabilityChecker() { }
+
     @Override
     public boolean isAssignable(Type lhs, Type rhs) {
         return lhs.accept(new AssignabilityVisitor(rhs));
