@@ -11,24 +11,41 @@ import com.semantax.ast.node.Statement;
 import com.semantax.ast.node.Word;
 import com.semantax.ast.node.list.AstNodeList;
 import com.semantax.ast.node.list.ModuleList;
-import com.semantax.ast.node.list.NameParsableExpressionPairList;
-import com.semantax.ast.node.list.NameTypeLitPairList;
-import com.semantax.ast.node.list.NameTypePairList;
-import com.semantax.ast.node.list.ParsableExpressionList;
 import com.semantax.ast.node.list.StatementList;
+import com.semantax.ast.node.list.WordList;
 import com.semantax.ast.node.literal.IntLit;
 import com.semantax.ast.node.literal.NameParsableExpressionPair;
+import com.semantax.ast.node.literal.type.ArrayTypeLit;
+import com.semantax.ast.node.literal.type.BoolTypeLit;
+import com.semantax.ast.node.literal.type.IntTypeLit;
 import com.semantax.ast.node.literal.type.NameTypeLitPair;
+import com.semantax.ast.node.literal.type.StringTypeLit;
 import com.semantax.ast.node.literal.type.TypeLit;
+import com.semantax.ast.type.ArrayType;
 import com.semantax.ast.type.NameTypePair;
 import com.semantax.ast.type.Type;
 import com.semantax.ast.util.FilePos;
+import com.semantax.exception.CompilerException;
 
 import java.util.Arrays;
 
+import static com.semantax.ast.type.BoolType.BOOL_TYPE;
+import static com.semantax.ast.type.IntType.INT_TYPE;
+import static com.semantax.ast.type.StringType.STRING_TYPE;
+import static com.semantax.ast.type.TypeType.TYPE_TYPE;
 import static org.mockito.Mockito.mock;
 
 public class AstUtil {
+
+    public static final IntTypeLit INT_TYPE_LIT = typeLit(IntTypeLit.class, INT_TYPE);
+    public static final BoolTypeLit BOOL_TYPE_LIT = typeLit(BoolTypeLit.class, BOOL_TYPE);
+    public static final StringTypeLit STRING_TYPE_LIT = typeLit(StringTypeLit.class, STRING_TYPE);
+    public static final ArrayTypeLit ARRAY_INT_TYPE_LIT = ArrayTypeLit.builder().subType(INT_TYPE_LIT).build();
+
+    static {
+        ARRAY_INT_TYPE_LIT.setType(TYPE_TYPE);
+        ARRAY_INT_TYPE_LIT.setRepresentedType(ArrayType.builder().subType(INT_TYPE).build());
+    }
 
     public static Program programForStatements(Statement... statements) {
         ModuleList modules = new ModuleList();
@@ -62,6 +79,13 @@ public class AstUtil {
         }
     }
 
+    public static WordList asList(Word... elements) {
+        WordList list = new WordList();
+        Arrays.stream(elements)
+                .forEach(list::add);
+        return list;
+    }
+
     public static Word word(String text) {
         return new Word(FilePos.none(), text);
     }
@@ -93,6 +117,19 @@ public class AstUtil {
                 .build();
     }
 
+
+    public static <T extends TypeLit> T typeLit(Class<T> typeLitClass, Type representedType) {
+        try {
+            T typeLit = typeLitClass.newInstance();
+            typeLit.setType(TYPE_TYPE);
+            typeLit.setRepresentedType(representedType);
+            return typeLit;
+
+        } catch (InstantiationException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static ParsableExpression parsedTo(Expression exp) {
         ParsableExpression parsableExpression = ParsableExpression.builder()
                 .phrase(mock(Phrase.class))
@@ -101,4 +138,8 @@ public class AstUtil {
         return parsableExpression;
     }
 
+    public static Expression withType(Expression expression, Type type) {
+        expression.setType(type);
+        return expression;
+    }
 }

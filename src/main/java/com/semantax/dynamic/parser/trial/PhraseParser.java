@@ -64,12 +64,7 @@ public class PhraseParser implements Parser {
         return Optional.empty();
     }
 
-    /**
-     * Shift one element from input to stack
-     */
-    private void shift(List<PhraseElement> input, List<PhraseElement> stack) {
-        stack.add(input.remove(0));
-    }
+
 
     /**
      * Reduce the stack by replacing the top n elements of the stack
@@ -107,6 +102,13 @@ public class PhraseParser implements Parser {
         return patterns.stream()
                 .filter(pattern -> this.canReduce(stack, pattern))
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * Shift one element from input to stack
+     */
+    private void shift(List<PhraseElement> input, List<PhraseElement> stack) {
+        stack.add(input.remove(0));
     }
 
     /**

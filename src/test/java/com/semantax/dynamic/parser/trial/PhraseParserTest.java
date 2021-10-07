@@ -63,7 +63,7 @@ public class PhraseParserTest {
                 .addPattern(ARRAY_PREPEND_PATTERN)
                 .addPattern(INT_ADDITION_PATTERN)
                 .build();
-
+        // int + int >> ar
         Phrase phrase = Phrase.builder()
                 .addElement(new Expression(INT_TYPE))
                 .addElement(new PhraseWord("+"))

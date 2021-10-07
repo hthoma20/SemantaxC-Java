@@ -1,7 +1,7 @@
 package com.semantax.phase.parser;
 
 import com.semantax.ast.node.AstNode;
-import com.semantax.ast.node.PatternDefinition;
+import com.semantax.ast.node.pattern.PatternDefinition;
 import com.semantax.ast.node.Phrase;
 import com.semantax.phase.SymbolTable;
 

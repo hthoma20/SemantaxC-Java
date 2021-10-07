@@ -4,7 +4,7 @@ import com.semantax.ast.node.AstNode;
 import com.semantax.ast.node.Expression;
 import com.semantax.ast.node.Module;
 import com.semantax.ast.node.ParsableExpression;
-import com.semantax.ast.node.PatternDefinition;
+import com.semantax.ast.node.pattern.PatternDefinition;
 import com.semantax.ast.node.Phrase;
 import com.semantax.ast.node.Program;
 import com.semantax.ast.util.FilePos;

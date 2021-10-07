@@ -14,7 +14,7 @@ import com.semantax.ast.node.*;
 import com.semantax.ast.node.list.*;
 import com.semantax.ast.node.literal.*;
 import com.semantax.ast.node.literal.type.*;
-import com.semantax.ast.node.progcall.ProgCall;
+import com.semantax.ast.node.pattern.PatternDefinition;import com.semantax.ast.node.progcall.ProgCall;
 import com.semantax.ast.util.FilePos;
 
 @SuppressWarnings("unchecked")
@@ -680,7 +680,7 @@ PatternDefinition PatternDef() :
     <DOLLAR>
     semantics = FunctionLit()
     {return PatternDefinition.builder()
-                .syntax(syntax)
-                .semantics(semantics)
-                .buildWith(FilePos.from(t));}
+    .syntax(syntax)
+    .semantics(semantics)
+    .buildWith(FilePos.from(t));}
 }

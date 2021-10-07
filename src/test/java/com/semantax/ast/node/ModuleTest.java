@@ -3,6 +3,7 @@ package com.semantax.ast.node;
 import com.semantax.ast.node.list.ModuleList;
 import com.semantax.ast.node.list.PatternDefinitionList;
 import com.semantax.ast.node.list.StatementList;
+import com.semantax.ast.node.pattern.PatternDefinition;
 import com.semantax.ast.util.FilePos;
 import junit.framework.TestCase;
 

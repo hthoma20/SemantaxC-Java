@@ -20,7 +20,7 @@ public class PhraseParserTestData {
             .withType(INT_TYPE)
             .build();
 
-    // $length of str$ (str: int)
+    // $length of str$ (str: string)
     public static final Pattern STRING_LENGTH_PATTERN = Pattern.builder()
             .addElement(new PatternWord("length"))
             .addElement(new PatternWord("of"))
