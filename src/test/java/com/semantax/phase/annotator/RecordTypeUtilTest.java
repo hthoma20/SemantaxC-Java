@@ -1,6 +1,8 @@
 package com.semantax.phase.annotator;
 
 import com.semantax.ast.node.ParsableExpression;
+import com.semantax.ast.node.list.NameParsableExpressionPairList;
+import com.semantax.ast.node.list.NameTypeLitPairList;
 import com.semantax.ast.node.literal.BoolLit;
 import com.semantax.ast.node.literal.IntLit;
 import com.semantax.ast.node.literal.RecordLit;
@@ -21,7 +23,7 @@ public class RecordTypeUtilTest extends TestCase {
     public void test_getDuplicateNames_lit_withDuplicates() {
         // given
         RecordLit recordLit = RecordLit.builder()
-                .nameParsableExpressionPairs(asList(
+                .nameParsableExpressionPairs(asList(NameParsableExpressionPairList.class,
                         pair("a", parsedTo(new IntLit(5))),
                         pair("b", parsedTo(new IntLit(10))),
                         pair("a", parsedTo(new BoolLit(true)))))
@@ -38,7 +40,7 @@ public class RecordTypeUtilTest extends TestCase {
     public void test_getDuplicateNames_typeLit_withDuplicates() {
         // given
         RecordTypeLit recordTypeLit = RecordTypeLit.builder()
-                .nameTypeLitPairs(asList(
+                .nameTypeLitPairs(asList(NameTypeLitPairList.class,
                         pair("a", new IntTypeLit()),
                         pair("b", new IntTypeLit()),
                         pair("a", new BoolTypeLit())))
@@ -55,7 +57,7 @@ public class RecordTypeUtilTest extends TestCase {
     public void test_getDuplicateNames_lit_withNoDuplicates() {
         // given
         RecordLit recordLit = RecordLit.builder()
-                .nameParsableExpressionPairs(asList(
+                .nameParsableExpressionPairs(asList(NameParsableExpressionPairList.class,
                         pair("a", parsedTo(new IntLit(5))),
                         pair("b", parsedTo(new IntLit(10)))))
                 .build();
@@ -70,7 +72,7 @@ public class RecordTypeUtilTest extends TestCase {
     public void test_getDuplicateNames_typeLit_withNoDuplicates() {
         // given
         RecordTypeLit recordTypeLit = RecordTypeLit.builder()
-                .nameTypeLitPairs(asList(
+                .nameTypeLitPairs(asList(NameTypeLitPairList.class,
                         pair("a", new IntTypeLit()),
                         pair("b", new IntTypeLit())))
                 .build();

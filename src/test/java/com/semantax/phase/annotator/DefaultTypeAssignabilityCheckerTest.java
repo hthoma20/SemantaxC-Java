@@ -68,10 +68,10 @@ public class DefaultTypeAssignabilityCheckerTest extends TestCase {
 
         // matching names and types
         assertTrue(assignabilityChecker.isAssignable(
-                RecordType.builder().nameTypePairs(asList(
+                RecordType.builder().nameTypePairs(asList(NameTypePairList.class,
                         pair("x", INT_TYPE),
                         pair("y", BOOL_TYPE))).build(),
-                RecordType.builder().nameTypePairs(asList(
+                RecordType.builder().nameTypePairs(asList(NameTypePairList.class,
                         pair("x", INT_TYPE),
                         pair("y", BOOL_TYPE))).build()));
     }
@@ -80,28 +80,28 @@ public class DefaultTypeAssignabilityCheckerTest extends TestCase {
 
         // matching names, but not types
         assertFalse(assignabilityChecker.isAssignable(
-                RecordType.builder().nameTypePairs(asList(
+                RecordType.builder().nameTypePairs(asList(NameTypePairList.class,
                         pair("x", INT_TYPE),
                         pair("y", INT_TYPE))).build(),
-                RecordType.builder().nameTypePairs(asList(
+                RecordType.builder().nameTypePairs(asList(NameTypePairList.class,
                         pair("x", INT_TYPE),
                         pair("y", BOOL_TYPE))).build()));
 
         // matching types, but not names
         assertFalse(assignabilityChecker.isAssignable(
-                RecordType.builder().nameTypePairs(asList(
+                RecordType.builder().nameTypePairs(asList(NameTypePairList.class,
                         pair("x", INT_TYPE),
                         pair("y", BOOL_TYPE))).build(),
-                RecordType.builder().nameTypePairs(asList(
+                RecordType.builder().nameTypePairs(asList(NameTypePairList.class,
                         pair("x1", INT_TYPE),
                         pair("y1", BOOL_TYPE))).build()));
 
         // matching, but one is longer
         assertFalse(assignabilityChecker.isAssignable(
-                RecordType.builder().nameTypePairs(asList(
+                RecordType.builder().nameTypePairs(asList(NameTypePairList.class,
                         pair("x", INT_TYPE),
                         pair("y", BOOL_TYPE))).build(),
-                RecordType.builder().nameTypePairs(asList(
+                RecordType.builder().nameTypePairs(asList(NameTypePairList.class,
                         pair("x", INT_TYPE),
                         pair("y", BOOL_TYPE),
                         pair("x", STRING_TYPE))).build()));

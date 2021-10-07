@@ -1,8 +1,10 @@
 package com.semantax.phase.annotator;
 
 import com.semantax.ast.node.ParsableExpression;
+import com.semantax.ast.node.list.NameParsableExpressionPairList;
 import com.semantax.ast.node.list.NameTypeLitPairList;
 import com.semantax.ast.node.list.NameTypePairList;
+import com.semantax.ast.node.list.ParsableExpressionList;
 import com.semantax.ast.node.literal.ArrayLit;
 import com.semantax.ast.node.literal.BoolLit;
 import com.semantax.ast.node.literal.FunctionLit;
@@ -89,7 +91,7 @@ public class DefaultTypeAnnotatorTest extends TestCase {
 
         // [5, 10]
         ArrayLit arrayLit = ArrayLit.builder()
-                .values(asList(e0, e1))
+                .values(asList(ParsableExpressionList.class, e0, e1))
                 .build();
 
         // when
@@ -110,7 +112,7 @@ public class DefaultTypeAnnotatorTest extends TestCase {
 
         // [5, true]
         ArrayLit arrayLit = ArrayLit.builder()
-                .values(asList(e0, e1))
+                .values(asList(ParsableExpressionList.class, e0, e1))
                 .buildWith(filePos);
 
         // when
@@ -124,7 +126,7 @@ public class DefaultTypeAnnotatorTest extends TestCase {
     public void test_record_positive() {
         // given
         RecordLit recordLit = RecordLit.builder()
-                .nameParsableExpressionPairs(asList(
+                .nameParsableExpressionPairs(asList(NameParsableExpressionPairList.class,
                         pair("a", parsedTo(new IntLit(5))),
                         pair("b", parsedTo(new BoolLit(true)))))
                 .build();
@@ -149,7 +151,7 @@ public class DefaultTypeAnnotatorTest extends TestCase {
         FilePos filePos = FilePos.none();
 
         RecordLit recordLit = RecordLit.builder()
-                .nameParsableExpressionPairs(asList(
+                .nameParsableExpressionPairs(asList(NameParsableExpressionPairList.class,
                         pair("a", parsedTo(new IntLit(5))),
                         pair("a", parsedTo(new BoolLit(true)))))
                 .buildWith(filePos);
@@ -166,7 +168,7 @@ public class DefaultTypeAnnotatorTest extends TestCase {
         // given
         FunctionLit functionLit = FunctionLit.builder()
                 .input(RecordTypeLit.builder()
-                        .nameTypeLitPairs(asList(
+                        .nameTypeLitPairs(asList(NameTypeLitPairList.class,
                                 pair("a", new IntTypeLit()),
                                 pair("b", new BoolTypeLit())))
                         .build())
@@ -192,7 +194,7 @@ public class DefaultTypeAnnotatorTest extends TestCase {
         // given
         FunctionLit functionLit = FunctionLit.builder()
                 .input(RecordTypeLit.builder()
-                        .nameTypeLitPairs(asList(
+                        .nameTypeLitPairs(asList(NameTypeLitPairList.class,
                                 pair("a", new IntTypeLit()),
                                 pair("b", new BoolTypeLit())))
                         .build())
@@ -271,7 +273,7 @@ public class DefaultTypeAnnotatorTest extends TestCase {
     public void test_recordTypeLit() {
         // given
         RecordTypeLit recordTypeLit = RecordTypeLit.builder()
-                .nameTypeLitPairs(asList(
+                .nameTypeLitPairs(asList(NameTypeLitPairList.class,
                         pair("a", new IntTypeLit()),
                         pair("b", new BoolTypeLit())))
                 .build();
@@ -296,7 +298,7 @@ public class DefaultTypeAnnotatorTest extends TestCase {
     public void test_funcTypeLit() {
         // given
         RecordTypeLit inputTypeLit = RecordTypeLit.builder()
-                .nameTypeLitPairs(asList(
+                .nameTypeLitPairs(asList(NameTypeLitPairList.class,
                         pair("a", new IntTypeLit()),
                         pair("b", new BoolTypeLit())))
                 .build();

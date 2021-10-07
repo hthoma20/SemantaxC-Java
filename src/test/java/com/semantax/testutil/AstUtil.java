@@ -1,6 +1,7 @@
 package com.semantax.testutil;
 
 import com.semantax.ast.factory.StatementFactory;
+import com.semantax.ast.node.AstNode;
 import com.semantax.ast.node.Expression;
 import com.semantax.ast.node.Module;
 import com.semantax.ast.node.ParsableExpression;
@@ -8,6 +9,7 @@ import com.semantax.ast.node.Phrase;
 import com.semantax.ast.node.Program;
 import com.semantax.ast.node.Statement;
 import com.semantax.ast.node.Word;
+import com.semantax.ast.node.list.AstNodeList;
 import com.semantax.ast.node.list.ModuleList;
 import com.semantax.ast.node.list.NameParsableExpressionPairList;
 import com.semantax.ast.node.list.NameTypeLitPairList;
@@ -33,7 +35,7 @@ public class AstUtil {
         modules.add(Module.builder()
                 .name("mainModule")
                 .modifier(Module.Modifier.MAIN)
-                .statements(asList(statements))
+                .statements(asList(StatementList.class, statements))
                 .build());
         return new Program(modules);
     }
@@ -46,39 +48,18 @@ public class AstUtil {
         return statements;
     }
 
-    public static StatementList asList(Statement... elements) {
-        StatementList list = new StatementList();
-        Arrays.stream(elements)
-                .forEach(list::add);
-        return list;
-    }
+    @SafeVarargs
+    public static <T extends AstNode, TList extends AstNodeList<T>> TList asList(
+            Class<TList> listClass, T... elements) {
+        try {
+            TList list = listClass.newInstance();
+            Arrays.stream(elements)
+                    .forEach(list::add);
+            return list;
 
-    public static NameTypePairList asList(NameTypePair... elements) {
-        NameTypePairList list = new NameTypePairList();
-        Arrays.stream(elements)
-                .forEach(list::add);
-        return list;
-    }
-
-    public static ParsableExpressionList asList(ParsableExpression... elements) {
-        ParsableExpressionList list = new ParsableExpressionList();
-        Arrays.stream(elements)
-                .forEach(list::add);
-        return list;
-    }
-
-    public static NameParsableExpressionPairList asList(NameParsableExpressionPair... elements) {
-        NameParsableExpressionPairList list = new NameParsableExpressionPairList();
-        Arrays.stream(elements)
-                .forEach(list::add);
-        return list;
-    }
-
-    public static NameTypeLitPairList asList(NameTypeLitPair... elements) {
-        NameTypeLitPairList list = new NameTypeLitPairList();
-        Arrays.stream(elements)
-                .forEach(list::add);
-        return list;
+        } catch (InstantiationException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static Word word(String text) {
