@@ -14,7 +14,8 @@ import com.semantax.ast.node.*;
 import com.semantax.ast.node.list.*;
 import com.semantax.ast.node.literal.*;
 import com.semantax.ast.node.literal.type.*;
-import com.semantax.ast.node.pattern.PatternDefinition;import com.semantax.ast.node.progcall.ProgCall;
+import com.semantax.ast.node.pattern.PatternDefinition;
+import com.semantax.ast.node.progcall.ProgCall;
 import com.semantax.ast.util.FilePos;
 
 @SuppressWarnings("unchecked")
@@ -200,15 +201,17 @@ WordList CommaDelimitedWordList() :
 }
 
 // list of two or more words separated by whitespace
-WordList SpaceDelimitedWordList() :
+WordList SpaceDelimitedWordSymbolList() :
 {
     Word word;
     WordList words = new WordList();
 }
 {
-    word = Word()
+    (word = Word() |
+     word = Symbol())
     {words.add(word);}
-    (word = Word()
+    ((word = Word() |
+     word = Symbol())
      {words.add(word);}
     )+
     {return words;}
@@ -675,7 +678,7 @@ PatternDefinition PatternDef() :
 }
 {
     t = <DOLLAR>
-    syntax = SpaceDelimitedWordList()
+    syntax = SpaceDelimitedWordSymbolList()
     {builder.syntax(syntax);}
     <DOLLAR>
     semantics = FunctionLit()

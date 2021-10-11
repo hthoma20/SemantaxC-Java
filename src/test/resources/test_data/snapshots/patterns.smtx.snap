@@ -47,6 +47,31 @@ Program {
                   ]
             )
          ]
+         Pattern: $a + b$ [ (18:5)
+            FunctionLit (19:29)
+               input:
+                  record( (19:5)
+                     a: (19:6)
+                     int (19:9)
+                     b: (19:14)
+                     int (19:17)
+                  )
+               output:
+                  int (19:25)
+               expression:
+                  Phrase: [ (20:9)
+                     @addint (20:9)
+                     ParsableExpressionList [ (20:17)
+                        Phrase: [ (20:17)
+                           Word: a (20:17)
+                        ]
+                        Phrase: [ (20:20)
+                           Word: b (20:20)
+                        ]
+                     ]
+                  ]
+            )
+         ]
       }
    ]
 }
