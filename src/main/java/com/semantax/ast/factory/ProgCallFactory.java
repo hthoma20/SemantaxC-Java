@@ -2,13 +2,17 @@ package com.semantax.ast.factory;
 
 import com.semantax.ast.node.Word;
 import com.semantax.ast.node.list.ParsableExpressionList;
+import com.semantax.ast.node.progcall.AddIntProgCall;
 import com.semantax.ast.node.progcall.DeclProgCall;
+import com.semantax.ast.node.progcall.PrintIntProgCall;
 import com.semantax.ast.node.progcall.ProgCall;
 import com.semantax.ast.util.FilePos;
 import com.semantax.exception.UnexpectedTokenException;
 import com.semantax.parser.generated.Token;
 
+import static com.semantax.ast.node.progcall.ProgCallConstants.ADD_INT;
 import static com.semantax.ast.node.progcall.ProgCallConstants.DECL;
+import static com.semantax.ast.node.progcall.ProgCallConstants.PRINT_INT;
 import static com.semantax.parser.generated.SemantaxParserConstants.*;
 
 public class ProgCallFactory {
@@ -29,6 +33,10 @@ public class ProgCallFactory {
         switch (name) {
             case DECL:
                 return DeclProgCall.builder();
+            case PRINT_INT:
+                return PrintIntProgCall.builder();
+            case ADD_INT:
+                return AddIntProgCall.builder();
             default:
                 return ProgCall.builder();
         }

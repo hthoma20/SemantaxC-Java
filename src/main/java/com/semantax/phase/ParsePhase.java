@@ -83,6 +83,8 @@ public class ParsePhase extends TraversalVisitor<Void>
     @Override
     public Void visit(PatternDefinition patternDefinition) {
         patterns.peek().add(patternDefinition);
+        patternDefinition.getSemantics().getInput().accept(typeAnnotator);
+        patternDefinition.getSemantics().getOutput().ifPresent(output -> output.accept(typeAnnotator));
         return null;
     }
 
@@ -113,13 +115,6 @@ public class ParsePhase extends TraversalVisitor<Void>
 
         return null;
     }
-
-//    @Override
-//    public Void visit(Expression expression) {
-//        super.visit(expression);
-//        typeAnnotator.annotate(expression);
-//        return null;
-//    }
 
     /////////////// Util methods //////////////////////////
 

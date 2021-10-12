@@ -63,6 +63,15 @@ public class DefaultPhraseParser implements PhraseParser {
     public Optional<AstNode> parse(Phrase phrase,
                                    List<PatternDefinition> patterns,
                                    SymbolTable symbolTable) {
+
+        if (phrase.getPhrase().size() == 1) {
+            PhraseElement element = phrase.getPhrase().get(0);
+            if (element instanceof AstNode) {
+                return Optional.of((AstNode) element);
+            }
+            return Optional.empty();
+        }
+
         this.patterns = patterns;
         this.symbolTable = symbolTable;
 

@@ -5,7 +5,9 @@ import com.semantax.ast.node.literal.*;
 import com.semantax.ast.node.literal.type.*;
 import com.semantax.ast.node.list.AstNodeList;
 import com.semantax.ast.node.pattern.PatternDefinition;
+import com.semantax.ast.node.progcall.AddIntProgCall;
 import com.semantax.ast.node.progcall.DeclProgCall;
+import com.semantax.ast.node.progcall.PrintIntProgCall;
 import com.semantax.ast.node.progcall.ProgCall;
 import com.semantax.ast.type.ArrayType;
 import com.semantax.ast.type.BoolType;
@@ -31,6 +33,8 @@ public interface AstVisitor<T> {
 
     T visit(ProgCall progCall);
     T visit(DeclProgCall declProgCall);
+    T visit(PrintIntProgCall printIntProgCall);
+    T visit(AddIntProgCall addIntProgCall);
 
     T visit(TypeTypeLit typeTypeLiteral);
     T visit(IntTypeLit intTypeLiteral);

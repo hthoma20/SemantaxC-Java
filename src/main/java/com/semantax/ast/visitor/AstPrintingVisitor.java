@@ -5,7 +5,9 @@ import com.semantax.ast.node.list.AstNodeList;
 import com.semantax.ast.node.literal.*;
 import com.semantax.ast.node.literal.type.*;
 import com.semantax.ast.node.pattern.PatternDefinition;
+import com.semantax.ast.node.progcall.AddIntProgCall;
 import com.semantax.ast.node.progcall.DeclProgCall;
+import com.semantax.ast.node.progcall.PrintIntProgCall;
 import com.semantax.ast.node.progcall.ProgCall;
 import com.semantax.ast.type.ArrayType;
 import com.semantax.ast.type.BoolType;
@@ -91,18 +93,37 @@ public class AstPrintingVisitor extends TraversalVisitor<Void> {
 
         output.printf("@%s (%s)%n", progCall.getName(), progCall.getFilePos());
 
+        depth++;
         super.visit(progCall);
+        depth--;
         return null;
     }
 
     @Override
     public Void visit(DeclProgCall declProgCall) {
-        indent();
-
-        output.printf("Decl @%s (%s)%n", declProgCall.getName(), declProgCall.getFilePos());
+        this.visit((ProgCall) declProgCall);
         indent();
         output.printf("name: %s%n", declProgCall.getDeclName());
-        super.visit(declProgCall);
+
+        return null;
+    }
+
+    @Override
+    public Void visit(PrintIntProgCall printIntProgcall) {
+        this.visit((ProgCall) printIntProgcall);
+        indent();
+        output.printf("arg: %s%n", printIntProgcall.getArgument());
+
+        return null;
+    }
+
+    @Override
+    public Void visit(AddIntProgCall addIntProgCall) {
+        this.visit((ProgCall) addIntProgCall);
+        indent();
+        output.printf("lhs: %s%n", addIntProgCall.getLhs());
+        indent();
+        output.printf("rhs: %s%n", addIntProgCall.getRhs());
         return null;
     }
 

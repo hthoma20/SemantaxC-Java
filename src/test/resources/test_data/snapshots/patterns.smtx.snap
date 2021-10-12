@@ -15,11 +15,11 @@ Program {
                      Statement { (5:9)
                         Phrase: [ (5:9)
                            @return (5:9)
-                           ParsableExpressionList [ (5:17)
-                              Phrase: [ (5:17)
-                                 IntLit 54 (5:17)
+                              ParsableExpressionList [ (5:17)
+                                 Phrase: [ (5:17)
+                                    IntLit 54 (5:17)
+                                 ]
                               ]
-                           ]
                         ]
                      }
                   ]
@@ -61,14 +61,16 @@ Program {
                expression:
                   Phrase: [ (20:9)
                      @addint (20:9)
-                     ParsableExpressionList [ (20:17)
-                        Phrase: [ (20:17)
-                           Word: a (20:17)
+                        ParsableExpressionList [ (20:17)
+                           Phrase: [ (20:17)
+                              Word: a (20:17)
+                           ]
+                           Phrase: [ (20:20)
+                              Word: b (20:20)
+                           ]
                         ]
-                        Phrase: [ (20:20)
-                           Word: b (20:20)
-                        ]
-                     ]
+                     lhs: Eventual.unfulfilled
+                     rhs: Eventual.unfulfilled
                   ]
             )
          ]

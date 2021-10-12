@@ -42,6 +42,7 @@ public class SemantaxC {
         if (args.getInputFiles().size() != 1) {
             errorLogger.error(FilePos.none(), "Exactly 1 file is required, but %d were given",
                     args.getInputFiles().size());
+            errorLogger.flush();
             return;
         }
 
@@ -50,6 +51,7 @@ public class SemantaxC {
 
         if (!inputStream.isPresent()) {
             errorLogger.error(FilePos.none(), "Couldn't open file: %s", filePath);
+            errorLogger.flush();
             return;
         }
 
@@ -57,6 +59,7 @@ public class SemantaxC {
 
         if (!program.isPresent()) {
             errorLogger.error(FilePos.none(), "Error parsing file: %s", filePath);
+            errorLogger.flush();
             return;
         }
 
@@ -64,6 +67,7 @@ public class SemantaxC {
 
         if (!program.isPresent()) {
             errorLogger.error(FilePos.none(), "Error in file: %s", filePath);
+            errorLogger.flush();
             return;
         }
 

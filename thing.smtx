@@ -1,0 +1,9 @@
+main module Thing {
+
+    $a + b$
+    (a: int, b: int) -> int {
+        @addint(a, b)
+    }
+
+    @printint(5 + 2);
+}

@@ -4,262 +4,262 @@ Program {
          Statement { (2:5)
             Phrase: [ (2:5)
                @bind (2:5)
-               ParsableExpressionList [ (2:11)
-                  Phrase: [ (2:11)
-                     IntLit 0 (2:11)
+                  ParsableExpressionList [ (2:11)
+                     Phrase: [ (2:11)
+                        IntLit 0 (2:11)
+                     ]
+                     Phrase: [ (2:14)
+                        int (2:14)
+                     ]
                   ]
-                  Phrase: [ (2:14)
-                     int (2:14)
-                  ]
-               ]
             ]
          }
          Statement { (3:5)
             Phrase: [ (3:5)
                @bind (3:5)
-               ParsableExpressionList [ (3:11)
-                  Phrase: [ (3:11)
-                     IntLit 1 (3:11)
+                  ParsableExpressionList [ (3:11)
+                     Phrase: [ (3:11)
+                        IntLit 1 (3:11)
+                     ]
+                     Phrase: [ (3:14)
+                        string (3:14)
+                     ]
                   ]
-                  Phrase: [ (3:14)
-                     string (3:14)
-                  ]
-               ]
             ]
          }
          Statement { (4:5)
             Phrase: [ (4:5)
                @bind (4:5)
-               ParsableExpressionList [ (4:11)
-                  Phrase: [ (4:11)
-                     IntLit 2 (4:11)
+                  ParsableExpressionList [ (4:11)
+                     Phrase: [ (4:11)
+                        IntLit 2 (4:11)
+                     ]
+                     Phrase: [ (4:14)
+                        type (4:14)
+                     ]
                   ]
-                  Phrase: [ (4:14)
-                     type (4:14)
-                  ]
-               ]
             ]
          }
          Statement { (5:5)
             Phrase: [ (5:5)
                @bind (5:5)
-               ParsableExpressionList [ (5:11)
-                  Phrase: [ (5:11)
-                     IntLit 3 (5:11)
+                  ParsableExpressionList [ (5:11)
+                     Phrase: [ (5:11)
+                        IntLit 3 (5:11)
+                     ]
+                     Phrase: [ (5:14)
+                        bool (5:14)
+                     ]
                   ]
-                  Phrase: [ (5:14)
-                     bool (5:14)
-                  ]
-               ]
             ]
          }
          Statement { (7:5)
             Phrase: [ (7:5)
                @bind (7:5)
-               ParsableExpressionList [ (7:11)
-                  Phrase: [ (7:11)
-                     IntLit 4 (7:11)
-                  ]
-                  Phrase: [ (7:14)
-                     array[ (7:14)
-                        int (7:20)
+                  ParsableExpressionList [ (7:11)
+                     Phrase: [ (7:11)
+                        IntLit 4 (7:11)
+                     ]
+                     Phrase: [ (7:14)
+                        array[ (7:14)
+                           int (7:20)
+                        ]
                      ]
                   ]
-               ]
             ]
          }
          Statement { (8:5)
             Phrase: [ (8:5)
                @bind (8:5)
-               ParsableExpressionList [ (8:11)
-                  Phrase: [ (8:11)
-                     IntLit 5 (8:11)
-                  ]
-                  Phrase: [ (8:14)
-                     array[ (8:14)
-                        string (8:20)
+                  ParsableExpressionList [ (8:11)
+                     Phrase: [ (8:11)
+                        IntLit 5 (8:11)
+                     ]
+                     Phrase: [ (8:14)
+                        array[ (8:14)
+                           string (8:20)
+                        ]
                      ]
                   ]
-               ]
             ]
          }
          Statement { (9:5)
             Phrase: [ (9:5)
                @bind (9:5)
-               ParsableExpressionList [ (9:11)
-                  Phrase: [ (9:11)
-                     IntLit 6 (9:11)
-                  ]
-                  Phrase: [ (9:14)
-                     array[ (9:14)
-                        array[ (9:20)
-                           int (9:26)
+                  ParsableExpressionList [ (9:11)
+                     Phrase: [ (9:11)
+                        IntLit 6 (9:11)
+                     ]
+                     Phrase: [ (9:14)
+                        array[ (9:14)
+                           array[ (9:20)
+                              int (9:26)
+                           ]
                         ]
                      ]
                   ]
-               ]
             ]
          }
          Statement { (11:5)
             Phrase: [ (11:5)
                @bind (11:5)
-               ParsableExpressionList [ (11:11)
-                  Phrase: [ (11:11)
-                     IntLit 7 (11:11)
+                  ParsableExpressionList [ (11:11)
+                     Phrase: [ (11:11)
+                        IntLit 7 (11:11)
+                     ]
+                     Phrase: [ (11:14)
+                        record( (11:14)
+                        )
+                     ]
                   ]
-                  Phrase: [ (11:14)
-                     record( (11:14)
-                     )
-                  ]
-               ]
             ]
          }
          Statement { (12:5)
             Phrase: [ (12:5)
                @bind (12:5)
-               ParsableExpressionList [ (12:11)
-                  Phrase: [ (12:11)
-                     IntLit 8 (12:11)
+                  ParsableExpressionList [ (12:11)
+                     Phrase: [ (12:11)
+                        IntLit 8 (12:11)
+                     ]
+                     Phrase: [ (12:14)
+                        record( (12:14)
+                           x: (12:21)
+                           int (12:24)
+                        )
+                     ]
                   ]
-                  Phrase: [ (12:14)
-                     record( (12:14)
-                        x: (12:21)
-                        int (12:24)
-                     )
-                  ]
-               ]
             ]
          }
          Statement { (13:5)
             Phrase: [ (13:5)
                @bind (13:5)
-               ParsableExpressionList [ (13:11)
-                  Phrase: [ (13:11)
-                     IntLit 9 (13:11)
+                  ParsableExpressionList [ (13:11)
+                     Phrase: [ (13:11)
+                        IntLit 9 (13:11)
+                     ]
+                     Phrase: [ (13:14)
+                        record( (13:14)
+                           x: (13:21)
+                           array[ (13:24)
+                              int (13:30)
+                           ]
+                        )
+                     ]
                   ]
-                  Phrase: [ (13:14)
-                     record( (13:14)
-                        x: (13:21)
-                        array[ (13:24)
-                           int (13:30)
-                        ]
-                     )
-                  ]
-               ]
             ]
          }
          Statement { (14:5)
             Phrase: [ (14:5)
                @bind (14:5)
-               ParsableExpressionList [ (14:11)
-                  Phrase: [ (14:11)
-                     IntLit 10 (14:11)
-                  ]
-                  Phrase: [ (14:15)
-                     record( (14:15)
-                        x: (15:9)
-                        int (15:12)
-                        y: (16:9)
-                        record( (16:12)
-                           a: (17:13)
-                           string (17:16)
-                           b: (18:13)
-                           array[ (18:16)
-                              bool (18:22)
-                           ]
+                  ParsableExpressionList [ (14:11)
+                     Phrase: [ (14:11)
+                        IntLit 10 (14:11)
+                     ]
+                     Phrase: [ (14:15)
+                        record( (14:15)
+                           x: (15:9)
+                           int (15:12)
+                           y: (16:9)
+                           record( (16:12)
+                              a: (17:13)
+                              string (17:16)
+                              b: (18:13)
+                              array[ (18:16)
+                                 bool (18:22)
+                              ]
+                           )
                         )
-                     )
+                     ]
                   ]
-               ]
             ]
          }
          Statement { (22:5)
             Phrase: [ (22:5)
                @bind (22:5)
-               ParsableExpressionList [ (22:11)
-                  Phrase: [ (22:11)
-                     IntLit 11 (22:11)
+                  ParsableExpressionList [ (22:11)
+                     Phrase: [ (22:11)
+                        IntLit 11 (22:11)
+                     ]
+                     Phrase: [ (22:15)
+                        func (22:15)
+                           record( (-1:-1)
+                           )
+                     ]
                   ]
-                  Phrase: [ (22:15)
-                     func (22:15)
-                        record( (-1:-1)
-                        )
-                  ]
-               ]
             ]
          }
          Statement { (23:5)
             Phrase: [ (23:5)
                @bind (23:5)
-               ParsableExpressionList [ (23:11)
-                  Phrase: [ (23:11)
-                     IntLit 12 (23:11)
+                  ParsableExpressionList [ (23:11)
+                     Phrase: [ (23:11)
+                        IntLit 12 (23:11)
+                     ]
+                     Phrase: [ (23:15)
+                        func (23:15)
+                           record( (-1:-1)
+                           )
+                     ]
                   ]
-                  Phrase: [ (23:15)
-                     func (23:15)
-                        record( (-1:-1)
-                        )
-                  ]
-               ]
             ]
          }
          Statement { (24:5)
             Phrase: [ (24:5)
                @bind (24:5)
-               ParsableExpressionList [ (24:11)
-                  Phrase: [ (24:11)
-                     IntLit 13 (24:11)
+                  ParsableExpressionList [ (24:11)
+                     Phrase: [ (24:11)
+                        IntLit 13 (24:11)
+                     ]
+                     Phrase: [ (24:15)
+                        func (24:15)
+                           string (24:20)
+                     ]
                   ]
-                  Phrase: [ (24:15)
-                     func (24:15)
-                        string (24:20)
-                  ]
-               ]
             ]
          }
          Statement { (25:5)
             Phrase: [ (25:5)
                @bind (25:5)
-               ParsableExpressionList [ (25:11)
-                  Phrase: [ (25:11)
-                     IntLit 14 (25:11)
+                  ParsableExpressionList [ (25:11)
+                     Phrase: [ (25:11)
+                        IntLit 14 (25:11)
+                     ]
+                     Phrase: [ (25:15)
+                        func (25:15)
+                           string (25:20)
+                     ]
                   ]
-                  Phrase: [ (25:15)
-                     func (25:15)
-                        string (25:20)
-                  ]
-               ]
             ]
          }
          Statement { (26:5)
             Phrase: [ (26:5)
                @bind (26:5)
-               ParsableExpressionList [ (26:11)
-                  Phrase: [ (26:11)
-                     IntLit 15 (26:11)
+                  ParsableExpressionList [ (26:11)
+                     Phrase: [ (26:11)
+                        IntLit 15 (26:11)
+                     ]
+                     Phrase: [ (26:15)
+                        func (26:15)
+                           record( (-1:-1)
+                           )
+                           int (26:22)
+                     ]
                   ]
-                  Phrase: [ (26:15)
-                     func (26:15)
-                        record( (-1:-1)
-                        )
-                        int (26:22)
-                  ]
-               ]
             ]
          }
          Statement { (27:5)
             Phrase: [ (27:5)
                @bind (27:5)
-               ParsableExpressionList [ (27:11)
-                  Phrase: [ (27:11)
-                     IntLit 16 (27:11)
+                  ParsableExpressionList [ (27:11)
+                     Phrase: [ (27:11)
+                        IntLit 16 (27:11)
+                     ]
+                     Phrase: [ (27:15)
+                        func (27:15)
+                           string (27:20)
+                           int (27:28)
+                     ]
                   ]
-                  Phrase: [ (27:15)
-                     func (27:15)
-                        string (27:20)
-                        int (27:28)
-                  ]
-               ]
             ]
          }
       }

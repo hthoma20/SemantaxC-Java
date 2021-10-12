@@ -4,105 +4,106 @@ Program {
          Statement { (2:5)
             Phrase: [ (2:5)
                @bind (2:5)
-               ParsableExpressionList [ (2:11)
-                  Phrase: [ (2:11)
-                     IntLit 0 (2:11)
-                  ]
-                  Phrase: [ (2:14)
-                     ArrayLit (2:14) [
-                        ParsableExpressionList [] (null)
+                  ParsableExpressionList [ (2:11)
+                     Phrase: [ (2:11)
+                        IntLit 0 (2:11)
+                     ]
+                     Phrase: [ (2:14)
+                        ArrayLit (2:14) [
+                           ParsableExpressionList [] (null)
+                        ]
                      ]
                   ]
-               ]
             ]
          }
          Statement { (3:5)
             Phrase: [ (3:5)
                @bind (3:5)
-               ParsableExpressionList [ (3:11)
-                  Phrase: [ (3:11)
-                     IntLit 1 (3:11)
-                  ]
-                  Phrase: [ (3:14)
-                     ArrayLit (3:14) [
-                        ParsableExpressionList [ (3:15)
-                           Phrase: [ (3:15)
-                              IntLit 1 (3:15)
+                  ParsableExpressionList [ (3:11)
+                     Phrase: [ (3:11)
+                        IntLit 1 (3:11)
+                     ]
+                     Phrase: [ (3:14)
+                        ArrayLit (3:14) [
+                           ParsableExpressionList [ (3:15)
+                              Phrase: [ (3:15)
+                                 IntLit 1 (3:15)
+                              ]
                            ]
                         ]
                      ]
                   ]
-               ]
             ]
          }
          Statement { (4:5)
             Phrase: [ (4:5)
                @bind (4:5)
-               ParsableExpressionList [ (4:11)
-                  Phrase: [ (4:11)
-                     IntLit 2 (4:11)
-                  ]
-                  Phrase: [ (4:14)
-                     ArrayLit (4:14) [
-                        ParsableExpressionList [ (4:15)
-                           Phrase: [ (4:15)
-                              IntLit 1 (4:15)
-                           ]
-                           Phrase: [ (4:17)
-                              IntLit 2 (4:17)
+                  ParsableExpressionList [ (4:11)
+                     Phrase: [ (4:11)
+                        IntLit 2 (4:11)
+                     ]
+                     Phrase: [ (4:14)
+                        ArrayLit (4:14) [
+                           ParsableExpressionList [ (4:15)
+                              Phrase: [ (4:15)
+                                 IntLit 1 (4:15)
+                              ]
+                              Phrase: [ (4:17)
+                                 IntLit 2 (4:17)
+                              ]
                            ]
                         ]
                      ]
                   ]
-               ]
             ]
          }
          Statement { (5:5)
             Phrase: [ (5:5)
                @bind (5:5)
-               ParsableExpressionList [ (5:11)
-                  Phrase: [ (5:11)
-                     IntLit 3 (5:11)
-                  ]
-                  Phrase: [ (5:14)
-                     ArrayLit (5:14) [
-                        ParsableExpressionList [ (5:15)
-                           Phrase: [ (5:15)
-                              IntLit 1 (5:15)
-                           ]
-                           Phrase: [ (5:17)
-                              IntLit 2 (5:17)
-                           ]
-                           Phrase: [ (5:19)
-                              IntLit 3 (5:19)
+                  ParsableExpressionList [ (5:11)
+                     Phrase: [ (5:11)
+                        IntLit 3 (5:11)
+                     ]
+                     Phrase: [ (5:14)
+                        ArrayLit (5:14) [
+                           ParsableExpressionList [ (5:15)
+                              Phrase: [ (5:15)
+                                 IntLit 1 (5:15)
+                              ]
+                              Phrase: [ (5:17)
+                                 IntLit 2 (5:17)
+                              ]
+                              Phrase: [ (5:19)
+                                 IntLit 3 (5:19)
+                              ]
                            ]
                         ]
                      ]
                   ]
-               ]
             ]
          }
          Statement { (6:5)
             Phrase: [ (6:5)
                @bind (6:5)
-               ParsableExpressionList [ (6:11)
-                  Phrase: [ (6:11)
-                     IntLit 4 (6:11)
-                  ]
-                  Phrase: [ (6:14)
-                     ArrayLit (6:14) [
-                        ParsableExpressionList [ (6:15)
-                           Phrase: [ (6:15)
-                              IntLit 1 (6:15)
-                           ]
-                           Phrase: [ (6:17)
-                              ArrayLit (6:17) [
-                                 ParsableExpressionList [ (6:18)
-                                    Phrase: [ (6:18)
-                                       IntLit 1 (6:18)
-                                    ]
-                                    Phrase: [ (6:20)
-                                       IntLit 2 (6:20)
+                  ParsableExpressionList [ (6:11)
+                     Phrase: [ (6:11)
+                        IntLit 4 (6:11)
+                     ]
+                     Phrase: [ (6:14)
+                        ArrayLit (6:14) [
+                           ParsableExpressionList [ (6:15)
+                              Phrase: [ (6:15)
+                                 IntLit 1 (6:15)
+                              ]
+                              Phrase: [ (6:17)
+                                 ArrayLit (6:17) [
+                                    ParsableExpressionList [ (6:18)
+                                       Phrase: [ (6:18)
+                                          IntLit 1 (6:18)
+                                       ]
+                                       Phrase: [ (6:20)
+                                          IntLit 2 (6:20)
+                                       ]
                                     ]
                                  ]
                               ]
@@ -110,7 +111,6 @@ Program {
                         ]
                      ]
                   ]
-               ]
             ]
          }
       }

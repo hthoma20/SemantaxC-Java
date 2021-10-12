@@ -17,6 +17,9 @@ import com.semantax.ast.node.literal.type.NameTypeLitPair;
 import com.semantax.ast.node.literal.type.RecordTypeLit;
 import com.semantax.ast.node.literal.type.StringTypeLit;
 import com.semantax.ast.node.literal.type.TypeLit;
+import com.semantax.ast.node.progcall.AddIntProgCall;
+import com.semantax.ast.node.progcall.DeclProgCall;
+import com.semantax.ast.node.progcall.PrintIntProgCall;
 import com.semantax.ast.type.ArrayType;
 import com.semantax.ast.type.BoolType;
 import com.semantax.ast.type.FuncType;
@@ -26,6 +29,7 @@ import com.semantax.ast.type.RecordType;
 import com.semantax.ast.type.StringType;
 import com.semantax.ast.type.Type;
 import com.semantax.ast.type.TypeType;
+import com.semantax.ast.type.VoidType;
 import com.semantax.ast.visitor.TraversalVisitor;
 import com.semantax.logger.ErrorLogger;
 
@@ -205,4 +209,23 @@ public class DefaultTypeAnnotator extends TraversalVisitor<Boolean> implements T
 
         return true;
     }
+
+    @Override
+    public Boolean visit(DeclProgCall progCall) {
+        progCall.setType(VoidType.VOID_TYPE);
+        return true;
+    }
+
+    @Override
+    public Boolean visit(PrintIntProgCall progCall) {
+        progCall.setType(VoidType.VOID_TYPE);
+        return true;
+    }
+
+    @Override
+    public Boolean visit(AddIntProgCall progCall) {
+        progCall.setType(IntType.INT_TYPE);
+        return true;
+    }
+
 }

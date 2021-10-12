@@ -4,179 +4,183 @@ Program {
          Statement { (2:5)
             Phrase: [ (2:5)
                @bind (2:5)
-               ParsableExpressionList [ (2:11)
-                  Phrase: [ (2:11)
-                     IntLit 0 (2:11)
+                  ParsableExpressionList [ (2:11)
+                     Phrase: [ (2:11)
+                        IntLit 0 (2:11)
+                     ]
+                     Phrase: [ (2:14)
+                        FunctionLit (2:14)
+                           input:
+                              record( (-1:-1)
+                              )
+                        )
+                     ]
                   ]
-                  Phrase: [ (2:14)
-                     FunctionLit (2:14)
-                        input:
-                           record( (-1:-1)
-                           )
-                     )
-                  ]
-               ]
             ]
          }
          Statement { (3:5)
             Phrase: [ (3:5)
                @bind (3:5)
-               ParsableExpressionList [ (3:11)
-                  Phrase: [ (3:11)
-                     IntLit 1 (3:11)
+                  ParsableExpressionList [ (3:11)
+                     Phrase: [ (3:11)
+                        IntLit 1 (3:11)
+                     ]
+                     Phrase: [ (3:16)
+                        FunctionLit (3:16)
+                           input:
+                              record( (-1:-1)
+                              )
+                        )
+                     ]
                   ]
-                  Phrase: [ (3:16)
-                     FunctionLit (3:16)
-                        input:
-                           record( (-1:-1)
-                           )
-                     )
-                  ]
-               ]
             ]
          }
          Statement { (4:5)
             Phrase: [ (4:5)
                @bind (4:5)
-               ParsableExpressionList [ (4:11)
-                  Phrase: [ (4:11)
-                     IntLit 2 (4:11)
+                  ParsableExpressionList [ (4:11)
+                     Phrase: [ (4:11)
+                        IntLit 2 (4:11)
+                     ]
+                     Phrase: [ (4:30)
+                        FunctionLit (4:30)
+                           input:
+                              record( (4:14)
+                                 a: (4:15)
+                                 int (4:18)
+                                 b: (4:23)
+                                 int (4:26)
+                              )
+                        )
+                     ]
                   ]
-                  Phrase: [ (4:30)
-                     FunctionLit (4:30)
-                        input:
-                           record( (4:14)
-                              a: (4:15)
-                              int (4:18)
-                              b: (4:23)
-                              int (4:26)
-                           )
-                     )
-                  ]
-               ]
             ]
          }
          Statement { (5:5)
             Phrase: [ (5:5)
                @bind (5:5)
-               ParsableExpressionList [ (5:11)
-                  Phrase: [ (5:11)
-                     IntLit 3 (5:11)
-                  ]
-                  Phrase: [ (5:34)
-                     FunctionLit (5:34)
-                        input:
-                           record( (5:14)
-                              a: (5:15)
-                              int (5:18)
-                              b: (5:23)
-                              string (5:26)
-                           )
-                        expression:
-                           Phrase: [ (6:9)
-                              @addint (6:9)
-                              ParsableExpressionList [ (6:17)
-                                 Phrase: [ (6:17)
-                                    IntLit 4 (6:17)
-                                 ]
-                                 Phrase: [ (6:20)
-                                    IntLit 5 (6:20)
-                                 ]
+                  ParsableExpressionList [ (5:11)
+                     Phrase: [ (5:11)
+                        IntLit 3 (5:11)
+                     ]
+                     Phrase: [ (5:34)
+                        FunctionLit (5:34)
+                           input:
+                              record( (5:14)
+                                 a: (5:15)
+                                 int (5:18)
+                                 b: (5:23)
+                                 string (5:26)
+                              )
+                           expression:
+                              Phrase: [ (6:9)
+                                 @addint (6:9)
+                                    ParsableExpressionList [ (6:17)
+                                       Phrase: [ (6:17)
+                                          IntLit 4 (6:17)
+                                       ]
+                                       Phrase: [ (6:20)
+                                          IntLit 5 (6:20)
+                                       ]
+                                    ]
+                                 lhs: Eventual.unfulfilled
+                                 rhs: Eventual.unfulfilled
                               ]
-                           ]
-                     )
+                        )
+                     ]
                   ]
-               ]
             ]
          }
          Statement { (8:5)
             Phrase: [ (8:5)
                @bind (8:5)
-               ParsableExpressionList [ (8:11)
-                  Phrase: [ (8:11)
-                     IntLit 4 (8:11)
-                  ]
-                  Phrase: [ (8:34)
-                     FunctionLit (8:34)
-                        input:
-                           record( (8:14)
-                              a: (8:15)
-                              int (8:18)
-                              b: (8:23)
-                              string (8:26)
-                           )
-                        statements:
-                           StatementList [ (9:9)
-                              Statement { (9:9)
-                                 Phrase: [ (9:9)
-                                    @printint (9:9)
-                                    ParsableExpressionList [ (9:19)
-                                       Phrase: [ (9:19)
-                                          IntLit 4 (9:19)
-                                       ]
+                  ParsableExpressionList [ (8:11)
+                     Phrase: [ (8:11)
+                        IntLit 4 (8:11)
+                     ]
+                     Phrase: [ (8:34)
+                        FunctionLit (8:34)
+                           input:
+                              record( (8:14)
+                                 a: (8:15)
+                                 int (8:18)
+                                 b: (8:23)
+                                 string (8:26)
+                              )
+                           statements:
+                              StatementList [ (9:9)
+                                 Statement { (9:9)
+                                    Phrase: [ (9:9)
+                                       @printint (9:9)
+                                          ParsableExpressionList [ (9:19)
+                                             Phrase: [ (9:19)
+                                                IntLit 4 (9:19)
+                                             ]
+                                          ]
+                                       arg: Eventual.unfulfilled
                                     ]
-                                 ]
-                              }
-                              Statement { (10:9)
-                                 Phrase: [ (10:9)
-                                    @printstring (10:9)
-                                    ParsableExpressionList [ (10:22)
-                                       Phrase: [ (10:22)
-                                          StringLit hello (10:22)
-                                       ]
+                                 }
+                                 Statement { (10:9)
+                                    Phrase: [ (10:9)
+                                       @printstring (10:9)
+                                          ParsableExpressionList [ (10:22)
+                                             Phrase: [ (10:22)
+                                                StringLit hello (10:22)
+                                             ]
+                                          ]
                                     ]
-                                 ]
-                              }
-                           ]
-                     )
+                                 }
+                              ]
+                        )
+                     ]
                   ]
-               ]
             ]
          }
          Statement { (12:5)
             Phrase: [ (12:5)
                @bind (12:5)
-               ParsableExpressionList [ (12:11)
-                  Phrase: [ (12:11)
-                     IntLit 4 (12:11)
-                  ]
-                  Phrase: [ (12:41)
-                     FunctionLit (12:41)
-                        input:
-                           record( (12:14)
-                              a: (12:15)
-                              int (12:18)
-                              b: (12:23)
-                              string (12:26)
-                           )
-                        output:
-                           int (12:37)
-                        statements:
-                           StatementList [ (13:9)
-                              Statement { (13:9)
-                                 Phrase: [ (13:9)
-                                    @printint (13:9)
-                                    ParsableExpressionList [ (13:19)
-                                       Phrase: [ (13:19)
-                                          IntLit 4 (13:19)
-                                       ]
+                  ParsableExpressionList [ (12:11)
+                     Phrase: [ (12:11)
+                        IntLit 4 (12:11)
+                     ]
+                     Phrase: [ (12:41)
+                        FunctionLit (12:41)
+                           input:
+                              record( (12:14)
+                                 a: (12:15)
+                                 int (12:18)
+                                 b: (12:23)
+                                 string (12:26)
+                              )
+                           output:
+                              int (12:37)
+                           statements:
+                              StatementList [ (13:9)
+                                 Statement { (13:9)
+                                    Phrase: [ (13:9)
+                                       @printint (13:9)
+                                          ParsableExpressionList [ (13:19)
+                                             Phrase: [ (13:19)
+                                                IntLit 4 (13:19)
+                                             ]
+                                          ]
+                                       arg: Eventual.unfulfilled
                                     ]
-                                 ]
-                              }
-                              Statement { (14:9)
-                                 Phrase: [ (14:9)
-                                    @printstring (14:9)
-                                    ParsableExpressionList [ (14:22)
-                                       Phrase: [ (14:22)
-                                          StringLit hello (14:22)
-                                       ]
+                                 }
+                                 Statement { (14:9)
+                                    Phrase: [ (14:9)
+                                       @printstring (14:9)
+                                          ParsableExpressionList [ (14:22)
+                                             Phrase: [ (14:22)
+                                                StringLit hello (14:22)
+                                             ]
+                                          ]
                                     ]
-                                 ]
-                              }
-                           ]
-                     )
+                                 }
+                              ]
+                        )
+                     ]
                   ]
-               ]
             ]
          }
       }

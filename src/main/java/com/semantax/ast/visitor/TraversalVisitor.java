@@ -5,7 +5,9 @@ import com.semantax.ast.node.list.AstNodeList;
 import com.semantax.ast.node.literal.*;
 import com.semantax.ast.node.literal.type.*;
 import com.semantax.ast.node.pattern.PatternDefinition;
+import com.semantax.ast.node.progcall.AddIntProgCall;
 import com.semantax.ast.node.progcall.DeclProgCall;
+import com.semantax.ast.node.progcall.PrintIntProgCall;
 import com.semantax.ast.node.progcall.ProgCall;
 import com.semantax.ast.type.ArrayType;
 import com.semantax.ast.type.BoolType;
@@ -58,8 +60,20 @@ public class TraversalVisitor<T> implements AstVisitor<T> {
     }
 
     @Override
-    public T visit(DeclProgCall declProgCall) {
-        declProgCall.getSubExpressions().accept(this);
+    public T visit(DeclProgCall progCall) {
+        progCall.getSubExpressions().accept(this);
+        return null;
+    }
+
+    @Override
+    public T visit(PrintIntProgCall progCall) {
+        progCall.getSubExpressions().accept(this);
+        return null;
+    }
+
+    @Override
+    public T visit(AddIntProgCall progCall) {
+        progCall.getSubExpressions().accept(this);
         return null;
     }
 
