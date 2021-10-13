@@ -16,7 +16,7 @@ import static org.junit.Assert.assertEquals;
 @AllArgsConstructor
 public class SnapshotTestUtil {
 
-    private final String testDataRoot;
+    private final String snapshotDir;
 
     public void assertMatchesSnapshot(String snapshotName, AstNode node) {
 
@@ -56,7 +56,7 @@ public class SnapshotTestUtil {
     }
 
     private String getFileName(String snapshotName) {
-        return String.format("%s/snapshots/%s.snap", testDataRoot, snapshotName);
+        return String.format("%s/%s.snap", snapshotDir, snapshotName);
     }
 
 }

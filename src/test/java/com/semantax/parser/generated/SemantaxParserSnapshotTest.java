@@ -18,8 +18,9 @@ import org.junit.runners.Parameterized;
 @RequiredArgsConstructor
 public class SemantaxParserSnapshotTest extends TestCase {
 
-    private static final String TEST_DATA_ROOT = "./src/test/resources/test_data";
-    private final SnapshotTestUtil snapshotTestUtil = new SnapshotTestUtil(TEST_DATA_ROOT);
+    private static final String INPUT_DIR = "./src/test/resources/test_data/grammar/input";
+    private static final String SNAPSHOT_DIR = "./src/test/resources/test_data/grammar/snapshots";
+    private final SnapshotTestUtil snapshotTestUtil = new SnapshotTestUtil(SNAPSHOT_DIR);
 
     // Parameter for test, populated in constructor
     private final String testFile;
@@ -35,7 +36,7 @@ public class SemantaxParserSnapshotTest extends TestCase {
 
     @Test
     public void test_snapshot() throws FileNotFoundException, ParseException {
-        SemantaxParser parser = getFileParser(String.format("%s/input/%s", TEST_DATA_ROOT, testFile));
+        SemantaxParser parser = getFileParser(String.format("%s/%s", INPUT_DIR, testFile));
 
         try {
             Program program = parser.Program();
@@ -50,6 +51,6 @@ public class SemantaxParserSnapshotTest extends TestCase {
     @Parameterized.Parameters
     public static Collection<String> testFiles() {
         return Arrays.asList(
-                new File("./src/test/resources/test_data/input").list());
+                new File(INPUT_DIR).list());
     }
 }
