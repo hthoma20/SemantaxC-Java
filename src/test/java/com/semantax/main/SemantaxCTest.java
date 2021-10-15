@@ -20,7 +20,7 @@ import static org.mockito.Mockito.when;
 
 public class SemantaxCTest extends TestCase {
 
-    private static final String TEST_FILE = "./src/test/resources/test_data/input/arrays.smtx";
+    private static final String TEST_FILE = "./src/test/resources/test_data/grammar/input/arrays.smtx";
 
     private final AstPrintingVisitor mockPrinter = mock(AstPrintingVisitor.class);
     private final ErrorLogger mockErrorLogger = mock(ErrorLogger.class);

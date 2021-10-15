@@ -4,6 +4,7 @@ import com.semantax.ast.node.AstNode;
 import com.semantax.ast.node.Expression;
 import com.semantax.ast.node.Module;
 import com.semantax.ast.node.ParsableExpression;
+import com.semantax.ast.node.VariableReference;
 import com.semantax.ast.node.pattern.PatternDefinition;
 import com.semantax.ast.node.Phrase;
 import com.semantax.ast.node.Program;
@@ -25,6 +26,7 @@ import com.semantax.ast.node.literal.type.NameTypeLitPair;
 import com.semantax.ast.node.literal.type.RecordTypeLit;
 import com.semantax.ast.node.literal.type.StringTypeLit;
 import com.semantax.ast.node.literal.type.TypeTypeLit;
+import com.semantax.ast.node.pattern.PatternInvocation;
 import com.semantax.ast.node.progcall.AddIntProgCall;
 import com.semantax.ast.node.progcall.DeclProgCall;
 import com.semantax.ast.node.progcall.PrintIntProgCall;
@@ -184,6 +186,16 @@ public class BaseAstVisitor<T> implements AstVisitor<T> {
 
     @Override
     public T visit(ParsableExpression parsableExpression) {
+        throw CompilerException.of(message);
+    }
+
+    @Override
+    public T visit(PatternInvocation patternInvocation) {
+        throw CompilerException.of(message);
+    }
+
+    @Override
+    public T visit(VariableReference variableReference) {
         throw CompilerException.of(message);
     }
 

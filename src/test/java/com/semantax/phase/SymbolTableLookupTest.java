@@ -1,5 +1,6 @@
 package com.semantax.phase;
 
+import com.semantax.ast.node.VariableDeclaration;
 import com.semantax.ast.node.progcall.DeclProgCall;
 import junit.framework.TestCase;
 import lombok.AllArgsConstructor;
@@ -21,13 +22,13 @@ import static org.mockito.Mockito.when;
 public class SymbolTableLookupTest extends TestCase {
 
     private final SymbolTable mockParent = mock(SymbolTable.class);
-    private final DeclProgCall mockDecl = mock(DeclProgCall.class);
+    private final VariableDeclaration mockDecl = mock(VariableDeclaration.class);
 
     // test data populated in constructor
     private final Optional<SymbolTable> parent;
-    private final Optional<DeclProgCall> parentVal;
+    private final Optional<VariableDeclaration> parentVal;
     private final boolean hasVal;
-    private final Optional<DeclProgCall> expectedVal;
+    private final Optional<VariableDeclaration> expectedVal;
 
     public SymbolTableLookupTest(boolean hasParent, boolean parentHasVal, boolean hasVal, boolean expected) {
         if (parentHasVal && !hasParent) {
@@ -69,7 +70,7 @@ public class SymbolTableLookupTest extends TestCase {
         }
 
         // then
-        Optional<DeclProgCall> val = symbolTable.lookup(key);
+        Optional<VariableDeclaration> val = symbolTable.lookup(key);
         boolean contains = symbolTable.contains(key);
 
         // expect

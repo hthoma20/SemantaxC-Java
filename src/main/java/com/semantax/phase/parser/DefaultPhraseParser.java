@@ -1,6 +1,9 @@
 package com.semantax.phase.parser;
 
 import com.semantax.ast.node.AstNode;
+import com.semantax.ast.node.Expression;
+import com.semantax.ast.node.VariableReference;
+import com.semantax.ast.node.Word;
 import com.semantax.ast.node.pattern.PatternDefinition;
 import com.semantax.ast.node.pattern.PatternInvocation;
 import com.semantax.ast.node.Phrase;
@@ -66,8 +69,19 @@ public class DefaultPhraseParser implements PhraseParser {
 
         if (phrase.getPhrase().size() == 1) {
             PhraseElement element = phrase.getPhrase().get(0);
-            if (element instanceof AstNode) {
-                return Optional.of((AstNode) element);
+            if (element instanceof Expression) {
+                return Optional.of((Expression) element);
+            }
+            if (element instanceof Word) {
+                return symbolTable.lookup(((Word) element).getValue())
+                        .map(decl -> {
+                            VariableReference variableReference = VariableReference.builder()
+                                    .declaration(decl)
+                                    .build();
+                            variableReference.setType(decl.getDeclType());
+                            variableReference.setFilePos(element.getFilePos());
+                            return variableReference;
+                        });
             }
             return Optional.empty();
         }

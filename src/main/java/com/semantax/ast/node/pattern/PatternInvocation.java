@@ -5,10 +5,12 @@ import com.semantax.ast.node.literal.RecordLit;
 import com.semantax.ast.node.pattern.PatternDefinition;
 import com.semantax.ast.visitor.AstVisitor;
 import lombok.Builder;
+import lombok.Getter;
 
 import java.util.Map;
 
 @Builder(builderClassName = "Builder")
+@Getter
 public class PatternInvocation extends Expression {
     private final PatternDefinition patternDefinition;
     @lombok.Singular

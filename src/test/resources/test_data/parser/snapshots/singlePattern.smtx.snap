@@ -1,0 +1,38 @@
+Program {
+   ModuleList [ (1:13)
+      MAIN module SinglePattern { (1:13)
+         Pattern: $a + b$ [ (3:5)
+            FunctionLit (4:29)
+               input:
+                  record( (4:5)
+                     a: (4:6)
+                     int (4:9)
+                     b: (4:14)
+                     int (4:17)
+                  )
+               output:
+                  int (4:25)
+               expression:
+                  @addint (5:9)
+                     ParsableExpressionList [ (5:17)
+                        Variable a (5:17)
+                        Variable b (5:20)
+                     ]
+                  lhs: Eventual.unfulfilled
+                  rhs: Eventual.unfulfilled
+            )
+         ]
+         Statement { (8:5)
+            @printint (8:5)
+               ParsableExpressionList [ (8:15)
+                  PatternInvocation: $a + b$ (8:15)
+                     a:
+                        IntLit 5 (8:15)
+                     b:
+                        IntLit 6 (8:19)
+               ]
+            arg: Eventual.unfulfilled
+         }
+      }
+   ]
+}

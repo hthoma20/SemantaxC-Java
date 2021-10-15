@@ -5,6 +5,7 @@ import com.semantax.ast.node.list.AstNodeList;
 import com.semantax.ast.node.literal.*;
 import com.semantax.ast.node.literal.type.*;
 import com.semantax.ast.node.pattern.PatternDefinition;
+import com.semantax.ast.node.pattern.PatternInvocation;
 import com.semantax.ast.node.progcall.AddIntProgCall;
 import com.semantax.ast.node.progcall.DeclProgCall;
 import com.semantax.ast.node.progcall.PrintIntProgCall;
@@ -102,8 +103,18 @@ public class AstPrintingVisitor extends TraversalVisitor<Void> {
     @Override
     public Void visit(DeclProgCall declProgCall) {
         this.visit((ProgCall) declProgCall);
-        indent();
-        output.printf("name: %s%n", declProgCall.getDeclName());
+
+        if (declProgCall.hasDeclName()) {
+            indent();
+            output.printf("name: %s%n", declProgCall.getDeclName());
+        }
+        if (declProgCall.hasDeclType()) {
+            indent();
+            output.printf("type: %n");
+            depth++;
+            declProgCall.getDeclType().accept(this);
+            depth--;
+        }
 
         return null;
     }
@@ -357,6 +368,31 @@ public class AstPrintingVisitor extends TraversalVisitor<Void> {
         depth--;
         indent();
         output.println("]");
+        return null;
+    }
+
+    @Override
+    public Void visit(PatternInvocation patternInvocation) {
+        indent();
+        output.printf("PatternInvocation: %s (%s)%n", patternInvocation.getPatternDefinition(),
+                patternInvocation.getFilePos());
+        depth++;
+        patternInvocation.getArguments().forEach((name, expression) -> {
+            indent();
+            output.printf("%s:%n", name);
+            depth++;
+            expression.accept(this);
+            depth--;
+        });
+        depth--;
+        return null;
+    }
+
+    @Override
+    public Void visit(VariableReference variableReference) {
+        indent();
+        output.printf("Variable %s (%s)%n", variableReference.getDeclaration().getDeclName(),
+                variableReference.getFilePos());
         return null;
     }
 

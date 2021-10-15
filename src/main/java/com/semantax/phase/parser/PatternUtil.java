@@ -87,6 +87,7 @@ public class PatternUtil {
 
         PatternInvocation patternInvocation = invocationBuilder.build();
         patternInvocation.setType(pattern.getSemantics().getOutput().get().getRepresentedType());
+        patternInvocation.setFilePos(phrase.get(0).getFilePos());
         return patternInvocation;
     }
 

@@ -1,5 +1,8 @@
 package com.semantax.ast.node.literal.type;
 
+import com.semantax.ast.node.VariableDeclaration;
+import com.semantax.ast.type.Type;
+import com.semantax.ast.util.eventual.Eventual;
 import com.semantax.ast.visitor.AstVisitor;
 import com.semantax.ast.node.AstNode;
 import lombok.Builder;
@@ -11,13 +14,23 @@ import lombok.Getter;
  */
 @Builder
 @Getter
-public class NameTypeLitPair extends AstNode {
+public class NameTypeLitPair extends AstNode implements VariableDeclaration {
 
-    private String name;
-    private TypeLit type;
+    private final String name;
+    private final TypeLit type;
 
     @Override
     public <T> T accept(AstVisitor<T> visitor) {
         return visitor.visit(this);
+    }
+
+    @Override
+    public String getDeclName() {
+        return name;
+    }
+
+    @Override
+    public Type getDeclType() {
+        return type.getRepresentedType();
     }
 }

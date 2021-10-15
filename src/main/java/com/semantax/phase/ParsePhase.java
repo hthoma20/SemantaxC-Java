@@ -4,10 +4,19 @@ import com.semantax.ast.node.AstNode;
 import com.semantax.ast.node.Expression;
 import com.semantax.ast.node.Module;
 import com.semantax.ast.node.ParsableExpression;
+import com.semantax.ast.node.PhraseElement;
+import com.semantax.ast.node.VariableDeclaration;
+import com.semantax.ast.node.Word;
+import com.semantax.ast.node.literal.FunctionLit;
+import com.semantax.ast.node.literal.type.NameTypeLitPair;
+import com.semantax.ast.node.literal.type.TypeLit;
 import com.semantax.ast.node.pattern.PatternDefinition;
 import com.semantax.ast.node.Phrase;
 import com.semantax.ast.node.Program;
+import com.semantax.ast.node.progcall.DeclProgCall;
+import com.semantax.ast.type.Type;
 import com.semantax.ast.util.FilePos;
+import com.semantax.ast.util.eventual.Eventual;
 import com.semantax.ast.visitor.TraversalVisitor;
 import com.semantax.exception.CompilerException;
 import com.semantax.logger.ErrorLogger;
@@ -15,6 +24,7 @@ import com.semantax.phase.annotator.TypeAnnotator;
 import com.semantax.phase.parser.PhraseParser;
 
 import javax.inject.Inject;
+import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -85,6 +95,23 @@ public class ParsePhase extends TraversalVisitor<Void>
         patterns.peek().add(patternDefinition);
         patternDefinition.getSemantics().getInput().accept(typeAnnotator);
         patternDefinition.getSemantics().getOutput().ifPresent(output -> output.accept(typeAnnotator));
+        super.visit(patternDefinition);
+        return null;
+    }
+
+    @Override
+    public Void visit(FunctionLit function) {
+        pushNewSymbolTable();
+
+        SymbolTable symbolTable = symbolTables.peek();
+
+        for (NameTypeLitPair nameTypeLitPair : function.getInput().getNameTypeLitPairs()) {
+            symbolTable.add(nameTypeLitPair.getName(), nameTypeLitPair);
+        }
+
+        super.visit(function);
+
+        symbolTables.pop();
         return null;
     }
 
@@ -116,7 +143,61 @@ public class ParsePhase extends TraversalVisitor<Void>
         return null;
     }
 
+    @Override
+    public Void visit(DeclProgCall declProgCall) {
+        super.visit(declProgCall);
+
+        if (declProgCall.getSubExpressions().size() != 2) {
+            errorLogger.error(declProgCall.getFilePos(),
+                    "%s expects exactly two arguments: a name and type.",declProgCall.getName());
+            return null;
+        }
+
+        Optional<String> variableName = getVariableName(declProgCall);
+        Optional<Type> variableType = getVariableType(declProgCall);
+
+        if (!variableName.isPresent() || !variableType.isPresent()) {
+            errorLogger.error(declProgCall.getFilePos(), "%s expects a name and type.", declProgCall.getDeclName());
+            return null;
+        }
+
+        declProgCall.setDeclName(variableName.get());
+        declProgCall.setDeclType(variableType.get());
+
+        symbolTables.peek().add(variableName.get(), declProgCall);
+        return null;
+    }
+
     /////////////// Util methods //////////////////////////
+
+    /**
+     * Get the variable name in the decl if it exists
+     * otherwise return Optional.empty()
+     */
+    private Optional<String> getVariableName(DeclProgCall declProgCall) {
+        if (declProgCall.getSubExpressions().size() < 1 ||
+                declProgCall.getSubExpressions().get(0).getPhrase().getPhrase().size() != 1) {
+            return Optional.empty();
+        }
+        PhraseElement arg = declProgCall.getSubExpressions().get(0).getPhrase().getPhrase().get(0);
+        if (!(arg instanceof Word)) {
+            return Optional.empty();
+        }
+        return Optional.of(((Word) arg).getValue());
+    }
+
+    /**
+     * Get the variable type in the decl if it exists
+     * otherwise return Optional.empty()
+     */
+    private Optional<Type> getVariableType(DeclProgCall declProgCall) {
+        if (declProgCall.getSubExpressions().size() < 2 ||
+                !(declProgCall.getSubExpressions().get(0).getExpression() instanceof TypeLit)) {
+            return Optional.empty();
+        }
+        Type type = ((TypeLit) declProgCall.getSubExpressions().get(0).getExpression()).getRepresentedType();
+        return Optional.of(type);
+    }
 
     private void pushNewSymbolTable() {
         Optional<SymbolTable> parent = symbolTables.isEmpty() ?

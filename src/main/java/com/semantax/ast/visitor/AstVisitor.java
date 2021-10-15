@@ -5,6 +5,7 @@ import com.semantax.ast.node.literal.*;
 import com.semantax.ast.node.literal.type.*;
 import com.semantax.ast.node.list.AstNodeList;
 import com.semantax.ast.node.pattern.PatternDefinition;
+import com.semantax.ast.node.pattern.PatternInvocation;
 import com.semantax.ast.node.progcall.AddIntProgCall;
 import com.semantax.ast.node.progcall.DeclProgCall;
 import com.semantax.ast.node.progcall.PrintIntProgCall;
@@ -54,6 +55,9 @@ public interface AstVisitor<T> {
     T visit(Phrase phrase);
     T visit(PatternDefinition patternDefinition);
     T visit(ParsableExpression parsableExpression);
+
+    T visit(PatternInvocation patternInvocation);
+    T visit(VariableReference variableReference);
 
     <N extends AstNode> T visit(AstNodeList<N> nodes);
 

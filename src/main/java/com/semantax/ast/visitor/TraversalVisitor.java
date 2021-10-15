@@ -5,6 +5,7 @@ import com.semantax.ast.node.list.AstNodeList;
 import com.semantax.ast.node.literal.*;
 import com.semantax.ast.node.literal.type.*;
 import com.semantax.ast.node.pattern.PatternDefinition;
+import com.semantax.ast.node.pattern.PatternInvocation;
 import com.semantax.ast.node.progcall.AddIntProgCall;
 import com.semantax.ast.node.progcall.DeclProgCall;
 import com.semantax.ast.node.progcall.PrintIntProgCall;
@@ -202,6 +203,19 @@ public class TraversalVisitor<T> implements AstVisitor<T> {
         else {
             parsableExpression.getPhrase().accept(this);
         }
+        return null;
+    }
+
+    @Override
+    public T visit(PatternInvocation patternInvocation) {
+        patternInvocation.getArguments().forEach((name, expression) -> {
+            expression.accept(this);
+        });
+        return null;
+    }
+
+    @Override
+    public T visit(VariableReference variableReference) {
         return null;
     }
 

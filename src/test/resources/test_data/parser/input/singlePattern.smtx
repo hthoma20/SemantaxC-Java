@@ -1,9 +1,10 @@
-main module Thing {
+main module SinglePattern {
 
     $a + b$
     (a: int, b: int) -> int {
         @addint(a, b)
     }
 
-    @printint(5 + 2);
+    @printint(5 + 6);
+
 }

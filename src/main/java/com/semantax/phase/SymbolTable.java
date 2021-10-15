@@ -1,5 +1,6 @@
 package com.semantax.phase;
 
+import com.semantax.ast.node.VariableDeclaration;
 import com.semantax.ast.node.progcall.DeclProgCall;
 import com.semantax.exception.CompilerException;
 import lombok.Builder;
@@ -17,7 +18,7 @@ import java.util.Optional;
 @Builder(builderClassName = "Builder")
 public class SymbolTable {
 
-    private final Map<String, DeclProgCall> table = new HashMap<>();
+    private final Map<String, VariableDeclaration> table = new HashMap<>();
 
     private final Optional<SymbolTable> parent;
 
@@ -27,7 +28,7 @@ public class SymbolTable {
      * @param name the name to lookup
      * @return an @decl with the given name
      */
-    public Optional<DeclProgCall> lookup(String name) {
+    public Optional<VariableDeclaration> lookup(String name) {
         if (table.containsKey(name)) {
             return Optional.of(table.get(name));
         }
@@ -35,7 +36,7 @@ public class SymbolTable {
         return parent.flatMap(par -> par.lookup(name));
     }
 
-    public void add(String name, DeclProgCall decl) {
+    public void add(String name, VariableDeclaration decl) {
         if (table.containsKey(name)) {
             throw CompilerException.of("SymbolTable already contains key %s", name);
         }
