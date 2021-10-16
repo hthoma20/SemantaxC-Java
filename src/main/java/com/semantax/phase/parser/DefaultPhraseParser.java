@@ -148,7 +148,7 @@ public class DefaultPhraseParser implements PhraseParser {
      */
     private void reduce(List<PhraseElement> stack, PatternDefinition pattern) {
         List<PhraseElement> phrase = pop(stack, pattern.getSyntax().size());
-        PatternInvocation parsedPhrase = patternUtil.parse(phrase, pattern);
+        PatternInvocation parsedPhrase = patternUtil.parse(phrase, pattern, symbolTable);
         stack.add(parsedPhrase);
     }
 
@@ -162,7 +162,7 @@ public class DefaultPhraseParser implements PhraseParser {
             return false;
         }
 
-        return patternUtil.matches(peek(stack, pattern.getSyntax().size()), pattern);
+        return patternUtil.matches(peek(stack, pattern.getSyntax().size()), pattern, symbolTable);
     }
 
     private List<PatternDefinition> reductionCandidates(List<PhraseElement> stack) {

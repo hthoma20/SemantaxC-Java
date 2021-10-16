@@ -2,17 +2,21 @@ package com.semantax.phase.parser;
 
 import com.semantax.ast.node.Expression;
 import com.semantax.ast.node.ParsableExpression;
+import com.semantax.ast.node.VariableDeclaration;
+import com.semantax.ast.node.VariableReference;
 import com.semantax.ast.node.pattern.PatternDefinition;
 import com.semantax.ast.node.pattern.PatternInvocation;
 import com.semantax.ast.node.PhraseElement;
 import com.semantax.ast.node.Word;
 import com.semantax.ast.type.Type;
 import com.semantax.exception.CompilerException;
+import com.semantax.phase.SymbolTable;
 import com.semantax.phase.annotator.TypeAssignabilityChecker;
 import lombok.AllArgsConstructor;
 
 import javax.inject.Inject;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -29,11 +33,11 @@ public class PatternUtil {
      * @param pattern the pattern to get elements for
      * @return a list of PatternElements to be used to determine a match
      */
-    public List<PatternElement> patternElements(PatternDefinition pattern) {
+    public List<PatternElement> patternElements(PatternDefinition pattern, SymbolTable symbolTable) {
         Set<String> variables = pattern.getVariables();
         return pattern.getSyntax().stream()
                 .map(word -> variables.contains(word.getValue()) ?
-                        new VariableElement(pattern.getType(word.getValue())) :
+                        new VariableElement(pattern.getType(word.getValue()), symbolTable) :
                         new WordElement(word))
                 .collect(Collectors.toList());
     }
@@ -41,14 +45,15 @@ public class PatternUtil {
     /**
      * @param phrase the phrase to check
      * @param pattern the pattern to check against
+     * @param symbolTable the symbol table in which to lookup words
      * @return whether the given phrase matches the given pattern
      */
-    public boolean matches(List<PhraseElement> phrase, PatternDefinition pattern) {
+    public boolean matches(List<PhraseElement> phrase, PatternDefinition pattern, SymbolTable symbolTable) {
         if (phrase.size() != pattern.getSyntax().size()) {
             return false;
         }
 
-        List<PatternElement> patternElements = patternElements(pattern);
+        List<PatternElement> patternElements = patternElements(pattern, symbolTable);
 
         for (int i = 0; i < phrase.size(); i++) {
             if (!patternElements.get(i).matches(phrase.get(i))) {
@@ -63,9 +68,10 @@ public class PatternUtil {
      *
      * @param phrase the phrase to parse
      * @param pattern the pattern to parse with
+     * @param symbolTable the symbol table to lookup variables
      * @return a pattern invocation for the given pattern and the given phrase
      */
-    public PatternInvocation parse(List<PhraseElement> phrase, PatternDefinition pattern) {
+    public PatternInvocation parse(List<PhraseElement> phrase, PatternDefinition pattern, SymbolTable symbolTable) {
 
         if (!pattern.getSemantics().getOutput().isPresent()) {
             throw CompilerException.of("Unexpected call without pattern return type");
@@ -77,11 +83,31 @@ public class PatternUtil {
                 .patternDefinition(pattern);
 
         for (int i = 0; i < phrase.size(); i++) {
-            String patternWord = pattern.getSyntax().get(i).getValue();
-            if (variables.contains(patternWord)) {
-                Expression argument = phrase.get(i) instanceof Expression ?
-                        (Expression) phrase.get(i) : ((ParsableExpression) phrase.get(i)).getExpression();
-                invocationBuilder.argument(patternWord, argument);
+
+            PhraseElement phraseElement = phrase.get(i);
+            Word patternElement = pattern.getSyntax().get(i);
+
+            // if this position in the pattern is a variable
+            if (variables.contains(patternElement.getValue())) {
+
+                Expression argument;
+
+                if (phraseElement instanceof Expression) {
+                    argument = (Expression) phraseElement;
+                }
+                else if (phraseElement instanceof ParsableExpression) {
+                    argument = ((ParsableExpression) phraseElement).getExpression();
+                }
+                else if (phraseElement instanceof Word) {
+                    argument = VariableReference.builder()
+                            .declaration(symbolTable.lookup(((Word) phraseElement).getValue()).get())
+                            .buildWith(phraseElement.getFilePos());
+                }
+                else {
+                    throw CompilerException.of("Unexpected phrase element: [%s]", phraseElement);
+                }
+
+                invocationBuilder.argument(patternElement.getValue(), argument);
             }
         }
 
@@ -90,6 +116,7 @@ public class PatternUtil {
         patternInvocation.setFilePos(phrase.get(0).getFilePos());
         return patternInvocation;
     }
+
 
     @AllArgsConstructor
     private static class WordElement implements PatternElement {
@@ -108,6 +135,7 @@ public class PatternUtil {
     @AllArgsConstructor
     private class VariableElement implements PatternElement {
         private final Type type;
+        private final SymbolTable symbolTable;
 
         @Override
         public boolean matches(PhraseElement phraseElement) {
@@ -119,6 +147,13 @@ public class PatternUtil {
             }
             else if (phraseElement instanceof ParsableExpression) {
                 phraseElementType = ((ParsableExpression) phraseElement).getExpression().getType();
+            }
+            else if (phraseElement instanceof Word) {
+                Optional<VariableDeclaration> variable = symbolTable.lookup(((Word) phraseElement).getValue());
+                if (!variable.isPresent()) {
+                    return false;
+                }
+                phraseElementType = variable.get().getDeclType();
             }
             else {
                 return false;

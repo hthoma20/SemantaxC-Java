@@ -5,7 +5,7 @@ import com.semantax.ast.node.Expression;
 import com.semantax.ast.node.Module;
 import com.semantax.ast.node.ParsableExpression;
 import com.semantax.ast.node.PhraseElement;
-import com.semantax.ast.node.VariableDeclaration;
+import com.semantax.ast.node.VariableReference;
 import com.semantax.ast.node.Word;
 import com.semantax.ast.node.literal.FunctionLit;
 import com.semantax.ast.node.literal.type.NameTypeLitPair;
@@ -145,7 +145,6 @@ public class ParsePhase extends TraversalVisitor<Void>
 
     @Override
     public Void visit(DeclProgCall declProgCall) {
-        super.visit(declProgCall);
 
         if (declProgCall.getSubExpressions().size() != 2) {
             errorLogger.error(declProgCall.getFilePos(),
@@ -154,10 +153,13 @@ public class ParsePhase extends TraversalVisitor<Void>
         }
 
         Optional<String> variableName = getVariableName(declProgCall);
+
+        declProgCall.getSubExpressions().get(1).accept(this);
+
         Optional<Type> variableType = getVariableType(declProgCall);
 
         if (!variableName.isPresent() || !variableType.isPresent()) {
-            errorLogger.error(declProgCall.getFilePos(), "%s expects a name and type.", declProgCall.getDeclName());
+            errorLogger.error(declProgCall.getFilePos(), "%s expects a name and type.", declProgCall.getName());
             return null;
         }
 
@@ -175,14 +177,22 @@ public class ParsePhase extends TraversalVisitor<Void>
      * otherwise return Optional.empty()
      */
     private Optional<String> getVariableName(DeclProgCall declProgCall) {
+
         if (declProgCall.getSubExpressions().size() < 1 ||
                 declProgCall.getSubExpressions().get(0).getPhrase().getPhrase().size() != 1) {
             return Optional.empty();
         }
-        PhraseElement arg = declProgCall.getSubExpressions().get(0).getPhrase().getPhrase().get(0);
+
+        ParsableExpression nameExpression = declProgCall.getSubExpressions().get(0);
+        PhraseElement arg = nameExpression.getPhrase().getPhrase().get(0);
         if (!(arg instanceof Word)) {
             return Optional.empty();
         }
+
+        nameExpression.parseTo(VariableReference.builder()
+            .declaration(declProgCall)
+            .buildWith(nameExpression.getFilePos()));
+
         return Optional.of(((Word) arg).getValue());
     }
 
@@ -192,10 +202,10 @@ public class ParsePhase extends TraversalVisitor<Void>
      */
     private Optional<Type> getVariableType(DeclProgCall declProgCall) {
         if (declProgCall.getSubExpressions().size() < 2 ||
-                !(declProgCall.getSubExpressions().get(0).getExpression() instanceof TypeLit)) {
+                !(declProgCall.getSubExpressions().get(1).getExpression() instanceof TypeLit)) {
             return Optional.empty();
         }
-        Type type = ((TypeLit) declProgCall.getSubExpressions().get(0).getExpression()).getRepresentedType();
+        Type type = ((TypeLit) declProgCall.getSubExpressions().get(1).getExpression()).getRepresentedType();
         return Optional.of(type);
     }
 

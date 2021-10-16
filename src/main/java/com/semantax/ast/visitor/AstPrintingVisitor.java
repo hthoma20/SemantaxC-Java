@@ -110,10 +110,8 @@ public class AstPrintingVisitor extends TraversalVisitor<Void> {
         }
         if (declProgCall.hasDeclType()) {
             indent();
-            output.printf("type: %n");
-            depth++;
+            output.print("type: ");
             declProgCall.getDeclType().accept(this);
-            depth--;
         }
 
         return null;
@@ -409,7 +407,7 @@ public class AstPrintingVisitor extends TraversalVisitor<Void> {
 
     @Override
     public Void visit(IntType intType) {
-        output.print("int");
+        output.println("int");
         return null;
     }
 

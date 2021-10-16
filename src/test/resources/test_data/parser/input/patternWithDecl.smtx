@@ -1,0 +1,14 @@
+main module patternWithDecl {
+
+    $a + b$
+    (a: int, b: int) -> int {
+        @addint(a, b)
+    }
+
+    @decl(x, int);
+    @decl(y, int);
+
+    @printint(x + y);
+
+
+}

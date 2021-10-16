@@ -44,7 +44,9 @@ public class DefaultPhraseParserTest extends TestCase {
                 .build();
 
         List<PatternDefinition> patterns = Arrays.asList(INT_ADDITION_PATTERN, STRING_LENGTH_PATTERN);
-        SymbolTable symbolTable = SymbolTable.builder().build();
+        SymbolTable symbolTable = SymbolTable.builder()
+                .parent(Optional.empty())
+                .build();
 
         Optional<AstNode> result = phraseParser.parse(phrase, patterns, symbolTable);
 
@@ -65,7 +67,9 @@ public class DefaultPhraseParserTest extends TestCase {
                 .build();
 
         List<PatternDefinition> patterns = Arrays.asList(INT_ADDITION_PATTERN, ARRAY_APPEND_PATTERN);
-        SymbolTable symbolTable = SymbolTable.builder().build();
+        SymbolTable symbolTable = SymbolTable.builder()
+                .parent(Optional.empty())
+                .build();
 
         Optional<AstNode> result = phraseParser.parse(phrase, patterns, symbolTable);
 
@@ -86,7 +90,9 @@ public class DefaultPhraseParserTest extends TestCase {
                 .build();
 
         List<PatternDefinition> patterns = Arrays.asList(INT_ADDITION_PATTERN, ARRAY_PREPEND_PATTERN);
-        SymbolTable symbolTable = SymbolTable.builder().build();
+        SymbolTable symbolTable = SymbolTable.builder()
+                .parent(Optional.empty())
+                .build();
 
         Optional<AstNode> result = phraseParser.parse(phrase, patterns, symbolTable);
 

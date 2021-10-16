@@ -29,6 +29,7 @@ import java.util.Collection;
 import java.util.Optional;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verifyZeroInteractions;
 
 @RunWith(Parameterized.class)
 @RequiredArgsConstructor
@@ -61,6 +62,9 @@ public class ParsePhaseSnapshotTest extends TestCase {
 
         program = parsePhase.process(program.get());
         assertTrue(program.isPresent());
+
+        verifyZeroInteractions(errorLogger);
+
         new ParseAssertingVisitor().visit(program.get());
 
         snapshotTestUtil.assertMatchesSnapshot(testFile, program.get());
