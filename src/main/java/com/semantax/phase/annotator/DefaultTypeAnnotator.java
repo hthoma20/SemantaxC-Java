@@ -51,6 +51,16 @@ public class DefaultTypeAnnotator extends TraversalVisitor<Boolean> implements T
     }
 
     @Override
+    public Boolean visit(ParsableExpression parsableExpression) {
+        // if we see a PE which is already parsed to an expression, then
+        // it has already been type annotated
+        if (!parsableExpression.hasExpression()) {
+            super.visit(parsableExpression);
+        }
+        return true;
+    }
+
+    @Override
     public Boolean visit(IntLit intLit) {
         intLit.setType(IntType.INT_TYPE);
         return true;
@@ -212,18 +222,21 @@ public class DefaultTypeAnnotator extends TraversalVisitor<Boolean> implements T
 
     @Override
     public Boolean visit(DeclProgCall progCall) {
+        super.visit(progCall);
         progCall.setType(VoidType.VOID_TYPE);
         return true;
     }
 
     @Override
     public Boolean visit(PrintIntProgCall progCall) {
+        super.visit(progCall);
         progCall.setType(VoidType.VOID_TYPE);
         return true;
     }
 
     @Override
     public Boolean visit(AddIntProgCall progCall) {
+        super.visit(progCall);
         progCall.setType(IntType.INT_TYPE);
         return true;
     }

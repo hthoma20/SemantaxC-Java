@@ -12,7 +12,7 @@ main module multiplePatterns {
 
     $a and b$
     (a: bool, b: bool) -> bool {
-        false
+        @return(false);
     }
 
     5 < 6 and 10 < 4;

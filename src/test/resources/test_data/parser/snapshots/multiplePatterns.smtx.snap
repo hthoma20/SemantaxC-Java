@@ -48,8 +48,15 @@ Program {
                   )
                output:
                   bool (14:27)
-               expression:
-                  BoolLit false (15:9)
+               statements:
+                  StatementList [ (15:9)
+                     Statement { (15:9)
+                        @return (15:9)
+                           ParsableExpressionList [ (15:17)
+                              BoolLit false (15:17)
+                           ]
+                     }
+                  ]
             )
          ]
          Statement { (18:5)

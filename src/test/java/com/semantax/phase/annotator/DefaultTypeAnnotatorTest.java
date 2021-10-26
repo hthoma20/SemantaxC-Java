@@ -42,6 +42,7 @@ import static com.semantax.ast.type.TypeType.TYPE_TYPE;
 import static com.semantax.testutil.AstUtil.asList;
 import static com.semantax.testutil.AstUtil.pair;
 import static com.semantax.testutil.AstUtil.parsedTo;
+import static com.semantax.testutil.AstUtil.withType;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyVararg;
 import static org.mockito.Matchers.eq;
@@ -86,8 +87,8 @@ public class DefaultTypeAnnotatorTest extends TestCase {
 
     public void test_array_positive() {
         // given
-        ParsableExpression e0 = parsedTo(new IntLit(5));
-        ParsableExpression e1 = parsedTo(new IntLit(10));
+        ParsableExpression e0 = parsedTo(withType(new IntLit(5), INT_TYPE));
+        ParsableExpression e1 = parsedTo(withType(new IntLit(10), INT_TYPE));
 
         // [5, 10]
         ArrayLit arrayLit = ArrayLit.builder()
@@ -105,8 +106,8 @@ public class DefaultTypeAnnotatorTest extends TestCase {
 
     public void test_array_negative() {
         // given
-        ParsableExpression e0 = parsedTo(new IntLit(5));
-        ParsableExpression e1 = parsedTo(new BoolLit(true));
+        ParsableExpression e0 = parsedTo(withType(new IntLit(5), INT_TYPE));
+        ParsableExpression e1 = parsedTo(withType(new BoolLit(true), BOOL_TYPE));
 
         FilePos filePos = FilePos.none();
 
@@ -127,8 +128,8 @@ public class DefaultTypeAnnotatorTest extends TestCase {
         // given
         RecordLit recordLit = RecordLit.builder()
                 .nameParsableExpressionPairs(asList(NameParsableExpressionPairList.class,
-                        pair("a", parsedTo(new IntLit(5))),
-                        pair("b", parsedTo(new BoolLit(true)))))
+                        pair("a", parsedTo(withType(new IntLit(5), INT_TYPE))),
+                        pair("b", parsedTo(withType(new BoolLit(true), BOOL_TYPE)))))
                 .build();
 
         // when
@@ -152,8 +153,8 @@ public class DefaultTypeAnnotatorTest extends TestCase {
 
         RecordLit recordLit = RecordLit.builder()
                 .nameParsableExpressionPairs(asList(NameParsableExpressionPairList.class,
-                        pair("a", parsedTo(new IntLit(5))),
-                        pair("a", parsedTo(new BoolLit(true)))))
+                        pair("a", parsedTo(withType(new IntLit(5), INT_TYPE))),
+                        pair("a", parsedTo(withType(new BoolLit(true), BOOL_TYPE)))))
                 .buildWith(filePos);
 
         // when
