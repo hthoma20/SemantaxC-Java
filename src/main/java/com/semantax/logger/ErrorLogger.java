@@ -1,6 +1,7 @@
 package com.semantax.logger;
 
 import com.semantax.ast.util.FilePos;
+import com.semantax.error.ErrorType;
 import com.semantax.module.UtilModule;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,7 +28,7 @@ public class ErrorLogger {
     }
 
 
-    public void error(FilePos filePos, String message, Object... args) {
+    public void error(ErrorType errorType, FilePos filePos, String message, Object... args) {
         synchronized (errors) {
             errors.add(Error.builder()
                         .message(String.format(message, args))

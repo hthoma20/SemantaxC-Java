@@ -1,5 +1,6 @@
 package com.semantax.phase;
 
+import com.semantax.error.ErrorType;
 import com.semantax.logger.ErrorLogger;
 import junit.framework.TestCase;
 
@@ -11,6 +12,7 @@ import java.util.Optional;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.anyVararg;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
@@ -25,7 +27,7 @@ public class GrammarPhaseTest extends TestCase {
         InputStream input = asInputStream("not a program");
 
         assertEquals(Optional.empty(), grammarPhase.process(input));
-        verify(mockErrorLogger).error(any(), anyString(), anyVararg());
+        verify(mockErrorLogger).error(eq(ErrorType.PROGRAM_PARSE_ERROR), any(), anyString(), anyVararg());
     }
 
     public void test_process_returnsProgram() {

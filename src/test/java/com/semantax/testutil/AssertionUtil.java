@@ -1,27 +1,15 @@
 package com.semantax.testutil;
 
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.Description;
+
 import java.util.Optional;
+import java.util.function.Predicate;
 
 import static junit.framework.TestCase.assertTrue;
+import static org.mockito.Matchers.argThat;
 
 public class AssertionUtil {
-    /**
-     * Return a throwable thrown by the given runnable, or Optional.empty if
-     * the runnable didn't throw
-     *
-     * @param runnable the Runnable to run
-     * @return the exception thrown by the runnable
-     */
-    public static Optional<Throwable> thrown(Runnable runnable) {
-        try {
-            runnable.run();
-        }
-        catch (Throwable exc) {
-            return Optional.of(exc);
-        }
-
-        return Optional.empty();
-    }
 
     /**
      * assert that a < b
@@ -31,5 +19,18 @@ public class AssertionUtil {
      */
     public static void assertLessThan(int a, int b) {
         assertTrue(String.format("Expected %d < %d", a, b), a < b);
+    }
+
+    public static <T> T matchesPred(Predicate<T> predicate) {
+        return argThat(new BaseMatcher<T>() {
+
+            @Override
+            public void describeTo(Description description) { }
+
+            @Override
+            public boolean matches(Object o) {
+                return predicate.test((T) o);
+            }
+        });
     }
 }

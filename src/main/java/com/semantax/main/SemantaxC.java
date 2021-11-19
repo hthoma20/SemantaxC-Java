@@ -3,6 +3,7 @@ package com.semantax.main;
 import com.semantax.ast.node.Program;
 import com.semantax.ast.util.FilePos;
 import com.semantax.ast.visitor.AstPrintingVisitor;
+import com.semantax.error.ErrorType;
 import com.semantax.logger.ErrorLogger;
 import com.semantax.main.args.SemantaxCArgs;
 import com.semantax.phase.GrammarPhase;
@@ -40,8 +41,16 @@ public class SemantaxC {
     public void execute(SemantaxCArgs args) {
 
         if (args.getInputFiles().size() != 1) {
-            errorLogger.error(FilePos.none(), "Exactly 1 file is required, but %d were given",
-                    args.getInputFiles().size());
+
+            if (args.getInputFiles().size() == 0) {
+                errorLogger.error(ErrorType.MISSING_INPUT_FILE, FilePos.none(),
+                        "Exactly 1 file is required, but none were given");
+            }
+            else {
+                errorLogger.error(ErrorType.TOO_MANY_INPUT_FILES, FilePos.none(),
+                        "Exactly 1 file is required, but %d were given", args.getInputFiles().size());
+            }
+
             errorLogger.flush();
             return;
         }
@@ -50,7 +59,7 @@ public class SemantaxC {
         Optional<InputStream> inputStream = getInputStream(filePath);
 
         if (!inputStream.isPresent()) {
-            errorLogger.error(FilePos.none(), "Couldn't open file: %s", filePath);
+            errorLogger.error(ErrorType.INVALID_FILE, FilePos.none(), "Couldn't open file: %s", filePath);
             errorLogger.flush();
             return;
         }
@@ -58,7 +67,6 @@ public class SemantaxC {
         Optional<Program> program = grammarPhase.process(inputStream.get());
 
         if (!program.isPresent()) {
-            errorLogger.error(FilePos.none(), "Error parsing file: %s", filePath);
             errorLogger.flush();
             return;
         }
@@ -66,7 +74,6 @@ public class SemantaxC {
         program = parsePhase.process(program.get());
 
         if (!program.isPresent()) {
-            errorLogger.error(FilePos.none(), "Error in file: %s", filePath);
             errorLogger.flush();
             return;
         }

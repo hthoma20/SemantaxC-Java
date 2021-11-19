@@ -16,15 +16,14 @@ import com.semantax.ast.node.Program;
 import com.semantax.ast.node.progcall.DeclProgCall;
 import com.semantax.ast.type.Type;
 import com.semantax.ast.util.FilePos;
-import com.semantax.ast.util.eventual.Eventual;
 import com.semantax.ast.visitor.TraversalVisitor;
+import com.semantax.error.ErrorType;
 import com.semantax.exception.CompilerException;
 import com.semantax.logger.ErrorLogger;
 import com.semantax.phase.annotator.TypeAnnotator;
 import com.semantax.phase.parser.PhraseParser;
 
 import javax.inject.Inject;
-import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -65,7 +64,6 @@ public class ParsePhase extends TraversalVisitor<Void>
 
         Optional<Module> mainModule = mainModule(program);
         if (!mainModule.isPresent()) {
-            errorLogger.error(program.getFilePos(), "The given program has no main module");
             return Optional.empty();
         }
 
@@ -127,7 +125,7 @@ public class ParsePhase extends TraversalVisitor<Void>
                 phraseParser.parse(phrase, currentPatterns(), symbolTables.peek());
 
         if (!optionalParsedPhrase.isPresent()) {
-            errorLogger.error(parsableExpression.getFilePos(), "Couldn't parse phrase");
+            errorLogger.error(ErrorType.UNPARSABLE_PHRASE, parsableExpression.getFilePos(), "Couldn't parse phrase");
             return null;
         }
 
@@ -147,7 +145,7 @@ public class ParsePhase extends TraversalVisitor<Void>
     public Void visit(DeclProgCall declProgCall) {
 
         if (declProgCall.getSubExpressions().size() != 2) {
-            errorLogger.error(declProgCall.getFilePos(),
+            errorLogger.error(ErrorType.ILLEGAL_DECL, declProgCall.getFilePos(),
                     "%s expects exactly two arguments: a name and type.",declProgCall.getName());
             return null;
         }
@@ -159,7 +157,8 @@ public class ParsePhase extends TraversalVisitor<Void>
         Optional<Type> variableType = getVariableType(declProgCall);
 
         if (!variableName.isPresent() || !variableType.isPresent()) {
-            errorLogger.error(declProgCall.getFilePos(), "%s expects a name and type.", declProgCall.getName());
+            errorLogger.error(ErrorType.ILLEGAL_DECL, declProgCall.getFilePos(),
+                    "%s expects a name and type.", declProgCall.getName());
             return null;
         }
 
@@ -235,12 +234,13 @@ public class ParsePhase extends TraversalVisitor<Void>
                 .collect(Collectors.toList());
 
         if (modules.size() > 1) {
-            errorLogger.error(modules.get(0).getFilePos(), "Found %d main modules, exactly 1 required", modules.size());
+            errorLogger.error(ErrorType.MULTIPLE_MAIN_MODULES, modules.get(0).getFilePos(),
+                    "Found %d main modules, exactly 1 required", modules.size());
             return Optional.empty();
         }
 
         if (modules.size() == 0 ) {
-            errorLogger.error(FilePos.none(), "No main module provided");
+            errorLogger.error(ErrorType.MISSING_MAIN_MODULE, FilePos.none(), "No main module provided");
             return Optional.empty();
         }
 

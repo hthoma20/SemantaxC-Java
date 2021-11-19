@@ -20,15 +20,12 @@ import com.semantax.ast.node.literal.type.RecordTypeLit;
 import com.semantax.ast.node.literal.type.StringTypeLit;
 import com.semantax.ast.node.literal.type.TypeLit;
 import com.semantax.ast.type.ArrayType;
-import com.semantax.ast.type.BoolType;
 import com.semantax.ast.type.FuncType;
 import com.semantax.ast.type.IntType;
-import com.semantax.ast.type.NameTypePair;
 import com.semantax.ast.type.RecordType;
-import com.semantax.ast.type.StringType;
 import com.semantax.ast.type.Type;
-import com.semantax.ast.type.TypeType;
 import com.semantax.ast.util.FilePos;
+import com.semantax.error.ErrorType;
 import com.semantax.logger.ErrorLogger;
 import junit.framework.TestCase;
 
@@ -121,7 +118,7 @@ public class DefaultTypeAnnotatorTest extends TestCase {
 
         // then
         assertFalse(result);
-        verify(errorLogger).error(eq(filePos), any(), anyVararg());
+        verify(errorLogger).error(eq(ErrorType.HETEROGENEOUS_ARRAY), eq(filePos), any(), anyVararg());
     }
 
     public void test_record_positive() {
@@ -162,7 +159,7 @@ public class DefaultTypeAnnotatorTest extends TestCase {
 
         // then
         assertFalse(result);
-        verify(errorLogger).error(eq(filePos), any(), any());
+        verify(errorLogger).error(eq(ErrorType.DUPLICATE_RECORD_NAME), eq(filePos), any(), anyVararg());
     }
 
     public void test_func_withOutput() {

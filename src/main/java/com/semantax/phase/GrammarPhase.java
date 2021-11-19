@@ -2,8 +2,7 @@ package com.semantax.phase;
 
 import com.semantax.ast.node.Program;
 import com.semantax.ast.util.FilePos;
-import com.semantax.exception.InvalidArgumentsException;
-import com.semantax.exception.ProgramErrorException;
+import com.semantax.error.ErrorType;
 import com.semantax.logger.ErrorLogger;
 import com.semantax.parser.generated.ParseException;
 import com.semantax.parser.generated.SemantaxParser;
@@ -31,7 +30,8 @@ public class GrammarPhase implements Phase<InputStream, Program> {
             return Optional.of(parser.Program());
         }
         catch (ParseException exc) {
-            errorLogger.error(FilePos.none(), "Error parsing program: %s", exc.getMessage());
+            errorLogger.error(ErrorType.PROGRAM_PARSE_ERROR, FilePos.from(exc.currentToken),
+                    "Error parsing program: %s", exc.getMessage());
             return Optional.empty();
         }
     }

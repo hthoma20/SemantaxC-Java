@@ -31,6 +31,7 @@ import com.semantax.ast.type.Type;
 import com.semantax.ast.type.TypeType;
 import com.semantax.ast.type.VoidType;
 import com.semantax.ast.visitor.TraversalVisitor;
+import com.semantax.error.ErrorType;
 import com.semantax.logger.ErrorLogger;
 
 import javax.inject.Inject;
@@ -92,7 +93,8 @@ public class DefaultTypeAnnotator extends TraversalVisitor<Boolean> implements T
 
         for (ParsableExpression element : arrayLit.getValues()) {
             if (!typeAssignabilityChecker.isAssignable(subType, element.getExpression().getType())) {
-                errorLogger.error(arrayLit.getFilePos(), "Array does not have elements of the same type");
+                errorLogger.error(ErrorType.HETEROGENEOUS_ARRAY, arrayLit.getFilePos(),
+                        "Array does not have elements of the same type");
                 return false;
             }
         }
@@ -115,7 +117,8 @@ public class DefaultTypeAnnotator extends TraversalVisitor<Boolean> implements T
         // check that all names are unique
         Set<String> duplicateNames = recordTypeUtil.getDuplicateNames(recordLit);
         if (!duplicateNames.isEmpty()) {
-            errorLogger.error(recordLit.getFilePos(), "Record has duplicate name(s): %s",
+            errorLogger.error(ErrorType.DUPLICATE_RECORD_NAME, recordLit.getFilePos(),
+                    "Record has duplicate name(s): %s",
                     String.join(",", duplicateNames));
             return false;
         }
@@ -185,7 +188,8 @@ public class DefaultTypeAnnotator extends TraversalVisitor<Boolean> implements T
         // check that all names are unique
         Set<String> duplicateNames = recordTypeUtil.getDuplicateNames(recordTypeLit);
         if (!duplicateNames.isEmpty()) {
-            errorLogger.error(recordTypeLit.getFilePos(), "Record has duplicate name(s): %s",
+            errorLogger.error(ErrorType.DUPLICATE_RECORD_TYPE_NAME, recordTypeLit.getFilePos(),
+                    "Record type has duplicate name(s): %s",
                     String.join(",", duplicateNames));
             return false;
         }
