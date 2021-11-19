@@ -66,7 +66,8 @@ public class DefaultPhraseParser implements PhraseParser {
     public Optional<AstNode> parse(Phrase phrase,
                                    List<PatternDefinition> patterns,
                                    SymbolTable symbolTable) {
-
+        // If a phrase is only one element, it should either
+        // be an expression or a variable reference
         if (phrase.getPhrase().size() == 1) {
             PhraseElement element = phrase.getPhrase().get(0);
             if (element instanceof Expression) {

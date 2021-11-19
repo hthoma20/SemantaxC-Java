@@ -1,0 +1,45 @@
+main module arrays {
+
+    $n * ar$
+    (n: int, ar: array(string)) -> array(string) {
+        ["hello", "world"]
+    }
+
+    $ar.length$
+    (ar: array(string)) -> int {
+        @return(5);
+    }
+
+    $ar[index]$
+    (ar: array(string), index: int) -> string {
+        @return("foo");
+    }
+
+    $ar[indices]$
+    (ar: array(string), indices: array(int)) -> array(string) {
+        @return(["foo", "bar"]);
+    }
+
+    ["foo", "bar", "baz"][0];
+    ["foo", "bar", "baz"][[1,2]];
+
+
+    $ [ str ] $
+    (str: string) -> array(string) {
+        [str,]
+    }
+
+    [ "foo", ];
+    [ "foo" ];
+
+    @decl(x, array(string));
+    x[10];
+
+    $ar[i]$
+    (ar: array(int), i: int) -> int { 0 }
+
+    $[element]$
+    (element: int) -> array(int) { [element,] }
+
+    [1][0];
+}

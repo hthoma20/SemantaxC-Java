@@ -7,7 +7,9 @@ options {
 PARSER_BEGIN(SemantaxParser)
 package com.semantax.parser.generated;
 
+import java.util.Iterator;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 import com.semantax.ast.factory.*;
 import com.semantax.ast.node.*;
@@ -17,9 +19,36 @@ import com.semantax.ast.node.literal.type.*;
 import com.semantax.ast.node.pattern.PatternDefinition;
 import com.semantax.ast.node.progcall.ProgCall;
 import com.semantax.ast.util.FilePos;
+import com.semantax.phase.grammar.*;
+
+import java.lang.reflect.Field;
 
 @SuppressWarnings("unchecked")
-public class SemantaxParser {}
+public class SemantaxParser {
+
+    private final LookaheadUtil lookaheadUtil = new LookaheadUtil(this);
+
+    public Iterator<Token> iterateTokens() {
+          return new Iterator<Token>() {
+
+              private Token curr = token;
+
+              @Override
+              public boolean hasNext() {
+                  if (curr.next == null) {
+                      curr.next = token_source.getNextToken();
+                  }
+                  return token.next != null;
+              }
+
+              @Override
+              public Token next() {
+                  curr = curr.next;
+                  return curr;
+              }
+          };
+    }
+}
 
 PARSER_END(SemantaxParser)
 
@@ -201,17 +230,19 @@ WordList CommaDelimitedWordList() :
 }
 
 // list of two or more words separated by whitespace
-WordList SpaceDelimitedWordSymbolList() :
+WordList PatternWordSymbolList() :
 {
     Word word;
     WordList words = new WordList();
 }
 {
-    (word = Word() |
-     word = Symbol())
+    (word = Word()
+     |
+     word = PatternSymbol())
     {words.add(word);}
-    ((word = Word() |
-     word = Symbol())
+    ((word = Word()
+     |
+     word = PatternSymbol())
      {words.add(word);}
     )+
     {return words;}
@@ -226,15 +257,51 @@ Word Word() :
     {return WordFactory.fromToken(t);}
 }
 
-Word Symbol() :
+Word PatternSymbol() :
+{
+    Word word;
+}
+{
+    // [] and : are not included in the symbol token, since they are tokens in thier own right
+    (word = PhraseSymbol()
+    |
+    word = RBracket(LookaheadUtil.BracketConsumer.PATTERN)
+    |
+    word = LBracket(LookaheadUtil.BracketConsumer.PATTERN)
+    )
+    {return word;}
+}
+
+Word PhraseSymbol() :
 {
     Token t;
 }
 {
-    // [] and : are not included in the symbol token, since they are tokens in thier own right
     t = <SYMBOL>
     {return Word.fromToken(t);}
 }
+
+
+Word LBracket(LookaheadUtil.BracketConsumer consumer) :
+{
+    Token t;
+}
+{
+    t = <L_BRACKET>
+    {lookaheadUtil.consumedLBracket(consumer);
+     return Word.fromToken(t);}
+}
+
+Word RBracket(LookaheadUtil.BracketConsumer consumer) :
+{
+    Token t;
+}
+{
+    t = <R_BRACKET>
+    {lookaheadUtil.consumedRBracket(consumer);
+     return Word.fromToken(t);}
+}
+
 
 Statement Statement() :
 {
@@ -251,8 +318,11 @@ Phrase Phrase() :
     Phrase.Builder builder = Phrase.builder();
 }
 {
-    (element = PhraseElement()
+
+    (LOOKAHEAD({!lookaheadUtil.isEndOfPhrase()})
+    element = PhraseElement()
      {builder.element(element);})+
+
     {return builder.build();}
 }
 
@@ -264,13 +334,28 @@ PhraseElement PhraseElement() :
 {
     (element = Word()
     |
-    element = Symbol()
+    // Are we looking at an parameter list followed by a brace? (disambiguates a ( as a RecordLit or grouping)
+    LOOKAHEAD([FunctionLitPrefix(FunctionLit.builder())] <L_BRACE>)
+    element = FunctionLit()
     |
-    LOOKAHEAD(3) // resolves conflict with parenthesized phrase - this picks a record literal if there is a colon
-    element = Expression()
+    // Are we looking at "( <word> :"? (disambiguates ( as a grouping)
+    LOOKAHEAD(<L_PAREN> Word() <COLON> | <L_PAREN> <R_PAREN> )
+    element = RecordLit()
     |
     (<L_PAREN> subPhrase = Phrase() <R_PAREN>)
-        {element = ParsableExpression.fromPhrase(subPhrase);})
+     {element = ParsableExpression.fromPhrase(subPhrase);}
+    |
+    element = SimpleExpression()
+    |
+    element = PhraseSymbol()
+    |
+    // Are we looking at the beginning of an array? (disambiguates a [ as a Word)
+    LOOKAHEAD({lookaheadUtil.isArrayLit()})
+    element = ArrayLit()
+    |
+    element = LBracket(LookaheadUtil.BracketConsumer.SYMBOL)
+    |
+    element = RBracket(LookaheadUtil.BracketConsumer.SYMBOL))
 
 
     {return element;}
@@ -304,19 +389,25 @@ ParsableExpressionList EnforcedPhraseList() :
     head = Phrase()
     {phraseList.add(ParsableExpression.fromPhrase(head));}
     <COMMA>
-    [tail = PhraseList()
-    {phraseList.addAll(tail);}]
+    // An Bracket here means the array is 1 element
+    (LOOKAHEAD(<R_BRACKET>)
+    {}
+    |
+    tail = PhraseList()
+    {phraseList.addAll(tail);})
     {return phraseList;}
 }
 
-Expression Expression() :
+// A simple expression is one that requires no special look ahead rules
+// in a PhraseElement. This exludes ArrayLit, RecordLit, FuncLit
+Expression SimpleExpression() :
 {
     Expression exp;
 }
 {
     (exp = ProgCall()
     |
-    exp = Literal()
+    exp = SimpleLiteral()
     )
     {return exp;}
 }
@@ -337,14 +428,12 @@ ProgCall ProgCall() :
     {return ProgCallFactory.from(t, name, subPhrases);}
 }
 
-Literal Literal() :
+Literal SimpleLiteral() :
 {
     Literal lit;
 }
 {
     (lit = PrimitiveLiteral()
-    |
-    lit = CompoundLiteral()
     |
     lit = TypeLit()
     )
@@ -563,33 +652,21 @@ NameParsableExpressionPairList NamePhrasePairList() :
     {return namePhrasePairList;}
 }
 
-Literal CompoundLiteral() :
-{
-    Literal lit;
-}
-{
-    (lit = ArrayLit()
-    |
-    LOOKAHEAD([FunctionLitPrefix(FunctionLit.builder())] <L_BRACE>)
-    lit = FunctionLit()
-    |
-    lit = RecordLit()
-     )
-    {return lit;}
-}
-
 ArrayLit ArrayLit() :
 {
-    Token t;
+    Word t;
     ParsableExpressionList expressions = new ParsableExpressionList();
 }
 {
-    t = <L_BRACKET>
-    [expressions = EnforcedPhraseList()]
-    <R_BRACKET>
+    t = LBracket(LookaheadUtil.BracketConsumer.ARRAY_LIT)
+    (LOOKAHEAD(<R_BRACKET>)
+    {}
+    |
+    expressions = EnforcedPhraseList())
+    RBracket(LookaheadUtil.BracketConsumer.ARRAY_LIT)
     {return ArrayLit.builder()
                 .values(expressions)
-                .buildWith(FilePos.from(t));}
+                .buildWith(t.getFilePos());}
 }
 
 RecordLit RecordLit() :
@@ -678,7 +755,7 @@ PatternDefinition PatternDef() :
 }
 {
     t = <DOLLAR>
-    syntax = SpaceDelimitedWordSymbolList()
+    syntax = PatternWordSymbolList()
     {builder.syntax(syntax);}
     <DOLLAR>
     semantics = FunctionLit()

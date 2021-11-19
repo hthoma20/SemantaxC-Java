@@ -1,0 +1,233 @@
+Program {
+   ModuleList [ (1:13)
+      MAIN module arrays { (1:13)
+         Pattern: $n * ar$ [ (3:5)
+            FunctionLit (4:50)
+               input:
+                  record( (4:5)
+                     n: (4:6)
+                     int (4:9)
+                     ar: (4:14)
+                     array[ (4:18)
+                        string (4:24)
+                     ]
+                  )
+               output:
+                  array[ (4:36)
+                     string (4:42)
+                  ]
+               expression:
+                  ArrayLit (5:9) [
+                     ParsableExpressionList [ (5:10)
+                        StringLit hello (5:10)
+                        StringLit world (5:19)
+                     ]
+                  ]
+            )
+         ]
+         Pattern: $ar . length$ [ (8:5)
+            FunctionLit (9:32)
+               input:
+                  record( (9:5)
+                     ar: (9:6)
+                     array[ (9:10)
+                        string (9:16)
+                     ]
+                  )
+               output:
+                  int (9:28)
+               statements:
+                  StatementList [ (10:9)
+                     Statement { (10:9)
+                        @return (10:9)
+                           ParsableExpressionList [ (10:17)
+                              IntLit 5 (10:17)
+                           ]
+                     }
+                  ]
+            )
+         ]
+         Pattern: $ar [ index ]$ [ (13:5)
+            FunctionLit (14:47)
+               input:
+                  record( (14:5)
+                     ar: (14:6)
+                     array[ (14:10)
+                        string (14:16)
+                     ]
+                     index: (14:25)
+                     int (14:32)
+                  )
+               output:
+                  string (14:40)
+               statements:
+                  StatementList [ (15:9)
+                     Statement { (15:9)
+                        @return (15:9)
+                           ParsableExpressionList [ (15:17)
+                              StringLit foo (15:17)
+                           ]
+                     }
+                  ]
+            )
+         ]
+         Pattern: $ar [ indices ]$ [ (18:5)
+            FunctionLit (19:63)
+               input:
+                  record( (19:5)
+                     ar: (19:6)
+                     array[ (19:10)
+                        string (19:16)
+                     ]
+                     indices: (19:25)
+                     array[ (19:34)
+                        int (19:40)
+                     ]
+                  )
+               output:
+                  array[ (19:49)
+                     string (19:55)
+                  ]
+               statements:
+                  StatementList [ (20:9)
+                     Statement { (20:9)
+                        @return (20:9)
+                           ParsableExpressionList [ (20:17)
+                              ArrayLit (20:17) [
+                                 ParsableExpressionList [ (20:18)
+                                    StringLit foo (20:18)
+                                    StringLit bar (20:25)
+                                 ]
+                              ]
+                           ]
+                     }
+                  ]
+            )
+         ]
+         Statement { (23:5)
+            PatternInvocation: $ar [ index ]$ (23:5)
+               ar:
+                  ArrayLit (23:5) [
+                     ParsableExpressionList [ (23:6)
+                        StringLit foo (23:6)
+                        StringLit bar (23:13)
+                        StringLit baz (23:20)
+                     ]
+                  ]
+               index:
+                  IntLit 0 (23:27)
+         }
+         Statement { (24:5)
+            PatternInvocation: $ar [ indices ]$ (24:5)
+               ar:
+                  ArrayLit (24:5) [
+                     ParsableExpressionList [ (24:6)
+                        StringLit foo (24:6)
+                        StringLit bar (24:13)
+                        StringLit baz (24:20)
+                     ]
+                  ]
+               indices:
+                  ArrayLit (24:27) [
+                     ParsableExpressionList [ (24:28)
+                        IntLit 1 (24:28)
+                        IntLit 2 (24:30)
+                     ]
+                  ]
+         }
+         Pattern: $[ str ]$ [ (27:5)
+            FunctionLit (28:36)
+               input:
+                  record( (28:5)
+                     str: (28:6)
+                     string (28:11)
+                  )
+               output:
+                  array[ (28:22)
+                     string (28:28)
+                  ]
+               expression:
+                  ArrayLit (29:9) [
+                     ParsableExpressionList [ (29:10)
+                        Variable str (29:10)
+                     ]
+                  ]
+            )
+         ]
+         Statement { (32:5)
+            ArrayLit (32:5) [
+               ParsableExpressionList [ (32:7)
+                  StringLit foo (32:7)
+               ]
+            ]
+         }
+         Statement { (33:5)
+            PatternInvocation: $[ str ]$ (33:5)
+               str:
+                  StringLit foo (33:7)
+         }
+         Statement { (35:5)
+            @decl (35:5)
+               ParsableExpressionList [ (35:11)
+                  Variable x (35:11)
+                  array[ (35:14)
+                     string (35:20)
+                  ]
+               ]
+            name: x
+            type: array(string)         }
+         Statement { (36:5)
+            PatternInvocation: $ar [ index ]$ (36:5)
+               ar:
+                  Variable x (36:5)
+               index:
+                  IntLit 10 (36:7)
+         }
+         Pattern: $ar [ i ]$ [ (38:5)
+            FunctionLit (39:37)
+               input:
+                  record( (39:5)
+                     ar: (39:6)
+                     array[ (39:10)
+                        int (39:16)
+                     ]
+                     i: (39:22)
+                     int (39:25)
+                  )
+               output:
+                  int (39:33)
+               expression:
+                  IntLit 0 (39:39)
+            )
+         ]
+         Pattern: $[ element ]$ [ (41:5)
+            FunctionLit (42:34)
+               input:
+                  record( (42:5)
+                     element: (42:6)
+                     int (42:15)
+                  )
+               output:
+                  array[ (42:23)
+                     int (42:29)
+                  ]
+               expression:
+                  ArrayLit (42:36) [
+                     ParsableExpressionList [ (42:37)
+                        Variable element (42:37)
+                     ]
+                  ]
+            )
+         ]
+         Statement { (44:5)
+            PatternInvocation: $ar [ i ]$ (44:5)
+               ar:
+                  PatternInvocation: $[ element ]$ (44:5)
+                     element:
+                        IntLit 1 (44:6)
+               i:
+                  IntLit 0 (44:9)
+         }
+      }
+   ]
+}
