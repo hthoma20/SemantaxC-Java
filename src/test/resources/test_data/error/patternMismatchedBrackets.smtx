@@ -1,0 +1,4 @@
+main module test {
+    $ [ test ] foo ] $
+    (test: int) -> int { 0 }
+}

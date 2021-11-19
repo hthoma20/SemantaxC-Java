@@ -83,15 +83,15 @@ public class SemantaxCErrorTest extends TestCase {
     @Parameterized.Parameters
     public static Collection<ErrorTestData> testFiles() {
         return Arrays.asList(
-                testData("missingMainModule.smtx", ErrorType.MISSING_MAIN_MODULE));
+                testData("missingMainModule.smtx", ErrorType.MISSING_MAIN_MODULE),
+                testData("twoMainModules.smtx", ErrorType.MULTIPLE_MAIN_MODULES),
+                testData("patternMismatchedBrackets.smtx", ErrorType.PROGRAM_PARSE_ERROR, new FilePos(2, 20)));
     }
 
     private static ErrorTestData testData(String file, ErrorType errorType) {
         return ErrorTestData.builder()
                 .file(file)
-                .expectedErrorType(error -> {
-                    return error == errorType;
-                })
+                .expectedErrorType(errorType::equals)
                 .expectedErrorFilePos(filePos -> true)
                 .build();
     }

@@ -1,5 +1,6 @@
 package com.semantax.phase.grammar;
 
+import com.semantax.exception.CustomParseException;
 import com.semantax.parser.generated.ParseException;
 import com.semantax.parser.generated.SemantaxParser;
 import com.semantax.parser.generated.Token;
@@ -126,10 +127,15 @@ public class LookaheadUtil {
      * Mark that an R_BRACKET was consumed
      */
     @SneakyThrows
-    public void consumedRBracket(BracketConsumer consumer) throws ParseException {
+    public void consumedRBracket(BracketConsumer consumer) {
+
+        if (bracketStack.isEmpty()) {
+            throw new CustomParseException("Mismatched bracket", parser.getToken(0));
+        }
+
         BracketConsumer openBracket = bracketStack.pop();
         if (openBracket != consumer) {
-            throw new ParseException("Unmatched bracket");
+            throw new CustomParseException("Mismatched bracket", parser.getToken(0));
         }
     }
 
