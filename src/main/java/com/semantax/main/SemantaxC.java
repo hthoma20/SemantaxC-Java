@@ -6,14 +6,17 @@ import com.semantax.ast.visitor.AstPrintingVisitor;
 import com.semantax.error.ErrorType;
 import com.semantax.logger.ErrorLogger;
 import com.semantax.main.args.SemantaxCArgs;
+import com.semantax.phase.CodeGenPhase;
 import com.semantax.phase.GrammarPhase;
 import com.semantax.phase.ParsePhase;
+import com.semantax.phase.SemanticPhase;
 
 import javax.inject.Inject;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Optional;
+import java.util.Set;
 
 public class SemantaxC {
 
@@ -22,17 +25,23 @@ public class SemantaxC {
 
     private final GrammarPhase grammarPhase;
     private final ParsePhase parsePhase;
+    private final SemanticPhase semanticPhase;
+    private final CodeGenPhase codeGenPhase;
 
     @Inject
     public SemantaxC(
             AstPrintingVisitor printer,
             ErrorLogger errorLogger,
             GrammarPhase grammarPhase,
-            ParsePhase parsePhase) {
+            ParsePhase parsePhase,
+            SemanticPhase semanticPhase,
+            CodeGenPhase codeGenPhase) {
         this.printer = printer;
         this.errorLogger = errorLogger;
         this.grammarPhase = grammarPhase;
         this.parsePhase = parsePhase;
+        this.semanticPhase = semanticPhase;
+        this.codeGenPhase = codeGenPhase;
     }
 
     /**
@@ -74,6 +83,18 @@ public class SemantaxC {
         program = parsePhase.process(program.get());
 
         if (!program.isPresent()) {
+            errorLogger.flush();
+            return;
+        }
+
+        program = semanticPhase.process(program.get());
+        if (!program.isPresent()) {
+            errorLogger.flush();
+            return;
+        }
+
+        Optional<Set<String>> files = codeGenPhase.process(program.get());
+        if (!files.isPresent()) {
             errorLogger.flush();
             return;
         }

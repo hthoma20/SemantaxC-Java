@@ -9,8 +9,10 @@ import com.semantax.logger.ErrorLogger;
 import com.semantax.main.args.SemantaxCArgs;
 import com.semantax.parser.generated.ParseException;
 import com.semantax.parser.generated.SemantaxParser;
+import com.semantax.phase.CodeGenPhase;
 import com.semantax.phase.GrammarPhase;
 import com.semantax.phase.ParsePhase;
+import com.semantax.phase.SemanticPhase;
 import com.semantax.phase.annotator.DefaultTypeAnnotator;
 import com.semantax.phase.annotator.DefaultTypeAssignabilityChecker;
 import com.semantax.phase.annotator.RecordTypeUtil;
@@ -61,11 +63,19 @@ public class SemantaxCErrorTest extends TestCase {
 
     ParsePhase parsePhase = new ParsePhase(errorLogger, phraseParser, typeAnnotator);
     GrammarPhase grammarPhase = new GrammarPhase(errorLogger);
+    SemanticPhase semanticPhase = new SemanticPhase();
+    CodeGenPhase codeGenPhase = new CodeGenPhase();
 
     AstPrintingVisitor astPrintingVisitor = mock(AstPrintingVisitor.class);
 
     // subject
-    SemantaxC semantaxC = new SemantaxC(astPrintingVisitor, errorLogger, grammarPhase, parsePhase);
+    SemantaxC semantaxC = new SemantaxC(
+            astPrintingVisitor,
+            errorLogger,
+            grammarPhase,
+            parsePhase,
+            semanticPhase,
+            codeGenPhase);
 
 
     @Test
