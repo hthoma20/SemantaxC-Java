@@ -48,7 +48,8 @@ public class RecordCodeGenerator {
         emitter.emitLine("%s* new_%s(%s) {", structName, structName, parameters);
         emitter.indent();
 
-        emitter.emitLine("%s* obj = gcalloc(sizeof(%s), %d);", structName, structName, record.getMembers().length);
+        emitter.emitLine("%s* obj = (%s*) gcalloc(sizeof(%s), %d);", structName, structName, structName,
+                record.getMembers().length);
 
         record.forEach((fieldName, typeName) -> {
             emitter.emitLine("obj->%s = %s;", fieldName, fieldName);
