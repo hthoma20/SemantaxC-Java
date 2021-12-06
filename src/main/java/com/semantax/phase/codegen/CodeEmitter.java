@@ -1,8 +1,5 @@
 package com.semantax.phase.codegen;
 
-import com.semantax.exception.CompilerException;
-
-import java.io.FileNotFoundException;
 import java.io.PrintStream;
 
 /**
@@ -10,21 +7,32 @@ import java.io.PrintStream;
  */
 public class CodeEmitter {
 
-    private final PrintStream out;
+    private static final String INDENT = "\t";
 
-    public CodeEmitter(String filePath) {
-        try {
-            this.out = new PrintStream(filePath);
-        } catch (FileNotFoundException e) {
-            throw CompilerException.of("Couldn't open file %s for writing", filePath);
-        }
+    private final PrintStream out;
+    private int indentLevel = 0;
+
+
+    public CodeEmitter(PrintStream out) {
+        this.out = out;
     }
 
     public void emit(String code, Object... args) {
+        for (int i = 0; i < indentLevel; i++) {
+            out.print(INDENT);
+        }
         out.printf(code, args);
     }
 
     public void emitLine(String code, Object... args) {
         emit(code + "%n", args);
+    }
+
+    public void indent() {
+        indentLevel += 1;
+    }
+
+    public void unIndent() {
+        indentLevel -= 1;
     }
 }
