@@ -4,6 +4,7 @@ import com.semantax.ast.type.ArrayType;
 import com.semantax.ast.type.BoolType;
 import com.semantax.ast.type.IntType;
 import com.semantax.ast.type.RecordType;
+import com.semantax.ast.type.StringType;
 import com.semantax.ast.visitor.BaseAstVisitor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -43,6 +44,10 @@ public class GeneratedTypeRegistry extends BaseAstVisitor<String> {
 
     public String visit(ArrayType arrayType) {
         return "Array";
+    }
+
+    public String visit(StringType stringType) {
+        return "String";
     }
 
 
