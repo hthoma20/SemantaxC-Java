@@ -5,6 +5,7 @@ import com.semantax.exception.CompilerException;
 import com.semantax.phase.codegen.CodeEmitter;
 import com.semantax.phase.codegen.GeneratedTypeAggregator;
 import com.semantax.phase.codegen.GeneratedTypeRegistry;
+import com.semantax.phase.codegen.MainCodeGenerator;
 import com.semantax.phase.codegen.RecordCodeGenerator;
 
 import javax.inject.Inject;
@@ -41,6 +42,7 @@ public class CodeGenPhase implements Phase<Program, Set<String>> {
 
         GeneratedTypeRegistry typeRegistry = generatedTypeAggregator.aggregateTypeNames(input);
         new RecordCodeGenerator(codeEmitter).generateTypes(typeRegistry);
+        new MainCodeGenerator(codeEmitter).generateMain();
 
         return Optional.of(new HashSet<>(Collections.singleton(OUTPUT_FILE)));
     }
