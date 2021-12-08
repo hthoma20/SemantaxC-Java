@@ -93,7 +93,10 @@ public class SemantaxC {
             return;
         }
 
-        Optional<Set<String>> files = codeGenPhase.process(program.get());
+        Optional<Set<String>> files = codeGenPhase.process(CodeGenPhase.CodeGenArgs.builder()
+                        .program(program.get())
+                        .outputPath(args.getOutputFile())
+                        .build());
         if (!files.isPresent()) {
             errorLogger.flush();
             return;

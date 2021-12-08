@@ -7,6 +7,7 @@ import com.semantax.phase.codegen.GeneratedTypeAggregator;
 import com.semantax.phase.codegen.GeneratedTypeRegistry;
 import com.semantax.phase.codegen.MainCodeGenerator;
 import com.semantax.phase.codegen.RecordCodeGenerator;
+import lombok.Builder;
 
 import javax.inject.Inject;
 import java.io.FileNotFoundException;
@@ -19,43 +20,47 @@ import java.util.Set;
 /**
  * Process a correct program and return the file paths that were created
  */
-public class CodeGenPhase implements Phase<Program, Set<String>> {
+public class CodeGenPhase implements Phase<CodeGenPhase.CodeGenArgs, Set<String>> {
 
     private final GeneratedTypeAggregator generatedTypeAggregator;
-
-    private final CodeEmitter codeEmitter;
-
-    private static final String OUTPUT_FILE = "out.cpp";
+    private final RecordCodeGenerator recordCodeGenerator;
+    private final MainCodeGenerator mainCodeGenerator;
 
     @Inject
-    public CodeGenPhase(GeneratedTypeAggregator generatedTypeAggregator) {
+    public CodeGenPhase(GeneratedTypeAggregator generatedTypeAggregator,
+                        RecordCodeGenerator recordCodeGenerator,
+                        MainCodeGenerator mainCodeGenerator) {
         this.generatedTypeAggregator = generatedTypeAggregator;
-        this.codeEmitter = new CodeEmitter(getPrintStream());
+        this.recordCodeGenerator = recordCodeGenerator;
+        this.mainCodeGenerator = mainCodeGenerator;
     }
 
     @Override
-    public Optional<Set<String>> process(Program input) {
+    public Optional<Set<String>> process(CodeGenArgs args) {
+        CodeEmitter codeEmitter = getCodeEmitter(args.outputPath);
 
         codeEmitter.emitLine("#include \"runtime.h\"");
-
         codeEmitter.emitLine("");
 
-        GeneratedTypeRegistry typeRegistry = generatedTypeAggregator.aggregateTypeNames(input);
-        new RecordCodeGenerator(codeEmitter).generateTypes(typeRegistry);
-        new MainCodeGenerator(codeEmitter).generateMain();
+        GeneratedTypeRegistry typeRegistry = generatedTypeAggregator.aggregateTypeNames(args.program);
+        recordCodeGenerator.generateTypes(codeEmitter, typeRegistry);
+        mainCodeGenerator.generateMain(codeEmitter);
 
-        return Optional.of(new HashSet<>(Collections.singleton(OUTPUT_FILE)));
+        return Optional.of(new HashSet<>(Collections.singleton(args.outputPath)));
     }
 
-    private PrintStream getPrintStream() {
+    private CodeEmitter getCodeEmitter(String outputFile) {
         try {
-            return new PrintStream(OUTPUT_FILE);
+            return new CodeEmitter(new PrintStream(outputFile));
         } catch (FileNotFoundException e) {
-            throw CompilerException.of("Couldn't construct PrintStream for %s", OUTPUT_FILE);
+            throw CompilerException.of("Couldn't construct PrintStream for %s", outputFile);
         }
     }
 
-
-
+    @Builder(builderClassName = "Builder")
+    public static class CodeGenArgs {
+        private final String outputPath;
+        private final Program program;
+    }
 
 }

@@ -97,7 +97,7 @@ public class SemantaxCTest extends TestCase {
         when(mockGrammarPhase.process(any())).thenReturn(Optional.of(program));
         when(mockParsePhase.process(program)).thenReturn(Optional.of(program));
         when(mockSemanticPhase.process(program)).thenReturn(Optional.of(program));
-        when(mockCodeGenPhase.process(program)).thenReturn(Optional.of(Collections.emptySet()));
+        when(mockCodeGenPhase.process(any())).thenReturn(Optional.of(Collections.emptySet()));
 
         semantaxC.execute(SemantaxCArgs.builder()
                 .inputFile(TEST_FILE)
@@ -106,7 +106,7 @@ public class SemantaxCTest extends TestCase {
         verify(mockGrammarPhase).process(any());
         verify(mockParsePhase).process(program);
         verify(mockSemanticPhase).process(program);
-        verify(mockCodeGenPhase).process(program);
+        verify(mockCodeGenPhase).process(any());
 
 
         verify(mockPrinter).visit(program);

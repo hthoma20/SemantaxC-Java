@@ -1,17 +1,15 @@
 package com.semantax.phase.codegen;
 
+import javax.inject.Inject;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
 public class RecordCodeGenerator {
 
-    private final CodeEmitter emitter;
+    @Inject
+    public RecordCodeGenerator() { }
 
-    public RecordCodeGenerator(CodeEmitter emitter) {
-        this.emitter = emitter;
-    }
-
-    public void generateTypes(GeneratedTypeRegistry typeRegistry) {
+    public void generateTypes(CodeEmitter emitter, GeneratedTypeRegistry typeRegistry) {
         // Emit struct declarations
         typeRegistry.getRecordNames().values().forEach(structName -> {
             emitter.emitLine("struct %s;", structName);
@@ -22,13 +20,13 @@ public class RecordCodeGenerator {
         // Emit struct definitions
         // and "constructors"
         typeRegistry.getRecordNames().forEach((recordEntry, structName) -> {
-            emitStruct(recordEntry, structName);
-            emitConstructor(recordEntry, structName);
+            emitStruct(emitter, recordEntry, structName);
+            emitConstructor(emitter, recordEntry, structName);
             emitter.emitLine("");
         });
     }
 
-    private void emitStruct(GeneratedTypeRegistry.RecordEntry record, String structName) {
+    private void emitStruct(CodeEmitter emitter, GeneratedTypeRegistry.RecordEntry record, String structName) {
         emitter.emitLine("struct %s : Collectable {", structName);
         emitter.indent();
 
@@ -40,7 +38,7 @@ public class RecordCodeGenerator {
         emitter.emitLine("};");
     }
 
-    private void emitConstructor(GeneratedTypeRegistry.RecordEntry record, String structName) {
+    private void emitConstructor(CodeEmitter emitter, GeneratedTypeRegistry.RecordEntry record, String structName) {
         String parameters = Arrays.stream(record.getMembers())
                 .map(member -> String.format("%s* %s", member.getTypeName(), member.getFieldName()))
                 .collect(Collectors.joining(", "));

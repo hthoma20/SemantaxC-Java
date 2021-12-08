@@ -13,5 +13,5 @@ public class SemantaxCArgs {
     @Singular
     private List<String> inputFiles;
     @lombok.Builder.Default
-    private Optional<String> outputDir = Optional.empty();
+    private String outputFile = "out.cpp";
 }
