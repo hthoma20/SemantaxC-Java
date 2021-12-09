@@ -69,8 +69,6 @@ Program {
                               Word: b (20:20)
                            ]
                         ]
-                     lhs: Eventual.unfulfilled
-                     rhs: Eventual.unfulfilled
                   ]
             )
          ]

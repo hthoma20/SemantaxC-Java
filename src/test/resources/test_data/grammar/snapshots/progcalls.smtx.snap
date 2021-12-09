@@ -12,8 +12,6 @@ Program {
                         IntLit 2 (2:16)
                      ]
                   ]
-               lhs: Eventual.unfulfilled
-               rhs: Eventual.unfulfilled
             ]
          }
          Statement { (3:5)
@@ -33,12 +31,8 @@ Program {
                                  IntLit 2 (3:26)
                               ]
                            ]
-                        lhs: Eventual.unfulfilled
-                        rhs: Eventual.unfulfilled
                      ]
                   ]
-               lhs: Eventual.unfulfilled
-               rhs: Eventual.unfulfilled
             ]
          }
          Statement { (4:5)
@@ -55,15 +49,11 @@ Program {
                                  IntLit 2 (4:23)
                               ]
                            ]
-                        lhs: Eventual.unfulfilled
-                        rhs: Eventual.unfulfilled
                      ]
                      Phrase: [ (4:27)
                         IntLit 3 (4:27)
                      ]
                   ]
-               lhs: Eventual.unfulfilled
-               rhs: Eventual.unfulfilled
             ]
          }
          Statement { (5:5)
@@ -80,8 +70,6 @@ Program {
                                  IntLit 2 (6:19)
                               ]
                            ]
-                        lhs: Eventual.unfulfilled
-                        rhs: Eventual.unfulfilled
                      ]
                      Phrase: [ (7:9)
                         @addint (7:9)
@@ -93,12 +81,8 @@ Program {
                                  IntLit 4 (7:19)
                               ]
                            ]
-                        lhs: Eventual.unfulfilled
-                        rhs: Eventual.unfulfilled
                      ]
                   ]
-               lhs: Eventual.unfulfilled
-               rhs: Eventual.unfulfilled
             ]
          }
          Statement { (10:5)
@@ -130,8 +114,6 @@ Program {
                         )
                      ]
                   ]
-               lhs: Eventual.unfulfilled
-               rhs: Eventual.unfulfilled
             ]
          }
          Statement { (15:5)

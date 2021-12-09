@@ -83,8 +83,6 @@ Program {
                                           IntLit 5 (6:20)
                                        ]
                                     ]
-                                 lhs: Eventual.unfulfilled
-                                 rhs: Eventual.unfulfilled
                               ]
                         )
                      ]
@@ -117,7 +115,6 @@ Program {
                                                 IntLit 4 (9:19)
                                              ]
                                           ]
-                                       arg: Eventual.unfulfilled
                                     ]
                                  }
                                  Statement { (10:9)
@@ -164,7 +161,6 @@ Program {
                                                 IntLit 4 (13:19)
                                              ]
                                           ]
-                                       arg: Eventual.unfulfilled
                                     ]
                                  }
                                  Statement { (14:9)

@@ -29,14 +29,20 @@ public class ExpressionCodeGenerator {
         private final GeneratedTypeRegistry typeRegistry;
 
         @Override
+        public Void visit(BoolLit boolLit) {
+            emitter.emit("new_Bool(%b)", boolLit.getValue());
+            return null;
+        }
+
+        @Override
         public Void visit(IntLit intLit) {
             emitter.emit("new_Int(%d)", intLit.getValue());
             return null;
         }
 
         @Override
-        public Void visit(BoolLit boolLit) {
-            emitter.emit("new_Bool(%b)", boolLit.getValue());
+        public Void visit(StringLit stringLit) {
+            emitter.emit("new_String(\"%s\")", stringLit.getValue());
             return null;
         }
 
@@ -68,10 +74,6 @@ public class ExpressionCodeGenerator {
             return null;
         }
 
-        @Override
-        public Void visit(StringLit stringLit) {
-            emitter.emit("new_String(\"%s\")", stringLit.getValue());
-            return null;
-        }
+
     }
 }

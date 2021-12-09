@@ -18,8 +18,6 @@ Program {
                         Variable a (5:17)
                         Variable b (5:20)
                      ]
-                  lhs: Eventual.unfulfilled
-                  rhs: Eventual.unfulfilled
             )
          ]
          Statement { (8:5)
@@ -49,7 +47,6 @@ Program {
                      b:
                         Variable y (11:19)
                ]
-            arg: Eventual.unfulfilled
          }
       }
    ]

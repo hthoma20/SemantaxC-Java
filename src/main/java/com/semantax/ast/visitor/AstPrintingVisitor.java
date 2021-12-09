@@ -6,9 +6,8 @@ import com.semantax.ast.node.literal.*;
 import com.semantax.ast.node.literal.type.*;
 import com.semantax.ast.node.pattern.PatternDefinition;
 import com.semantax.ast.node.pattern.PatternInvocation;
-import com.semantax.ast.node.progcall.AddIntProgCall;
 import com.semantax.ast.node.progcall.DeclProgCall;
-import com.semantax.ast.node.progcall.PrintIntProgCall;
+import com.semantax.ast.node.progcall.DynamicProgcall;
 import com.semantax.ast.node.progcall.ProgCall;
 import com.semantax.ast.type.ArrayType;
 import com.semantax.ast.type.BoolType;
@@ -101,6 +100,13 @@ public class AstPrintingVisitor extends TraversalVisitor<Void> {
     }
 
     @Override
+    public Void visit(DynamicProgcall dynamicProgcall) {
+        this.visit((ProgCall) dynamicProgcall);
+
+        return null;
+    }
+
+    @Override
     public Void visit(DeclProgCall declProgCall) {
         this.visit((ProgCall) declProgCall);
 
@@ -114,25 +120,6 @@ public class AstPrintingVisitor extends TraversalVisitor<Void> {
             declProgCall.getDeclType().accept(this);
         }
 
-        return null;
-    }
-
-    @Override
-    public Void visit(PrintIntProgCall printIntProgcall) {
-        this.visit((ProgCall) printIntProgcall);
-        indent();
-        output.printf("arg: %s%n", printIntProgcall.getArgument());
-
-        return null;
-    }
-
-    @Override
-    public Void visit(AddIntProgCall addIntProgCall) {
-        this.visit((ProgCall) addIntProgCall);
-        indent();
-        output.printf("lhs: %s%n", addIntProgCall.getLhs());
-        indent();
-        output.printf("rhs: %s%n", addIntProgCall.getRhs());
         return null;
     }
 

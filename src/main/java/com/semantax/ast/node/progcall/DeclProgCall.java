@@ -18,6 +18,7 @@ public class DeclProgCall extends ProgCall implements VariableDeclaration {
     DeclProgCall(String name, ParsableExpressionList subExpressions) {
         super(name, subExpressions);
     }
+    public static class Builder extends ProgCall.Builder {}
 
     @Override
     public <T> T accept(AstVisitor<T> visitor) {
@@ -49,6 +50,4 @@ public class DeclProgCall extends ProgCall implements VariableDeclaration {
     public Type getDeclType() {
         return declType.get();
     }
-
-    public static class Builder extends ProgCall.Builder {}
 }

@@ -119,8 +119,6 @@ Program {
                                        IntLit 2 (8:26)
                                     ]
                                  ]
-                              lhs: Eventual.unfulfilled
-                              rhs: Eventual.unfulfilled
                            ]
                         )
                      ]
