@@ -13,6 +13,8 @@ import static com.semantax.ast.node.progcall.ProgCallConstants.ADD_INT_BUILDER;
 import static com.semantax.ast.node.progcall.ProgCallConstants.DECL;
 import static com.semantax.ast.node.progcall.ProgCallConstants.PRINT_INT;
 import static com.semantax.ast.node.progcall.ProgCallConstants.PRINT_INT_BUILDER;
+import static com.semantax.ast.node.progcall.ProgCallConstants.PRINT_STRING;
+import static com.semantax.ast.node.progcall.ProgCallConstants.PRINT_STRING_BUILDER;
 import static com.semantax.parser.generated.SemantaxParserConstants.*;
 
 public class ProgCallFactory {
@@ -35,6 +37,8 @@ public class ProgCallFactory {
                 return DeclProgCall.builder();
             case PRINT_INT:
                 return PRINT_INT_BUILDER;
+            case PRINT_STRING:
+                return PRINT_STRING_BUILDER;
             case ADD_INT:
                 return ADD_INT_BUILDER;
             default:

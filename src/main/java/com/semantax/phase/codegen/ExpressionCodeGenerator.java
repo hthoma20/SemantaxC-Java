@@ -1,12 +1,13 @@
 package com.semantax.phase.codegen;
 
+import com.semantax.ast.node.AstNode;
 import com.semantax.ast.node.Expression;
 import com.semantax.ast.node.VariableReference;
 import com.semantax.ast.node.literal.BoolLit;
 import com.semantax.ast.node.literal.IntLit;
-import com.semantax.ast.node.literal.NameParsableExpressionPair;
 import com.semantax.ast.node.literal.RecordLit;
 import com.semantax.ast.node.literal.StringLit;
+import com.semantax.ast.node.progcall.DynamicProgcall;
 import com.semantax.ast.visitor.TraversalVisitor;
 import lombok.AllArgsConstructor;
 
@@ -57,14 +58,18 @@ public class ExpressionCodeGenerator {
             String recordName = recordLit.getType().accept(typeRegistry);
             emitter.emit("new_%s(", recordName);
 
-            Iterator<NameParsableExpressionPair> iterator = recordLit.getNameParsableExpressionPairs().iterator();
-            iterator.next().getExpression().getExpression().accept(this);
-            iterator.forEachRemaining(nameParsableExpressionPair -> {
-                emitter.emit(", ");
-                nameParsableExpressionPair.accept(this);
-            });
+            commaSeparatedVisit(recordLit.getNameParsableExpressionPairs().iterator());
 
             emitter.emit(")");
+            return null;
+        }
+
+        @Override
+        public Void visit(DynamicProgcall dynamicProgcall) {
+            emitter.emit("%s(", dynamicProgcall.getName());
+            commaSeparatedVisit(dynamicProgcall.getSubExpressions().iterator());
+            emitter.emit(")");
+
             return null;
         }
 
@@ -74,6 +79,17 @@ public class ExpressionCodeGenerator {
             return null;
         }
 
-
+        /**
+         * Generate expressions by visiting each Ast node in the given iterator
+         * Between each visitation, emit a comma
+         * @param iterator the AstNodes to visit
+         */
+        private void commaSeparatedVisit(Iterator<? extends AstNode> iterator) {
+            iterator.next().accept(this);
+            iterator.forEachRemaining(node -> {
+                emitter.emit(", ");
+                node.accept(this);
+            });
+        }
     }
 }
