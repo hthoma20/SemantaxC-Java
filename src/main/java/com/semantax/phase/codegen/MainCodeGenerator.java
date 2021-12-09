@@ -33,6 +33,7 @@ public class MainCodeGenerator {
             emitter.endLine(";");
         }
 
+        emitter.emitLine("finalizeGarbageCollector();");
         emitter.emitLine("return 0;");
         emitter.unIndent();
         emitter.emitLine("}");
