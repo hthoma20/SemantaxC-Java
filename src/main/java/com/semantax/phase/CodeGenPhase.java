@@ -44,7 +44,7 @@ public class CodeGenPhase implements Phase<CodeGenPhase.CodeGenArgs, Set<String>
 
         GeneratedTypeRegistry typeRegistry = generatedTypeAggregator.aggregateTypeNames(args.program);
         recordCodeGenerator.generateTypes(codeEmitter, typeRegistry);
-        mainCodeGenerator.generateMain(codeEmitter);
+        mainCodeGenerator.generateMain(codeEmitter, typeRegistry, args.program);
 
         return Optional.of(new HashSet<>(Collections.singleton(args.outputPath)));
     }

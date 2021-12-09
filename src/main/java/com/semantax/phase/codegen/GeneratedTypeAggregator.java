@@ -7,7 +7,7 @@ import com.semantax.ast.visitor.TraversalVisitor;
 
 import javax.inject.Inject;
 
-public class GeneratedTypeAggregator extends TraversalVisitor<Void> {
+public class GeneratedTypeAggregator {
 
     @Inject
     public GeneratedTypeAggregator() { };

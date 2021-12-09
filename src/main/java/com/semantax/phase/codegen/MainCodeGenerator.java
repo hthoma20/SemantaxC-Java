@@ -1,5 +1,11 @@
 package com.semantax.phase.codegen;
 
+import com.semantax.ast.node.Module;
+import com.semantax.ast.node.Program;
+import com.semantax.ast.node.Statement;
+import com.semantax.ast.node.progcall.DeclProgCall;
+import com.semantax.exception.CompilerException;
+
 import javax.inject.Inject;
 
 /**
@@ -7,14 +13,36 @@ import javax.inject.Inject;
  */
 public class MainCodeGenerator {
 
-    @Inject
-    public MainCodeGenerator() { }
+    private final ExpressionCodeGenerator expressionCodeGenerator;
 
-    public void generateMain(CodeEmitter emitter) {
+    @Inject
+    public MainCodeGenerator(ExpressionCodeGenerator expressionCodeGenerator) {
+        this.expressionCodeGenerator = expressionCodeGenerator;
+    }
+
+    public void generateMain(CodeEmitter emitter, GeneratedTypeRegistry typeRegistry, Program program) {
         emitter.emitLine("int main(int argc, char* argv[]) {");
         emitter.indent();
+
+        for (Statement statement : mainModule(program).getStatements()) {
+            if (statement.getExpression() instanceof DeclProgCall) {
+                continue;
+            }
+            emitter.beginLine();
+            expressionCodeGenerator.generateExpression(emitter, typeRegistry, statement.getExpression());
+            emitter.endLine(";");
+        }
+
         emitter.emitLine("return 0;");
         emitter.unIndent();
         emitter.emitLine("}");
+    }
+
+    private Module mainModule(Program program) {
+        return program.getModules()
+                .stream()
+                .filter(module -> module.getModifier() == Module.Modifier.MAIN)
+                .findFirst()
+                .orElseThrow(() -> CompilerException.of("No main module during code generation"));
     }
 }

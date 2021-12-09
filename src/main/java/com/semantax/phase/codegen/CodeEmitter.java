@@ -18,14 +18,23 @@ public class CodeEmitter {
     }
 
     public void emit(String code, Object... args) {
-        for (int i = 0; i < indentLevel; i++) {
-            out.print(INDENT);
-        }
         out.printf(code, args);
     }
 
+    public void beginLine() {
+        for (int i = 0; i < indentLevel; i++) {
+            out.print(INDENT);
+        }
+    }
+
+    public void endLine(String code, Object... args) {
+        out.printf(code, args);
+        out.printf("%n");
+    }
+
     public void emitLine(String code, Object... args) {
-        emit(code + "%n", args);
+        beginLine();
+        endLine(code, args);
     }
 
     public void indent() {

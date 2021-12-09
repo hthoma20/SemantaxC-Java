@@ -14,6 +14,7 @@ import com.semantax.phase.annotator.DefaultTypeAssignabilityChecker;
 import com.semantax.phase.annotator.RecordTypeUtil;
 import com.semantax.phase.annotator.TypeAnnotator;
 import com.semantax.phase.annotator.TypeAssignabilityChecker;
+import com.semantax.phase.codegen.ExpressionCodeGenerator;
 import com.semantax.phase.codegen.GeneratedTypeAggregator;
 import com.semantax.phase.codegen.MainCodeGenerator;
 import com.semantax.phase.codegen.RecordCodeGenerator;
@@ -55,7 +56,8 @@ public class SemantaxCErrorTest extends TestCase {
 
     GeneratedTypeAggregator generatedTypeAggregator = new GeneratedTypeAggregator();
     RecordCodeGenerator recordCodeGenerator = new RecordCodeGenerator();
-    MainCodeGenerator mainCodeGenerator = new MainCodeGenerator();
+    ExpressionCodeGenerator expressionCodeGenerator = new ExpressionCodeGenerator();
+    MainCodeGenerator mainCodeGenerator = new MainCodeGenerator(expressionCodeGenerator);
 
     ParsePhase parsePhase = new ParsePhase(errorLogger, phraseParser, typeAnnotator);
     GrammarPhase grammarPhase = new GrammarPhase(errorLogger);
