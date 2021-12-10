@@ -19,6 +19,7 @@ import com.semantax.phase.codegen.GeneratedTypeAggregator;
 import com.semantax.phase.codegen.MainCodeGenerator;
 import com.semantax.phase.codegen.PatternCodeGenerator;
 import com.semantax.phase.codegen.RecordCodeGenerator;
+import com.semantax.phase.codegen.StatementCodeGenerator;
 import com.semantax.phase.parser.DefaultPhraseParser;
 import com.semantax.phase.parser.PatternUtil;
 import com.semantax.phase.parser.PhraseParser;
@@ -59,8 +60,9 @@ public class SemantaxCErrorTest extends TestCase {
     GeneratedTypeAggregator generatedTypeAggregator = new GeneratedTypeAggregator();
     RecordCodeGenerator recordCodeGenerator = new RecordCodeGenerator();
     ExpressionCodeGenerator expressionCodeGenerator = new ExpressionCodeGenerator();
-    MainCodeGenerator mainCodeGenerator = new MainCodeGenerator(expressionCodeGenerator);
-    PatternCodeGenerator patternCodeGenerator = new PatternCodeGenerator();
+    StatementCodeGenerator statementCodeGenerator = new StatementCodeGenerator(expressionCodeGenerator);
+    MainCodeGenerator mainCodeGenerator = new MainCodeGenerator(statementCodeGenerator);
+    PatternCodeGenerator patternCodeGenerator = new PatternCodeGenerator(expressionCodeGenerator, statementCodeGenerator);
 
     ParsePhase parsePhase = new ParsePhase(errorLogger, phraseParser, typeAnnotator);
     GrammarPhase grammarPhase = new GrammarPhase(errorLogger);

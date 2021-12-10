@@ -2,8 +2,7 @@ package com.semantax.phase.codegen;
 
 import com.semantax.ast.node.Module;
 import com.semantax.ast.node.Program;
-import com.semantax.ast.node.Statement;
-import com.semantax.ast.node.progcall.DeclProgCall;
+import com.semantax.ast.node.list.StatementList;
 import com.semantax.exception.CompilerException;
 
 import javax.inject.Inject;
@@ -13,11 +12,11 @@ import javax.inject.Inject;
  */
 public class MainCodeGenerator {
 
-    private final ExpressionCodeGenerator expressionCodeGenerator;
+    private final StatementCodeGenerator statementCodeGenerator;
 
     @Inject
-    public MainCodeGenerator(ExpressionCodeGenerator expressionCodeGenerator) {
-        this.expressionCodeGenerator = expressionCodeGenerator;
+    public MainCodeGenerator(StatementCodeGenerator statementCodeGenerator) {
+        this.statementCodeGenerator = statementCodeGenerator;
     }
 
     public void generateMain(CodeEmitter emitter,
@@ -27,14 +26,9 @@ public class MainCodeGenerator {
         emitter.emitLine("int main(int argc, char* argv[]) {");
         emitter.indent();
 
-        for (Statement statement : mainModule(program).getStatements()) {
-            if (statement.getExpression() instanceof DeclProgCall) {
-                continue;
-            }
-            emitter.beginLine();
-            expressionCodeGenerator.generateExpression(emitter, typeRegistry, patternRegistry, statement.getExpression());
-            emitter.endLine(";");
-        }
+        StatementList statements = mainModule(program).getStatements();
+        statementCodeGenerator.generateStatements(emitter,
+                typeRegistry, patternRegistry, statements);
 
         emitter.emitLine("finalizeGarbageCollector();");
         emitter.emitLine("return 0;");
