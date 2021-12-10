@@ -7,6 +7,8 @@ import com.semantax.ast.node.literal.BoolLit;
 import com.semantax.ast.node.literal.IntLit;
 import com.semantax.ast.node.literal.RecordLit;
 import com.semantax.ast.node.literal.StringLit;
+import com.semantax.ast.node.literal.type.RecordTypeLit;
+import com.semantax.ast.node.pattern.PatternInvocation;
 import com.semantax.ast.node.progcall.DynamicProgcall;
 import com.semantax.ast.visitor.TraversalVisitor;
 import lombok.AllArgsConstructor;
@@ -19,8 +21,11 @@ public class ExpressionCodeGenerator {
     @Inject
     public ExpressionCodeGenerator() { }
 
-    public void generateExpression(CodeEmitter emitter, GeneratedTypeRegistry typeRegistry, Expression expression) {
-        expression.accept(new ExpressionTraversalVisitor(emitter, typeRegistry));
+    public void generateExpression(CodeEmitter emitter,
+                                   GeneratedTypeRegistry typeRegistry,
+                                   GeneratedPatternRegistry patternRegistry,
+                                   Expression expression) {
+        expression.accept(new ExpressionTraversalVisitor(emitter, typeRegistry, patternRegistry));
     }
 
     @AllArgsConstructor
@@ -28,6 +33,7 @@ public class ExpressionCodeGenerator {
 
         private final CodeEmitter emitter;
         private final GeneratedTypeRegistry typeRegistry;
+        private final GeneratedPatternRegistry patternRegistry;
 
         @Override
         public Void visit(BoolLit boolLit) {
@@ -72,6 +78,34 @@ public class ExpressionCodeGenerator {
 
             return null;
         }
+
+        private void emitPatternInvocationArg(PatternInvocation patternInvocation) {
+            RecordTypeLit typeLit = patternInvocation.getPatternDefinition()
+                    .getSemantics()
+                    .getInput();
+            String recordName = typeLit.getRepresentedType().accept(typeRegistry);
+            emitter.emit("new_%s(", recordName);
+
+            Iterator<Expression> iterator = typeLit.getNameTypeLitPairs()
+                    .stream()
+                    .map(nameTypeLitPair -> patternInvocation.getArguments().get(nameTypeLitPair.getName()))
+                    .iterator();
+
+            commaSeparatedVisit(iterator);
+
+            emitter.emit(")");
+        }
+
+        @Override
+        public Void visit(PatternInvocation patternInvocation) {
+
+            emitter.emit("%s(", patternRegistry.getPatternName(patternInvocation.getPatternDefinition()));
+            emitPatternInvocationArg(patternInvocation);
+            emitter.emit(")");
+
+            return null;
+        }
+
 
         @Override
         public Void visit(VariableReference variableReference) {

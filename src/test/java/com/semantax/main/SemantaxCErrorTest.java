@@ -17,6 +17,7 @@ import com.semantax.phase.annotator.TypeAssignabilityChecker;
 import com.semantax.phase.codegen.ExpressionCodeGenerator;
 import com.semantax.phase.codegen.GeneratedTypeAggregator;
 import com.semantax.phase.codegen.MainCodeGenerator;
+import com.semantax.phase.codegen.PatternCodeGenerator;
 import com.semantax.phase.codegen.RecordCodeGenerator;
 import com.semantax.phase.parser.DefaultPhraseParser;
 import com.semantax.phase.parser.PatternUtil;
@@ -41,6 +42,7 @@ import static org.mockito.Mockito.verify;
 @RunWith(Parameterized.class)
 @RequiredArgsConstructor
 public class SemantaxCErrorTest extends TestCase {
+
     private static final String INPUT_DIR = "./src/test/resources/test_data/error";
 
     // Parameter for test, populated in constructor
@@ -58,11 +60,15 @@ public class SemantaxCErrorTest extends TestCase {
     RecordCodeGenerator recordCodeGenerator = new RecordCodeGenerator();
     ExpressionCodeGenerator expressionCodeGenerator = new ExpressionCodeGenerator();
     MainCodeGenerator mainCodeGenerator = new MainCodeGenerator(expressionCodeGenerator);
+    PatternCodeGenerator patternCodeGenerator = new PatternCodeGenerator();
 
     ParsePhase parsePhase = new ParsePhase(errorLogger, phraseParser, typeAnnotator);
     GrammarPhase grammarPhase = new GrammarPhase(errorLogger);
     SemanticPhase semanticPhase = new SemanticPhase();
-    CodeGenPhase codeGenPhase = new CodeGenPhase(generatedTypeAggregator, recordCodeGenerator, mainCodeGenerator);
+    CodeGenPhase codeGenPhase = new CodeGenPhase(generatedTypeAggregator,
+            recordCodeGenerator,
+            patternCodeGenerator,
+            mainCodeGenerator);
 
     AstPrintingVisitor astPrintingVisitor = mock(AstPrintingVisitor.class);
 

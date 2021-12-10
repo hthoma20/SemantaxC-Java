@@ -27,8 +27,15 @@ public class CodeEmitter {
         }
     }
 
+    public void beginLine(String code, Object... args) {
+        for (int i = 0; i < indentLevel; i++) {
+            out.print(INDENT);
+        }
+        emit(code, args);
+    }
+
     public void endLine(String code, Object... args) {
-        out.printf(code, args);
+        emit(code, args);
         out.printf("%n");
     }
 

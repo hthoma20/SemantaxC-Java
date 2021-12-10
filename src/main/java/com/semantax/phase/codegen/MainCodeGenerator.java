@@ -20,7 +20,10 @@ public class MainCodeGenerator {
         this.expressionCodeGenerator = expressionCodeGenerator;
     }
 
-    public void generateMain(CodeEmitter emitter, GeneratedTypeRegistry typeRegistry, Program program) {
+    public void generateMain(CodeEmitter emitter,
+                             GeneratedTypeRegistry typeRegistry,
+                             GeneratedPatternRegistry patternRegistry,
+                             Program program) {
         emitter.emitLine("int main(int argc, char* argv[]) {");
         emitter.indent();
 
@@ -29,7 +32,7 @@ public class MainCodeGenerator {
                 continue;
             }
             emitter.beginLine();
-            expressionCodeGenerator.generateExpression(emitter, typeRegistry, statement.getExpression());
+            expressionCodeGenerator.generateExpression(emitter, typeRegistry, patternRegistry, statement.getExpression());
             emitter.endLine(";");
         }
 

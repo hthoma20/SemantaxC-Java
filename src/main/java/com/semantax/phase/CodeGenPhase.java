@@ -3,9 +3,11 @@ package com.semantax.phase;
 import com.semantax.ast.node.Program;
 import com.semantax.exception.CompilerException;
 import com.semantax.phase.codegen.CodeEmitter;
+import com.semantax.phase.codegen.GeneratedPatternRegistry;
 import com.semantax.phase.codegen.GeneratedTypeAggregator;
 import com.semantax.phase.codegen.GeneratedTypeRegistry;
 import com.semantax.phase.codegen.MainCodeGenerator;
+import com.semantax.phase.codegen.PatternCodeGenerator;
 import com.semantax.phase.codegen.RecordCodeGenerator;
 import lombok.Builder;
 
@@ -24,14 +26,17 @@ public class CodeGenPhase implements Phase<CodeGenPhase.CodeGenArgs, Set<String>
 
     private final GeneratedTypeAggregator generatedTypeAggregator;
     private final RecordCodeGenerator recordCodeGenerator;
+    private final PatternCodeGenerator patternCodeGenerator;
     private final MainCodeGenerator mainCodeGenerator;
 
     @Inject
     public CodeGenPhase(GeneratedTypeAggregator generatedTypeAggregator,
                         RecordCodeGenerator recordCodeGenerator,
+                        PatternCodeGenerator patternCodeGenerator,
                         MainCodeGenerator mainCodeGenerator) {
         this.generatedTypeAggregator = generatedTypeAggregator;
         this.recordCodeGenerator = recordCodeGenerator;
+        this.patternCodeGenerator = patternCodeGenerator;
         this.mainCodeGenerator = mainCodeGenerator;
     }
 
@@ -43,8 +48,11 @@ public class CodeGenPhase implements Phase<CodeGenPhase.CodeGenArgs, Set<String>
         codeEmitter.emitLine("");
 
         GeneratedTypeRegistry typeRegistry = generatedTypeAggregator.aggregateTypeNames(args.program);
+        GeneratedPatternRegistry patternRegistry = new GeneratedPatternRegistry();
+
         recordCodeGenerator.generateTypes(codeEmitter, typeRegistry);
-        mainCodeGenerator.generateMain(codeEmitter, typeRegistry, args.program);
+        patternCodeGenerator.generatePatterns(codeEmitter, patternRegistry, typeRegistry, args.program);
+        mainCodeGenerator.generateMain(codeEmitter, typeRegistry, patternRegistry, args.program);
 
         return Optional.of(new HashSet<>(Collections.singleton(args.outputPath)));
     }
