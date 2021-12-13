@@ -4,11 +4,13 @@ import com.semantax.ast.node.Expression;
 import com.semantax.ast.node.ParsableExpression;
 import com.semantax.ast.node.VariableDeclaration;
 import com.semantax.ast.node.VariableReference;
+import com.semantax.ast.node.literal.type.TypeLit;
 import com.semantax.ast.node.pattern.PatternDefinition;
 import com.semantax.ast.node.pattern.PatternInvocation;
 import com.semantax.ast.node.PhraseElement;
 import com.semantax.ast.node.Word;
 import com.semantax.ast.type.Type;
+import com.semantax.ast.type.VoidType;
 import com.semantax.exception.CompilerException;
 import com.semantax.phase.SymbolTable;
 import com.semantax.phase.annotator.TypeAssignabilityChecker;
@@ -73,10 +75,6 @@ public class PatternUtil {
      */
     public PatternInvocation parse(List<PhraseElement> phrase, PatternDefinition pattern, SymbolTable symbolTable) {
 
-        if (!pattern.getSemantics().getOutput().isPresent()) {
-            throw CompilerException.of("Unexpected call without pattern return type");
-        }
-
         Set<String> variables = pattern.getVariables();
 
         PatternInvocation.Builder invocationBuilder = PatternInvocation.builder()
@@ -112,7 +110,9 @@ public class PatternUtil {
         }
 
         PatternInvocation patternInvocation = invocationBuilder.build();
-        patternInvocation.setType(pattern.getSemantics().getOutput().get().getRepresentedType());
+        patternInvocation.setType(pattern.getSemantics().getOutput()
+                .map(TypeLit::getRepresentedType)
+                .orElse(VoidType.VOID_TYPE));
         patternInvocation.setFilePos(phrase.get(0).getFilePos());
         return patternInvocation;
     }

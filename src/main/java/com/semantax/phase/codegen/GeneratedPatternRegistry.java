@@ -37,7 +37,7 @@ public class GeneratedPatternRegistry {
         String fullPatternHint = pattern.getSyntax()
                 .stream()
                 .map(Word::getValue)
-                .filter(word -> word.matches("[a-zA-Z]"))
+                .filter(word -> word.matches("[a-zA-Z]+"))
                 .collect(Collectors.joining(""));
         return fullPatternHint.length() <= maxHintLength ?
                 fullPatternHint : fullPatternHint.substring(0, maxHintLength);

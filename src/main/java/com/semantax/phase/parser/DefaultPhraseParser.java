@@ -106,7 +106,8 @@ public class DefaultPhraseParser implements PhraseParser {
         while (true) {
 
             // Find different patterns that might reduce the stack
-            List<PatternDefinition> reductionCandidates = reductionCandidates(stack);
+            boolean isTopLevel = input.isEmpty();
+            List<PatternDefinition> reductionCandidates = reductionCandidates(stack, isTopLevel);
 
             // Try reducing the stack with each potential pattern
             // Then try to continue the parse from that state
@@ -166,8 +167,14 @@ public class DefaultPhraseParser implements PhraseParser {
         return patternUtil.matches(peek(stack, pattern.getSyntax().size()), pattern, symbolTable);
     }
 
-    private List<PatternDefinition> reductionCandidates(List<PhraseElement> stack) {
+    /**
+     * @param stack the stack of inputs to be parsed
+     * @param isTopLevel whether this is is parsing the top-level, if so void-returning patterns are considered
+     * @return a list of patterns that could be used to parse some elements off the top of the stack
+     */
+    private List<PatternDefinition> reductionCandidates(List<PhraseElement> stack, boolean isTopLevel) {
         return patterns.stream()
+                .filter(pattern -> isTopLevel || pattern.getSemantics().getOutput().isPresent())
                 .filter(pattern -> this.canReduce(stack, pattern))
                 .collect(Collectors.toList());
     }
