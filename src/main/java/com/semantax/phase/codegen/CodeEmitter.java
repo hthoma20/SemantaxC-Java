@@ -12,6 +12,8 @@ public class CodeEmitter {
     private final PrintStream out;
     private int indentLevel = 0;
 
+    private boolean annotationsEnabled = true;
+
 
     public CodeEmitter(PrintStream out) {
         this.out = out;
@@ -50,5 +52,20 @@ public class CodeEmitter {
 
     public void unIndent() {
         indentLevel -= 1;
+    }
+
+    public void annotateLine(String annotation, Object... args) {
+        if (!annotationsEnabled) return;
+        emitLine(annotation, args);
+    }
+
+    public void annotateIndent() {
+        if (!annotationsEnabled) return;
+        indent();
+    }
+
+    public void annotateUnIndent() {
+        if (!annotationsEnabled) return;
+        unIndent();
     }
 }

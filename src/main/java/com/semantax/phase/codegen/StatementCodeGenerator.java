@@ -4,6 +4,7 @@ package com.semantax.phase.codegen;
 import com.semantax.ast.node.Statement;
 import com.semantax.ast.node.list.StatementList;
 import com.semantax.ast.node.progcall.DeclProgCall;
+import com.semantax.ast.type.VoidType;
 
 import javax.inject.Inject;
 
@@ -24,9 +25,11 @@ public class StatementCodeGenerator {
             if (statement.getExpression() instanceof DeclProgCall) {
                 continue;
             }
-            emitter.beginLine();
-            expressionCodeGenerator.generateExpression(emitter, typeRegistry, patternRegistry, statement.getExpression());
-            emitter.endLine(";");
+            expressionCodeGenerator.generateExpression(
+                    emitter, typeRegistry, patternRegistry, statement.getExpression());
+            if (statement.getExpression().getType() != VoidType.VOID_TYPE) {
+                emitter.emitLine("popRoot();");
+            }
         }
     }
 }

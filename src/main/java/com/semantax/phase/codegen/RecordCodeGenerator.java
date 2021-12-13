@@ -39,21 +39,21 @@ public class RecordCodeGenerator {
     }
 
     private void emitConstructor(CodeEmitter emitter, GeneratedTypeRegistry.RecordEntry record, String structName) {
-        String parameters = Arrays.stream(record.getMembers())
-                .map(member -> String.format("%s* %s", member.getTypeName(), member.getFieldName()))
-                .collect(Collectors.joining(", "));
 
-        emitter.emitLine("%s* new_%s(%s) {", structName, structName, parameters);
+        emitter.emitLine("void new_%s() {", structName);
         emitter.indent();
 
         emitter.emitLine("%s* obj = (%s*) gcalloc(sizeof(%s), %d);", structName, structName, structName,
                 record.getMembers().length);
 
-        record.forEach((fieldName, typeName) -> {
-            emitter.emitLine("obj->%s = %s;", fieldName, fieldName);
-        });
+        // pop arguments in reverse order
+        GeneratedTypeRegistry.RecordEntry.RecordMember[] members = record.getMembers();
+        for (int i = members.length - 1; i >= 0; i--) {
+            GeneratedTypeRegistry.RecordEntry.RecordMember member = members[i];
+            emitter.emitLine("obj->%s = (%s*) popRoot();", member.getFieldName(), member.getTypeName());
+        }
 
-        emitter.emitLine("return obj;");
+        emitter.emitLine("pushRoot(obj);");
 
         emitter.unIndent();
         emitter.emitLine("}");

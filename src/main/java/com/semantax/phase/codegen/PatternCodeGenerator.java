@@ -41,16 +41,14 @@ public class PatternCodeGenerator {
                                  GeneratedTypeRegistry typeRegistry,
                                  GeneratedPatternRegistry patternRegistry,
                                  PatternDefinition pattern) {
-        String returnType = pattern.getSemantics().getOutput()
-                .map(TypeLit::getRepresentedType)
-                .map(type -> type.accept(typeRegistry))
-                .orElse("void");
+
         String argType = pattern.getSemantics().getInput()
                 .getRepresentedType()
                 .accept(typeRegistry);
 
-        emitter.emitLine("%s* %s(%s* arg) {", returnType, patternRegistry.getPatternName(pattern), argType);
+        emitter.emitLine("void %s() {", patternRegistry.getPatternName(pattern));
         emitter.indent();
+        emitter.emitLine("%s* arg = (%s*) popRoot();", argType, argType);
 
         generatePatternBody(emitter, typeRegistry, patternRegistry, pattern);
 
@@ -66,9 +64,7 @@ public class PatternCodeGenerator {
 
         if (function.getReturnExpression().isPresent()) {
             Expression returnExpression = function.getReturnExpression().get().getExpression();
-            emitter.beginLine("return ");
             expressionCodeGenerator.generateExpression(emitter, typeRegistry, patternRegistry, returnExpression);
-            emitter.endLine(";");
         }
         else {
             StatementList statements = function.getStatements().get();
