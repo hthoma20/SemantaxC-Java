@@ -3,16 +3,20 @@ package com.semantax.phase.codegen;
 import com.semantax.ast.node.AstNode;
 import com.semantax.ast.node.Expression;
 import com.semantax.ast.node.ParsableExpression;
+import com.semantax.ast.node.VariableDeclaration;
 import com.semantax.ast.node.VariableReference;
 import com.semantax.ast.node.literal.BoolLit;
 import com.semantax.ast.node.literal.IntLit;
 import com.semantax.ast.node.literal.NameParsableExpressionPair;
 import com.semantax.ast.node.literal.RecordLit;
 import com.semantax.ast.node.literal.StringLit;
+import com.semantax.ast.node.literal.type.NameTypeLitPair;
 import com.semantax.ast.node.literal.type.RecordTypeLit;
 import com.semantax.ast.node.pattern.PatternInvocation;
+import com.semantax.ast.node.progcall.DeclProgCall;
 import com.semantax.ast.node.progcall.DynamicProgcall;
 import com.semantax.ast.visitor.TraversalVisitor;
+import com.semantax.exception.CompilerException;
 import lombok.AllArgsConstructor;
 
 import javax.inject.Inject;
@@ -106,7 +110,20 @@ public class ExpressionCodeGenerator {
 
         @Override
         public Void visit(VariableReference variableReference) {
-            emitter.emitLine("pushRoot(nullptr);");
+
+            VariableDeclaration declaration = variableReference.getDeclaration();
+
+            if (declaration instanceof DeclProgCall) {
+                emitter.emitLine("pushRoot(nullptr);");
+            }
+            else if (declaration instanceof NameTypeLitPair) {
+                // this is a reference to the argument of a function or pattern
+                emitter.emitLine("pushRoot(arg->%s);", declaration.getDeclName());
+            }
+            else {
+                throw CompilerException.of("Unexpected declaration type");
+            }
+
             return null;
         }
 
