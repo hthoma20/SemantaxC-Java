@@ -28,18 +28,16 @@ public class ExpressionCodeGenerator {
     public ExpressionCodeGenerator() { }
 
     public void generateExpression(CodeEmitter emitter,
-                                   GeneratedTypeRegistry typeRegistry,
-                                   GeneratedPatternRegistry patternRegistry,
+                                   GeneratedNameRegistry nameRegistry,
                                    Expression expression) {
-        expression.accept(new ExpressionTraversalVisitor(emitter, typeRegistry, patternRegistry));
+        expression.accept(new ExpressionTraversalVisitor(emitter, nameRegistry));
     }
 
     @AllArgsConstructor
     private static class ExpressionTraversalVisitor extends TraversalVisitor<Void> {
 
         private final CodeEmitter emitter;
-        private final GeneratedTypeRegistry typeRegistry;
-        private final GeneratedPatternRegistry patternRegistry;
+        private final GeneratedNameRegistry nameRegistry;
 
         @Override
         public Void visit(BoolLit boolLit) {
@@ -72,7 +70,7 @@ public class ExpressionCodeGenerator {
                     .map(ParsableExpression::getExpression)
                     .iterator());
 
-            String recordName = recordLit.getType().accept(typeRegistry);
+            String recordName = nameRegistry.getTypeName(recordLit.getType());
             emitter.emitLine("new_%s();", recordName);
 
             return null;
@@ -100,9 +98,9 @@ public class ExpressionCodeGenerator {
                     .iterator();
             annotateIndentedVisit(argumentIterator);
 
-            emitter.emitLine("new_%s();", inputType.getRepresentedType().accept(typeRegistry));
+            emitter.emitLine("new_%s();", nameRegistry.getTypeName(inputType.getRepresentedType()));
 
-            emitter.emitLine("%s();", patternRegistry.getPatternName(patternInvocation.getPatternDefinition()));
+            emitter.emitLine("%s();", nameRegistry.getPatternName(patternInvocation.getPatternDefinition()));
 
             return null;
         }

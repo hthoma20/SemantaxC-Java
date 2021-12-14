@@ -18,15 +18,13 @@ public class StatementCodeGenerator {
     }
 
     public void generateStatements(CodeEmitter emitter,
-                                   GeneratedTypeRegistry typeRegistry,
-                                   GeneratedPatternRegistry patternRegistry,
+                                   GeneratedNameRegistry nameRegistry,
                                    StatementList statements) {
         for (Statement statement : statements) {
             if (statement.getExpression() instanceof DeclProgCall) {
                 continue;
             }
-            expressionCodeGenerator.generateExpression(
-                    emitter, typeRegistry, patternRegistry, statement.getExpression());
+            expressionCodeGenerator.generateExpression(emitter, nameRegistry, statement.getExpression());
             if (statement.getExpression().getType() != VoidType.VOID_TYPE) {
                 emitter.emitLine("popRoot();");
             }

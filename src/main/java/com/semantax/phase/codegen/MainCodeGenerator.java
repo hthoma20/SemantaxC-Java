@@ -20,15 +20,13 @@ public class MainCodeGenerator {
     }
 
     public void generateMain(CodeEmitter emitter,
-                             GeneratedTypeRegistry typeRegistry,
-                             GeneratedPatternRegistry patternRegistry,
+                             GeneratedNameRegistry nameRegistry,
                              Program program) {
         emitter.emitLine("int main(int argc, char* argv[]) {");
         emitter.indent();
 
         StatementList statements = mainModule(program).getStatements();
-        statementCodeGenerator.generateStatements(emitter,
-                typeRegistry, patternRegistry, statements);
+        statementCodeGenerator.generateStatements(emitter, nameRegistry, statements);
 
         emitter.emitLine("finalizeGarbageCollector();");
         emitter.emitLine("return 0;");

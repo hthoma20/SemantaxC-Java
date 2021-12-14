@@ -26,49 +26,45 @@ public class PatternCodeGenerator {
     }
 
     public void generatePatterns(CodeEmitter emitter,
-                                 GeneratedPatternRegistry patternRegistry,
-                                 GeneratedTypeRegistry typeRegistry,
+                                 GeneratedNameRegistry nameRegistry,
                                  Program program) {
         for (Module module : program.getModules()) {
             for (PatternDefinition pattern : module.getPatterns()) {
-                generatePattern(emitter, typeRegistry, patternRegistry, pattern);
+                generatePattern(emitter, nameRegistry, pattern);
                 emitter.emitLine("");
             }
         }
     }
 
     private void generatePattern(CodeEmitter emitter,
-                                 GeneratedTypeRegistry typeRegistry,
-                                 GeneratedPatternRegistry patternRegistry,
+                                 GeneratedNameRegistry nameRegistry,
                                  PatternDefinition pattern) {
 
-        String argType = pattern.getSemantics().getInput()
-                .getRepresentedType()
-                .accept(typeRegistry);
+        String argType = nameRegistry.getTypeName(pattern.getSemantics().getInput()
+                .getRepresentedType());
 
-        emitter.emitLine("void %s() {", patternRegistry.getPatternName(pattern));
+        emitter.emitLine("void %s() {", nameRegistry.getPatternName(pattern));
         emitter.indent();
         emitter.emitLine("%s* arg = (%s*) popRoot();", argType, argType);
 
-        generatePatternBody(emitter, typeRegistry, patternRegistry, pattern);
+        generatePatternBody(emitter, nameRegistry, pattern);
 
         emitter.unIndent();
         emitter.emitLine("}");
     }
 
     private void generatePatternBody(CodeEmitter emitter,
-                                     GeneratedTypeRegistry typeRegistry,
-                                     GeneratedPatternRegistry patternRegistry,
+                                     GeneratedNameRegistry nameRegistry,
                                      PatternDefinition pattern) {
         FunctionLit function = pattern.getSemantics();
 
         if (function.getReturnExpression().isPresent()) {
             Expression returnExpression = function.getReturnExpression().get().getExpression();
-            expressionCodeGenerator.generateExpression(emitter, typeRegistry, patternRegistry, returnExpression);
+            expressionCodeGenerator.generateExpression(emitter, nameRegistry, returnExpression);
         }
         else {
             StatementList statements = function.getStatements().get();
-            statementCodeGenerator.generateStatements(emitter, typeRegistry, patternRegistry, statements);
+            statementCodeGenerator.generateStatements(emitter, nameRegistry, statements);
         }
     }
 }

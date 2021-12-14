@@ -3,9 +3,11 @@ package com.semantax.phase;
 import com.semantax.ast.node.Program;
 import com.semantax.exception.CompilerException;
 import com.semantax.phase.codegen.CodeEmitter;
+import com.semantax.phase.codegen.GeneratedNameRegistry;
 import com.semantax.phase.codegen.GeneratedPatternRegistry;
 import com.semantax.phase.codegen.GeneratedTypeAggregator;
 import com.semantax.phase.codegen.GeneratedTypeRegistry;
+import com.semantax.phase.codegen.GeneratedVariableRegistry;
 import com.semantax.phase.codegen.MainCodeGenerator;
 import com.semantax.phase.codegen.PatternCodeGenerator;
 import com.semantax.phase.codegen.RecordCodeGenerator;
@@ -48,11 +50,15 @@ public class CodeGenPhase implements Phase<CodeGenPhase.CodeGenArgs, Set<String>
         codeEmitter.emitLine("");
 
         GeneratedTypeRegistry typeRegistry = generatedTypeAggregator.aggregateTypeNames(args.program);
-        GeneratedPatternRegistry patternRegistry = new GeneratedPatternRegistry();
+        GeneratedNameRegistry nameRegistry = GeneratedNameRegistry.builder()
+                .typeRegistry(typeRegistry)
+                .patternRegistry(new GeneratedPatternRegistry())
+                .variableRegistry(new GeneratedVariableRegistry())
+                .build();
 
         recordCodeGenerator.generateTypes(codeEmitter, typeRegistry);
-        patternCodeGenerator.generatePatterns(codeEmitter, patternRegistry, typeRegistry, args.program);
-        mainCodeGenerator.generateMain(codeEmitter, typeRegistry, patternRegistry, args.program);
+        patternCodeGenerator.generatePatterns(codeEmitter, nameRegistry, args.program);
+        mainCodeGenerator.generateMain(codeEmitter, nameRegistry, args.program);
 
         return Optional.of(new HashSet<>(Collections.singleton(args.outputPath)));
     }
