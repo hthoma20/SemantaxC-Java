@@ -112,7 +112,7 @@ public class ExpressionCodeGenerator {
             VariableDeclaration declaration = variableReference.getDeclaration();
 
             if (declaration instanceof DeclProgCall) {
-                emitter.emitLine("pushRoot(nullptr);");
+                emitter.emitLine("pushRoot(%s->val);", nameRegistry.getVariableName((DeclProgCall) declaration));
             }
             else if (declaration instanceof NameTypeLitPair) {
                 // this is a reference to the argument of a function or pattern

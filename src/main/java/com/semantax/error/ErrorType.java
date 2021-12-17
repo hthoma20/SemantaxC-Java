@@ -21,7 +21,9 @@ public enum ErrorType {
 
     HETEROGENEOUS_ARRAY("TYPEA-0"),
     DUPLICATE_RECORD_NAME("TYPEA-1"),
-    DUPLICATE_RECORD_TYPE_NAME("TYPEA-2");
+    DUPLICATE_RECORD_TYPE_NAME("TYPEA-2"),
+
+    ILLEGAL_BIND("SEM-0");
 
     @Getter
     private final String id;

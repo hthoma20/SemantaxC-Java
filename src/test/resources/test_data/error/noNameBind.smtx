@@ -1,0 +1,4 @@
+main module noNameBind {
+    @decl(x, int);
+    @bind(7, 5);
+}

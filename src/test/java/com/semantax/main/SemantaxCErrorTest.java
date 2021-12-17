@@ -66,7 +66,7 @@ public class SemantaxCErrorTest extends TestCase {
 
     ParsePhase parsePhase = new ParsePhase(errorLogger, phraseParser, typeAnnotator);
     GrammarPhase grammarPhase = new GrammarPhase(errorLogger);
-    SemanticPhase semanticPhase = new SemanticPhase();
+    SemanticPhase semanticPhase = new SemanticPhase(errorLogger);
     CodeGenPhase codeGenPhase = new CodeGenPhase(generatedTypeAggregator,
             recordCodeGenerator,
             patternCodeGenerator,
@@ -101,7 +101,10 @@ public class SemantaxCErrorTest extends TestCase {
         return Arrays.asList(
                 testData("missingMainModule.smtx", ErrorType.MISSING_MAIN_MODULE),
                 testData("twoMainModules.smtx", ErrorType.MULTIPLE_MAIN_MODULES),
-                testData("patternMismatchedBrackets.smtx", ErrorType.PROGRAM_PARSE_ERROR, new FilePos(2, 20)));
+                testData("patternMismatchedBrackets.smtx", ErrorType.PROGRAM_PARSE_ERROR, new FilePos(2, 20)),
+                testData("threeArgBind.smtx", ErrorType.ILLEGAL_BIND),
+                testData("undeclaredBind.smtx", ErrorType.UNPARSABLE_PHRASE),
+                testData("noNameBind.smtx", ErrorType.ILLEGAL_BIND));
     }
 
     private static ErrorTestData testData(String file, ErrorType errorType) {

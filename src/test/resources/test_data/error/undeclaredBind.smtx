@@ -1,0 +1,3 @@
+main module undeclaredBind {
+    @bind(x, 4);
+}

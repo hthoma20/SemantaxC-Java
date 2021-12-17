@@ -6,9 +6,8 @@ import com.semantax.ast.node.list.ParsableExpressionList;
 import com.semantax.ast.type.Type;
 import com.semantax.ast.util.eventual.Eventual;
 import com.semantax.ast.visitor.AstVisitor;
-import lombok.Getter;
 
-public class DeclProgCall extends ProgCall implements VariableDeclaration {
+public class DeclProgCall extends StaticProgCall implements VariableDeclaration {
 
     private final Eventual<String> declName = Eventual.unfulfilled();
     private final Eventual<Type> declType = Eventual.unfulfilled();
@@ -18,7 +17,7 @@ public class DeclProgCall extends ProgCall implements VariableDeclaration {
     DeclProgCall(String name, ParsableExpressionList subExpressions) {
         super(name, subExpressions);
     }
-    public static class Builder extends ProgCall.Builder {}
+    public static class Builder extends StaticProgCall.Builder {}
 
     @Override
     public <T> T accept(AstVisitor<T> visitor) {

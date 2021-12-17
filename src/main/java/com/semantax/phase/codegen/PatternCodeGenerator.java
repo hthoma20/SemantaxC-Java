@@ -3,17 +3,24 @@ package com.semantax.phase.codegen;
 import com.semantax.ast.node.Expression;
 import com.semantax.ast.node.Module;
 import com.semantax.ast.node.Program;
+import com.semantax.ast.node.Statement;
 import com.semantax.ast.node.list.StatementList;
 import com.semantax.ast.node.literal.FunctionLit;
-import com.semantax.ast.node.literal.type.TypeLit;
 import com.semantax.ast.node.pattern.PatternDefinition;
+import com.semantax.ast.node.progcall.DeclProgCall;
 
 import javax.inject.Inject;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Generate code for the main function
  */
 public class PatternCodeGenerator {
+
+    private static final String RETURN_LABEL = "ret";
 
     private final ExpressionCodeGenerator expressionCodeGenerator;
     private final StatementCodeGenerator statementCodeGenerator;
@@ -40,17 +47,37 @@ public class PatternCodeGenerator {
                                  GeneratedNameRegistry nameRegistry,
                                  PatternDefinition pattern) {
 
-        String argType = nameRegistry.getTypeName(pattern.getSemantics().getInput()
-                .getRepresentedType());
+        List<DeclProgCall> variableDeclarations = declaredVariables(pattern);
 
         emitter.emitLine("void %s() {", nameRegistry.getPatternName(pattern));
         emitter.indent();
-        emitter.emitLine("%s* arg = (%s*) popRoot();", argType, argType);
 
+        generatePatternHeader(emitter, nameRegistry, pattern, variableDeclarations);
+        emitter.emitLine("");
         generatePatternBody(emitter, nameRegistry, pattern);
+        emitter.emitLine("");
+        generatePatternReturn(emitter, pattern, variableDeclarations);
 
         emitter.unIndent();
         emitter.emitLine("}");
+    }
+
+    /**
+     * Generate variable declarations
+     */
+    private void generatePatternHeader(CodeEmitter emitter,
+                                       GeneratedNameRegistry nameRegistry,
+                                       PatternDefinition pattern,
+                                       List<DeclProgCall> declaredVariables) {
+
+        String argType = nameRegistry.getTypeName(pattern.getSemantics().getInput()
+                .getRepresentedType());
+        emitter.emitLine("%s* arg = (%s*) getRoot(0);", argType, argType);
+
+        for (DeclProgCall declaration : declaredVariables) {
+            emitter.emitLine("new_Variable();");
+            emitter.emitLine("Variable* %s = (Variable*) getRoot(0);", nameRegistry.getVariableName(declaration));
+        }
     }
 
     private void generatePatternBody(CodeEmitter emitter,
@@ -67,4 +94,43 @@ public class PatternCodeGenerator {
             statementCodeGenerator.generateStatements(emitter, nameRegistry, statements);
         }
     }
+
+
+    /**
+     * Generate a return label which cleans up the stack and returns
+     * it is assumed that the return value will be the top of the stack,
+     * if there is one
+     */
+    private void generatePatternReturn(CodeEmitter emitter,
+                                       PatternDefinition pattern,
+                                       List<DeclProgCall> declaredVariables) {
+
+        emitter.emitLine("%s:", RETURN_LABEL);
+
+        boolean hasReturnValue = pattern.getSemantics().getOutput().isPresent();
+
+        if (hasReturnValue) {
+            emitter.emitLine("Collectable* ret_val = popRoot();");
+        }
+        // pop variables and the arg
+        emitter.emitLine("popRoots(%d);", declaredVariables.size() + 1);
+
+        if (hasReturnValue) {
+            emitter.emitLine("pushRoot(ret_val);");
+        }
+    }
+
+    private List<DeclProgCall> declaredVariables(PatternDefinition pattern) {
+        Optional<StatementList> statements = pattern.getSemantics().getStatements();
+        if (!statements.isPresent()) {
+            return Collections.emptyList();
+        }
+
+        return statements.get().stream()
+                    .map(Statement::getExpression)
+                    .filter(exp -> exp instanceof DeclProgCall)
+                    .map(exp -> (DeclProgCall) exp)
+                    .collect(Collectors.toList());
+    }
+
 }

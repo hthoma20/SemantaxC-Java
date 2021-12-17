@@ -27,6 +27,7 @@ import com.semantax.ast.node.literal.type.RecordTypeLit;
 import com.semantax.ast.node.literal.type.StringTypeLit;
 import com.semantax.ast.node.literal.type.TypeTypeLit;
 import com.semantax.ast.node.pattern.PatternInvocation;
+import com.semantax.ast.node.progcall.BindProgCall;
 import com.semantax.ast.node.progcall.DeclProgCall;
 import com.semantax.ast.node.progcall.DynamicProgcall;
 import com.semantax.ast.node.progcall.ProgCall;
@@ -106,6 +107,11 @@ public class BaseAstVisitor<T> implements AstVisitor<T> {
 
     @Override
     public T visit(DeclProgCall progCall) {
+        throw CompilerException.of(message);
+    }
+
+    @Override
+    public T visit(BindProgCall progCall) {
         throw CompilerException.of(message);
     }
 

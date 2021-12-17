@@ -45,6 +45,7 @@ public class ParsePhase extends TraversalVisitor<Void>
     private final TypeAnnotator typeAnnotator;
 
     private Module currentModule;
+    private boolean failedParse = false;
 
     private final Stack<SymbolTable> symbolTables = new Stack<>();
     private final Stack<List<PatternDefinition>> patterns = new Stack<>();
@@ -69,6 +70,9 @@ public class ParsePhase extends TraversalVisitor<Void>
 
         mainModule.get().accept(this);
 
+        if (failedParse) {
+            return Optional.empty();
+        }
         return Optional.of(program);
     }
 
@@ -126,6 +130,7 @@ public class ParsePhase extends TraversalVisitor<Void>
 
         if (!optionalParsedPhrase.isPresent()) {
             errorLogger.error(ErrorType.UNPARSABLE_PHRASE, parsableExpression.getFilePos(), "Couldn't parse phrase");
+            failedParse = true;
             return null;
         }
 
@@ -147,6 +152,7 @@ public class ParsePhase extends TraversalVisitor<Void>
         if (declProgCall.getSubExpressions().size() != 2) {
             errorLogger.error(ErrorType.ILLEGAL_DECL, declProgCall.getFilePos(),
                     "%s expects exactly two arguments: a name and type.",declProgCall.getName());
+            failedParse = true;
             return null;
         }
 
@@ -159,6 +165,7 @@ public class ParsePhase extends TraversalVisitor<Void>
         if (!variableName.isPresent() || !variableType.isPresent()) {
             errorLogger.error(ErrorType.ILLEGAL_DECL, declProgCall.getFilePos(),
                     "%s expects a name and type.", declProgCall.getName());
+            failedParse = true;
             return null;
         }
 

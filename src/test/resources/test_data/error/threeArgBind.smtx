@@ -1,0 +1,4 @@
+main module threeArgBind {
+    @decl(x, int);
+    @bind(x, 4, 5);
+}

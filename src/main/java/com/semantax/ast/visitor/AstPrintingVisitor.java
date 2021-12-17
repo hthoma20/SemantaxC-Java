@@ -6,6 +6,7 @@ import com.semantax.ast.node.literal.*;
 import com.semantax.ast.node.literal.type.*;
 import com.semantax.ast.node.pattern.PatternDefinition;
 import com.semantax.ast.node.pattern.PatternInvocation;
+import com.semantax.ast.node.progcall.BindProgCall;
 import com.semantax.ast.node.progcall.DeclProgCall;
 import com.semantax.ast.node.progcall.DynamicProgcall;
 import com.semantax.ast.node.progcall.ProgCall;
@@ -119,6 +120,13 @@ public class AstPrintingVisitor extends TraversalVisitor<Void> {
             output.print("type: ");
             declProgCall.getDeclType().accept(this);
         }
+
+        return null;
+    }
+
+    @Override
+    public Void visit(BindProgCall bindProgCall) {
+        this.visit((ProgCall) bindProgCall);
 
         return null;
     }

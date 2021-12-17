@@ -6,6 +6,7 @@ import com.semantax.ast.node.literal.type.*;
 import com.semantax.ast.node.list.AstNodeList;
 import com.semantax.ast.node.pattern.PatternDefinition;
 import com.semantax.ast.node.pattern.PatternInvocation;
+import com.semantax.ast.node.progcall.BindProgCall;
 import com.semantax.ast.node.progcall.DeclProgCall;
 import com.semantax.ast.node.progcall.DynamicProgcall;
 import com.semantax.ast.node.progcall.ProgCall;
@@ -33,6 +34,7 @@ public interface AstVisitor<T> {
 
     T visit(ProgCall progCall);
     T visit(DeclProgCall declProgCall);
+    T visit(BindProgCall bindProgCall);
     T visit(DynamicProgcall dynamicProgcall);
 
     T visit(TypeTypeLit typeTypeLiteral);
