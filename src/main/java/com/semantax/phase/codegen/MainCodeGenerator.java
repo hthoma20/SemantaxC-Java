@@ -3,6 +3,7 @@ package com.semantax.phase.codegen;
 import com.semantax.ast.node.Module;
 import com.semantax.ast.node.Program;
 import com.semantax.ast.node.list.StatementList;
+import com.semantax.ast.node.progcall.DeclProgCall;
 import com.semantax.exception.CompilerException;
 
 import javax.inject.Inject;
@@ -25,8 +26,19 @@ public class MainCodeGenerator {
         emitter.emitLine("int main(int argc, char* argv[]) {");
         emitter.indent();
 
+        for (DeclProgCall declaration : program.getGlobalVariables()) {
+            String variableName = nameRegistry.getVariableName(declaration);
+            emitter.emitLine("new_Variable();");
+            emitter.emitLine("%s = (Variable*) popRoot();", variableName);
+            emitter.emitLine("pushRoot(%s);", variableName);
+        }
+
+        emitter.emitLine("");
+
         StatementList statements = mainModule(program).getStatements();
         statementCodeGenerator.generateStatements(emitter, nameRegistry, statements);
+
+        emitter.emitLine("");
 
         emitter.emitLine("finalizeGarbageCollector();");
         emitter.emitLine("return 0;");

@@ -4,8 +4,8 @@ package com.semantax.phase.codegen;
 import com.semantax.ast.node.Expression;
 import com.semantax.ast.node.Statement;
 import com.semantax.ast.node.VariableDeclaration;
+import com.semantax.ast.node.VariableReference;
 import com.semantax.ast.node.list.StatementList;
-import com.semantax.ast.node.literal.type.NameTypeLitPair;
 import com.semantax.ast.node.progcall.BindProgCall;
 import com.semantax.ast.node.progcall.DeclProgCall;
 import com.semantax.ast.node.progcall.StaticProgCall;
@@ -56,20 +56,26 @@ public class StatementCodeGenerator {
         @Override
         public Void visit(BindProgCall bindProgCall) {
 
-            VariableDeclaration declaration = bindProgCall.getVariableReference().getDeclaration();
+            VariableReference variableReference = bindProgCall.getVariableReference();
+            VariableDeclaration declaration = variableReference.getDeclaration();
             Expression expression = bindProgCall.getValue();
 
             expressionCodeGenerator.generateExpression(emitter, nameRegistry, expression);
 
-            if (declaration instanceof DeclProgCall) {
-                emitter.emitLine("%s->val = popRoot();", nameRegistry.getVariableName((DeclProgCall) declaration));
-            }
-            else if (declaration instanceof NameTypeLitPair) {
-                // this is a reference to the argument of a function or pattern
-                emitter.emitLine("arg->%s = popRoot();", declaration.getDeclName());
-            }
-            else {
-                throw CompilerException.of("Unexpected declaration type");
+
+            switch (variableReference.getScope()) {
+                case LOCAL:
+                case GLOBAL:
+                    emitter.emitLine("%s->val = popRoot();", nameRegistry.getVariableName((DeclProgCall) declaration));
+                    break;
+                case ARGUMENT:
+                    emitter.emitLine("arg->%s = popRoot();", declaration.getDeclName());
+                    break;
+                case CLOSURE:
+                    emitter.emitLine("closure->%s->val = popRoot();", declaration.getDeclName());
+                    break;
+                default:
+                    throw CompilerException.of("Unexpected variable reference scope");
             }
 
             return null;

@@ -2,6 +2,7 @@ package com.semantax.ast.node.literal;
 
 import com.semantax.ast.node.ParsableExpression;
 import com.semantax.ast.node.list.StatementList;
+import com.semantax.ast.node.progcall.DeclProgCall;
 import com.semantax.ast.util.FilePos;
 import com.semantax.ast.visitor.AstVisitor;
 import com.semantax.ast.node.literal.type.RecordTypeLit;
@@ -9,7 +10,9 @@ import com.semantax.ast.node.literal.type.TypeLit;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 @Builder(builderClassName = "Builder")
 @Getter
@@ -25,6 +28,9 @@ public class FunctionLit extends Literal {
     @lombok.Builder.Default
     private Optional<ParsableExpression> returnExpression = Optional.empty();
 
+    @Getter
+    private final Set<DeclProgCall> localVariables = new HashSet<>();
+
     @Override
     public <T> T accept(AstVisitor<T> visitor) {
         return visitor.visit(this);
@@ -38,5 +44,9 @@ public class FunctionLit extends Literal {
             return functionLit;
         }
 
+    }
+
+    public void addLocalVariable(DeclProgCall declaration) {
+        localVariables.add(declaration);
     }
 }

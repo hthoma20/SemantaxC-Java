@@ -111,15 +111,19 @@ public class ExpressionCodeGenerator {
 
             VariableDeclaration declaration = variableReference.getDeclaration();
 
-            if (declaration instanceof DeclProgCall) {
-                emitter.emitLine("pushRoot(%s->val);", nameRegistry.getVariableName((DeclProgCall) declaration));
-            }
-            else if (declaration instanceof NameTypeLitPair) {
-                // this is a reference to the argument of a function or pattern
-                emitter.emitLine("pushRoot(arg->%s);", declaration.getDeclName());
-            }
-            else {
-                throw CompilerException.of("Unexpected declaration type");
+            switch (variableReference.getScope()) {
+                case LOCAL:
+                case GLOBAL:
+                    emitter.emitLine("pushRoot(%s->val);", nameRegistry.getVariableName((DeclProgCall) declaration));
+                    break;
+                case ARGUMENT:
+                    emitter.emitLine("pushRoot(arg->%s);", declaration.getDeclName());
+                    break;
+                case CLOSURE:
+                    emitter.emitLine("pushRoot(closure->%s->val);", declaration.getDeclName());
+                    break;
+                default:
+                    throw CompilerException.of("Unexpected variable reference scope");
             }
 
             return null;

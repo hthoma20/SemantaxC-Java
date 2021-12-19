@@ -1,7 +1,9 @@
 package com.semantax.ast.node;
 
 import com.semantax.ast.util.FilePos;
+import com.semantax.ast.util.eventual.Eventual;
 import com.semantax.ast.visitor.AstVisitor;
+import com.semantax.phase.codegen.VariableScope;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -9,6 +11,7 @@ import lombok.Getter;
 @Getter
 public class VariableReference extends Expression {
     private final VariableDeclaration declaration;
+    private final Eventual<VariableScope> scope = Eventual.unfulfilled();
 
     @Override
     public <T> T accept(AstVisitor<T> visitor) {
@@ -23,4 +26,11 @@ public class VariableReference extends Expression {
         }
     }
 
+    public VariableScope getScope() {
+        return scope.get();
+    }
+
+    public void setScope(VariableScope scope) {
+        this.scope.fulfill(scope);
+    }
 }

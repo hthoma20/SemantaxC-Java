@@ -8,9 +8,11 @@ import com.semantax.phase.codegen.GeneratedPatternRegistry;
 import com.semantax.phase.codegen.GeneratedTypeAggregator;
 import com.semantax.phase.codegen.GeneratedTypeRegistry;
 import com.semantax.phase.codegen.GeneratedVariableRegistry;
+import com.semantax.phase.codegen.GlobalVariableCodeGenerator;
 import com.semantax.phase.codegen.MainCodeGenerator;
 import com.semantax.phase.codegen.PatternCodeGenerator;
 import com.semantax.phase.codegen.RecordCodeGenerator;
+import com.semantax.phase.codegen.VariableScopeAnnotator;
 import lombok.Builder;
 
 import javax.inject.Inject;
@@ -27,17 +29,22 @@ import java.util.Set;
 public class CodeGenPhase implements Phase<CodeGenPhase.CodeGenArgs, Set<String>> {
 
     private final GeneratedTypeAggregator generatedTypeAggregator;
+    private final VariableScopeAnnotator variableScopeAnnotator;
     private final RecordCodeGenerator recordCodeGenerator;
+    private final GlobalVariableCodeGenerator variableCodeGenerator;
     private final PatternCodeGenerator patternCodeGenerator;
     private final MainCodeGenerator mainCodeGenerator;
 
     @Inject
     public CodeGenPhase(GeneratedTypeAggregator generatedTypeAggregator,
+                        VariableScopeAnnotator variableScopeAnnotator,
                         RecordCodeGenerator recordCodeGenerator,
-                        PatternCodeGenerator patternCodeGenerator,
+                        GlobalVariableCodeGenerator variableCodeGenerator, PatternCodeGenerator patternCodeGenerator,
                         MainCodeGenerator mainCodeGenerator) {
         this.generatedTypeAggregator = generatedTypeAggregator;
+        this.variableScopeAnnotator = variableScopeAnnotator;
         this.recordCodeGenerator = recordCodeGenerator;
+        this.variableCodeGenerator = variableCodeGenerator;
         this.patternCodeGenerator = patternCodeGenerator;
         this.mainCodeGenerator = mainCodeGenerator;
     }
@@ -56,8 +63,14 @@ public class CodeGenPhase implements Phase<CodeGenPhase.CodeGenArgs, Set<String>
                 .variableRegistry(new GeneratedVariableRegistry())
                 .build();
 
+        variableScopeAnnotator.annotateVariables(args.program);
+
         recordCodeGenerator.generateTypes(codeEmitter, typeRegistry);
+        codeEmitter.emitLine("");
+        variableCodeGenerator.generateGlobalVariables(codeEmitter, nameRegistry, args.program);
+        codeEmitter.emitLine("");
         patternCodeGenerator.generatePatterns(codeEmitter, nameRegistry, args.program);
+        codeEmitter.emitLine("");
         mainCodeGenerator.generateMain(codeEmitter, nameRegistry, args.program);
 
         return Optional.of(new HashSet<>(Collections.singleton(args.outputPath)));

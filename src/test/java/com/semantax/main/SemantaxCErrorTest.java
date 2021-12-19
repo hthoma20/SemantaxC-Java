@@ -16,10 +16,12 @@ import com.semantax.phase.annotator.TypeAnnotator;
 import com.semantax.phase.annotator.TypeAssignabilityChecker;
 import com.semantax.phase.codegen.ExpressionCodeGenerator;
 import com.semantax.phase.codegen.GeneratedTypeAggregator;
+import com.semantax.phase.codegen.GlobalVariableCodeGenerator;
 import com.semantax.phase.codegen.MainCodeGenerator;
 import com.semantax.phase.codegen.PatternCodeGenerator;
 import com.semantax.phase.codegen.RecordCodeGenerator;
 import com.semantax.phase.codegen.StatementCodeGenerator;
+import com.semantax.phase.codegen.VariableScopeAnnotator;
 import com.semantax.phase.parser.DefaultPhraseParser;
 import com.semantax.phase.parser.PatternUtil;
 import com.semantax.phase.parser.PhraseParser;
@@ -58,7 +60,9 @@ public class SemantaxCErrorTest extends TestCase {
     TypeAnnotator typeAnnotator = new DefaultTypeAnnotator(typeAssignabilityChecker, recordTypeUtil, errorLogger);
 
     GeneratedTypeAggregator generatedTypeAggregator = new GeneratedTypeAggregator();
+    VariableScopeAnnotator variableScopeAnnotator = new VariableScopeAnnotator();
     RecordCodeGenerator recordCodeGenerator = new RecordCodeGenerator();
+    GlobalVariableCodeGenerator globalVariableCodeGenerator = new GlobalVariableCodeGenerator();
     ExpressionCodeGenerator expressionCodeGenerator = new ExpressionCodeGenerator();
     StatementCodeGenerator statementCodeGenerator = new StatementCodeGenerator(expressionCodeGenerator);
     MainCodeGenerator mainCodeGenerator = new MainCodeGenerator(statementCodeGenerator);
@@ -68,7 +72,9 @@ public class SemantaxCErrorTest extends TestCase {
     GrammarPhase grammarPhase = new GrammarPhase(errorLogger);
     SemanticPhase semanticPhase = new SemanticPhase(errorLogger);
     CodeGenPhase codeGenPhase = new CodeGenPhase(generatedTypeAggregator,
+            variableScopeAnnotator,
             recordCodeGenerator,
+            globalVariableCodeGenerator,
             patternCodeGenerator,
             mainCodeGenerator);
 

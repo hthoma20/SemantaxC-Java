@@ -47,16 +47,14 @@ public class PatternCodeGenerator {
                                  GeneratedNameRegistry nameRegistry,
                                  PatternDefinition pattern) {
 
-        List<DeclProgCall> variableDeclarations = declaredVariables(pattern);
-
         emitter.emitLine("void %s() {", nameRegistry.getPatternName(pattern));
         emitter.indent();
 
-        generatePatternHeader(emitter, nameRegistry, pattern, variableDeclarations);
+        generatePatternHeader(emitter, nameRegistry, pattern);
         emitter.emitLine("");
         generatePatternBody(emitter, nameRegistry, pattern);
         emitter.emitLine("");
-        generatePatternReturn(emitter, pattern, variableDeclarations);
+        generatePatternReturn(emitter, pattern);
 
         emitter.unIndent();
         emitter.emitLine("}");
@@ -67,14 +65,13 @@ public class PatternCodeGenerator {
      */
     private void generatePatternHeader(CodeEmitter emitter,
                                        GeneratedNameRegistry nameRegistry,
-                                       PatternDefinition pattern,
-                                       List<DeclProgCall> declaredVariables) {
+                                       PatternDefinition pattern) {
 
         String argType = nameRegistry.getTypeName(pattern.getSemantics().getInput()
                 .getRepresentedType());
         emitter.emitLine("%s* arg = (%s*) getRoot(0);", argType, argType);
 
-        for (DeclProgCall declaration : declaredVariables) {
+        for (DeclProgCall declaration : pattern.getSemantics().getLocalVariables()) {
             emitter.emitLine("new_Variable();");
             emitter.emitLine("Variable* %s = (Variable*) getRoot(0);", nameRegistry.getVariableName(declaration));
         }
@@ -102,8 +99,7 @@ public class PatternCodeGenerator {
      * if there is one
      */
     private void generatePatternReturn(CodeEmitter emitter,
-                                       PatternDefinition pattern,
-                                       List<DeclProgCall> declaredVariables) {
+                                       PatternDefinition pattern) {
 
         emitter.emitLine("%s:", RETURN_LABEL);
 
@@ -113,24 +109,11 @@ public class PatternCodeGenerator {
             emitter.emitLine("Collectable* ret_val = popRoot();");
         }
         // pop variables and the arg
-        emitter.emitLine("popRoots(%d);", declaredVariables.size() + 1);
+        emitter.emitLine("popRoots(%d);", pattern.getSemantics().getLocalVariables().size() + 1);
 
         if (hasReturnValue) {
             emitter.emitLine("pushRoot(ret_val);");
         }
-    }
-
-    private List<DeclProgCall> declaredVariables(PatternDefinition pattern) {
-        Optional<StatementList> statements = pattern.getSemantics().getStatements();
-        if (!statements.isPresent()) {
-            return Collections.emptyList();
-        }
-
-        return statements.get().stream()
-                    .map(Statement::getExpression)
-                    .filter(exp -> exp instanceof DeclProgCall)
-                    .map(exp -> (DeclProgCall) exp)
-                    .collect(Collectors.toList());
     }
 
 }
