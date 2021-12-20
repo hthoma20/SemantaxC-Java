@@ -3,8 +3,8 @@ package com.semantax.phase;
 import com.semantax.ast.node.Program;
 import com.semantax.exception.CompilerException;
 import com.semantax.phase.codegen.CodeEmitter;
+import com.semantax.phase.codegen.GeneratedFunctionRegistry;
 import com.semantax.phase.codegen.GeneratedNameRegistry;
-import com.semantax.phase.codegen.GeneratedPatternRegistry;
 import com.semantax.phase.codegen.GeneratedTypeAggregator;
 import com.semantax.phase.codegen.GeneratedTypeRegistry;
 import com.semantax.phase.codegen.GeneratedVariableRegistry;
@@ -59,8 +59,8 @@ public class CodeGenPhase implements Phase<CodeGenPhase.CodeGenArgs, Set<String>
         GeneratedTypeRegistry typeRegistry = generatedTypeAggregator.aggregateTypeNames(args.program);
         GeneratedNameRegistry nameRegistry = GeneratedNameRegistry.builder()
                 .typeRegistry(typeRegistry)
-                .patternRegistry(new GeneratedPatternRegistry())
                 .variableRegistry(new GeneratedVariableRegistry())
+                .functionRegistry(new GeneratedFunctionRegistry())
                 .build();
 
         variableScopeAnnotator.annotateVariables(args.program);

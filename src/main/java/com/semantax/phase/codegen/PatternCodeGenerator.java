@@ -4,6 +4,7 @@ import com.semantax.ast.node.Expression;
 import com.semantax.ast.node.Module;
 import com.semantax.ast.node.Program;
 import com.semantax.ast.node.Statement;
+import com.semantax.ast.node.Word;
 import com.semantax.ast.node.list.StatementList;
 import com.semantax.ast.node.literal.FunctionLit;
 import com.semantax.ast.node.pattern.PatternDefinition;
@@ -22,14 +23,11 @@ public class PatternCodeGenerator {
 
     private static final String RETURN_LABEL = "ret";
 
-    private final ExpressionCodeGenerator expressionCodeGenerator;
-    private final StatementCodeGenerator statementCodeGenerator;
+    private final FunctionDefinitionCodeGenerator functionCodeGenerator;
 
     @Inject
-    public PatternCodeGenerator(ExpressionCodeGenerator expressionCodeGenerator,
-                                StatementCodeGenerator statementCodeGenerator) {
-        this.expressionCodeGenerator = expressionCodeGenerator;
-        this.statementCodeGenerator = statementCodeGenerator;
+    public PatternCodeGenerator(FunctionDefinitionCodeGenerator functionCodeGenerator) {
+        this.functionCodeGenerator = functionCodeGenerator;
     }
 
     public void generatePatterns(CodeEmitter emitter,
@@ -37,83 +35,28 @@ public class PatternCodeGenerator {
                                  Program program) {
         for (Module module : program.getModules()) {
             for (PatternDefinition pattern : module.getPatterns()) {
-                generatePattern(emitter, nameRegistry, pattern);
+
+                emitter.annotateLine("// %s", getHint(pattern));
+                emitter.emitLine("struct %s : Collectable {};", nameRegistry.getClosureName(pattern.getSemantics()));
+                functionCodeGenerator.generateFunctionDefinition(
+                        emitter, nameRegistry, pattern.getSemantics());
+
                 emitter.emitLine("");
             }
         }
     }
 
-    private void generatePattern(CodeEmitter emitter,
-                                 GeneratedNameRegistry nameRegistry,
-                                 PatternDefinition pattern) {
-
-        emitter.emitLine("void %s() {", nameRegistry.getPatternName(pattern));
-        emitter.indent();
-
-        generatePatternHeader(emitter, nameRegistry, pattern);
-        emitter.emitLine("");
-        generatePatternBody(emitter, nameRegistry, pattern);
-        emitter.emitLine("");
-        generatePatternReturn(emitter, pattern);
-
-        emitter.unIndent();
-        emitter.emitLine("}");
-    }
-
     /**
-     * Generate variable declarations
+     * Return a hint for a comment in the generated code
+     * @param pattern the pattern to get a hint for
+     * @return a String that identifies this pattern, not guaranteed to be unique
      */
-    private void generatePatternHeader(CodeEmitter emitter,
-                                       GeneratedNameRegistry nameRegistry,
-                                       PatternDefinition pattern) {
-
-        String argType = nameRegistry.getTypeName(pattern.getSemantics().getInput()
-                .getRepresentedType());
-        emitter.emitLine("%s* arg = (%s*) getRoot(0);", argType, argType);
-
-        for (DeclProgCall declaration : pattern.getSemantics().getLocalVariables()) {
-            emitter.emitLine("new_Variable();");
-            emitter.emitLine("Variable* %s = (Variable*) getRoot(0);", nameRegistry.getVariableName(declaration));
-        }
-    }
-
-    private void generatePatternBody(CodeEmitter emitter,
-                                     GeneratedNameRegistry nameRegistry,
-                                     PatternDefinition pattern) {
-        FunctionLit function = pattern.getSemantics();
-
-        if (function.getReturnExpression().isPresent()) {
-            Expression returnExpression = function.getReturnExpression().get().getExpression();
-            expressionCodeGenerator.generateExpression(emitter, nameRegistry, returnExpression);
-        }
-        else {
-            StatementList statements = function.getStatements().get();
-            statementCodeGenerator.generateStatements(emitter, nameRegistry, statements);
-        }
-    }
-
-
-    /**
-     * Generate a return label which cleans up the stack and returns
-     * it is assumed that the return value will be the top of the stack,
-     * if there is one
-     */
-    private void generatePatternReturn(CodeEmitter emitter,
-                                       PatternDefinition pattern) {
-
-        emitter.emitLine("%s:", RETURN_LABEL);
-
-        boolean hasReturnValue = pattern.getSemantics().getOutput().isPresent();
-
-        if (hasReturnValue) {
-            emitter.emitLine("Collectable* ret_val = popRoot();");
-        }
-        // pop variables and the arg
-        emitter.emitLine("popRoots(%d);", pattern.getSemantics().getLocalVariables().size() + 1);
-
-        if (hasReturnValue) {
-            emitter.emitLine("pushRoot(ret_val);");
-        }
+    private String getHint(PatternDefinition pattern) {
+        String syntax = pattern.getSyntax()
+                .stream()
+                .map(Word::getValue)
+                .collect(Collectors.joining(" "));
+        return String.format("$ %s $", syntax);
     }
 
 }

@@ -60,11 +60,6 @@ public class ExpressionCodeGenerator {
         @Override
         public Void visit(RecordLit recordLit) {
 
-            if (recordLit.getNameParsableExpressionPairs().size() == 0) {
-                emitter.emitLine("pushRoot(nullptr);");
-                return null;
-            }
-
             annotateIndentedVisit(recordLit.getNameParsableExpressionPairs().stream()
                     .map(NameParsableExpressionPair::getExpression)
                     .map(ParsableExpression::getExpression)
@@ -88,6 +83,9 @@ public class ExpressionCodeGenerator {
         @Override
         public Void visit(PatternInvocation patternInvocation) {
 
+            emitter.annotateLine("// closure for pattern");
+            emitter.emitLine("pushRoot(nullptr);");
+
             RecordTypeLit inputType = patternInvocation.getPatternDefinition()
                     .getSemantics()
                     .getInput();
@@ -100,7 +98,8 @@ public class ExpressionCodeGenerator {
 
             emitter.emitLine("new_%s();", nameRegistry.getTypeName(inputType.getRepresentedType()));
 
-            emitter.emitLine("%s();", nameRegistry.getPatternName(patternInvocation.getPatternDefinition()));
+            emitter.emitLine("%s();", nameRegistry.getFunctionName(
+                    patternInvocation.getPatternDefinition().getSemantics()));
 
             return null;
         }
