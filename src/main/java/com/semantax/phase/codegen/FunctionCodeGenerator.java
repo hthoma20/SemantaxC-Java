@@ -36,7 +36,7 @@ public class FunctionCodeGenerator {
         private final GeneratedNameRegistry nameRegistry;
 
         private void generateClosure(FunctionLit functionLit) {
-            emitter.emitLine("struct %s {", nameRegistry.getClosureName(functionLit));
+            emitter.emitLine("struct %s : Collectable {", nameRegistry.getClosureName(functionLit));
             emitter.indent();
 
             for (VariableDeclaration declaration : functionLit.getEnclosedVariables()) {
@@ -66,6 +66,7 @@ public class FunctionCodeGenerator {
                     VariableDeclaration enclosedVariable = enclosedVariables[i];
                     emitter.emitLine("closure->%s = (Variable*) popRoot();", enclosedVariable.getDeclName());
                 }
+                emitter.emitLine("pushRoot(closure);");
             }
             else { // no closure
                 emitter.emitLine("pushRoot(nullptr);");
