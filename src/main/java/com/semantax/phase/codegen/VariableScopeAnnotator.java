@@ -24,6 +24,7 @@ public class VariableScopeAnnotator {
 
     /**
      * Annotate each FunctionLit with the local variables that it defines (including PatternDefinitions)
+     *      and with each enclosed variable
      * Annotate each VariableReference with its VariableScope
      * Annotate the give Program with the global (module-level) variables it defines
      * @param program the program to traverse
@@ -93,6 +94,7 @@ public class VariableScopeAnnotator {
 
             // if its not a global, locale, or argument, then it must be a closure
             variableReference.setScope(VariableScope.CLOSURE);
+            currentFunction.addEnclosedVariable(declaration);
             return null;
         }
 

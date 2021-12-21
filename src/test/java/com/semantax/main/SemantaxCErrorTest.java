@@ -15,10 +15,10 @@ import com.semantax.phase.annotator.RecordTypeUtil;
 import com.semantax.phase.annotator.TypeAnnotator;
 import com.semantax.phase.annotator.TypeAssignabilityChecker;
 import com.semantax.phase.codegen.ExpressionCodeGenerator;
+import com.semantax.phase.codegen.FunctionCodeGenerator;
 import com.semantax.phase.codegen.GeneratedTypeAggregator;
 import com.semantax.phase.codegen.GlobalVariableCodeGenerator;
 import com.semantax.phase.codegen.MainCodeGenerator;
-import com.semantax.phase.codegen.PatternCodeGenerator;
 import com.semantax.phase.codegen.RecordCodeGenerator;
 import com.semantax.phase.codegen.StatementCodeGenerator;
 import com.semantax.phase.codegen.VariableScopeAnnotator;
@@ -66,16 +66,18 @@ public class SemantaxCErrorTest extends TestCase {
     ExpressionCodeGenerator expressionCodeGenerator = new ExpressionCodeGenerator();
     StatementCodeGenerator statementCodeGenerator = new StatementCodeGenerator(expressionCodeGenerator);
     MainCodeGenerator mainCodeGenerator = new MainCodeGenerator(statementCodeGenerator);
-    PatternCodeGenerator patternCodeGenerator = new PatternCodeGenerator(expressionCodeGenerator, statementCodeGenerator);
+    FunctionCodeGenerator functionCodeGenerator =
+            new FunctionCodeGenerator(expressionCodeGenerator, statementCodeGenerator);
 
     ParsePhase parsePhase = new ParsePhase(errorLogger, phraseParser, typeAnnotator);
     GrammarPhase grammarPhase = new GrammarPhase(errorLogger);
     SemanticPhase semanticPhase = new SemanticPhase(errorLogger);
-    CodeGenPhase codeGenPhase = new CodeGenPhase(generatedTypeAggregator,
+    CodeGenPhase codeGenPhase = new CodeGenPhase(
+            generatedTypeAggregator,
             variableScopeAnnotator,
             recordCodeGenerator,
             globalVariableCodeGenerator,
-            patternCodeGenerator,
+            functionCodeGenerator,
             mainCodeGenerator);
 
     AstPrintingVisitor astPrintingVisitor = mock(AstPrintingVisitor.class);

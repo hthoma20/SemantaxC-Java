@@ -31,7 +31,8 @@ public class GeneratedTypeRegistry extends BaseAstVisitor<String> {
      */
     public String visit(RecordType recordType) {
         RecordEntry entry = new RecordEntry(recordType);
-        return recordNames.computeIfAbsent(entry, e -> "record_" + recordIndex++);
+        return recordNames.computeIfAbsent(entry, e ->
+                e.getMembers().length == 0 ? "void" : "record_" + recordIndex++);
     }
 
     public String visit(IntType intType) {

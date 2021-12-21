@@ -15,7 +15,7 @@ public class CodeEmitter {
     private int indentLevel = 0;
 
     private boolean annotationsEnabled = true;
-    private boolean annotateEmitter = false;
+    private boolean annotateCaller = false;
 
 
     public CodeEmitter(PrintStream out) {
@@ -42,7 +42,7 @@ public class CodeEmitter {
     public void endLine(String code, Object... args) {
         emit(code, args);
 
-        if (annotateEmitter) {
+        if (annotateCaller) {
             StackTraceElement caller = getCaller();
             out.printf(" // %s:%d", caller.getClassName(), caller.getLineNumber());
         }

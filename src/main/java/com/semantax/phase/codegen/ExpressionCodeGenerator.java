@@ -6,6 +6,7 @@ import com.semantax.ast.node.ParsableExpression;
 import com.semantax.ast.node.VariableDeclaration;
 import com.semantax.ast.node.VariableReference;
 import com.semantax.ast.node.literal.BoolLit;
+import com.semantax.ast.node.literal.FunctionLit;
 import com.semantax.ast.node.literal.IntLit;
 import com.semantax.ast.node.literal.NameParsableExpressionPair;
 import com.semantax.ast.node.literal.RecordLit;
@@ -125,6 +126,12 @@ public class ExpressionCodeGenerator {
                     throw CompilerException.of("Unexpected variable reference scope");
             }
 
+            return null;
+        }
+
+        @Override
+        public Void visit(FunctionLit function) {
+            emitter.annotateLine("// Function lit on line %d", function.getFilePos().getLine());
             return null;
         }
 

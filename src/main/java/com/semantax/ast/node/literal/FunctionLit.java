@@ -1,6 +1,7 @@
 package com.semantax.ast.node.literal;
 
 import com.semantax.ast.node.ParsableExpression;
+import com.semantax.ast.node.VariableDeclaration;
 import com.semantax.ast.node.list.StatementList;
 import com.semantax.ast.node.progcall.DeclProgCall;
 import com.semantax.ast.util.FilePos;
@@ -10,9 +11,10 @@ import com.semantax.ast.node.literal.type.TypeLit;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.util.HashSet;
+
+import java.util.LinkedHashSet;
 import java.util.Optional;
-import java.util.Set;
+
 
 @Builder(builderClassName = "Builder")
 @Getter
@@ -29,7 +31,9 @@ public class FunctionLit extends Literal {
     private Optional<ParsableExpression> returnExpression = Optional.empty();
 
     @Getter
-    private final Set<DeclProgCall> localVariables = new HashSet<>();
+    private final LinkedHashSet<DeclProgCall> localVariables = new LinkedHashSet<>();
+    @Getter
+    private final LinkedHashSet<VariableDeclaration> enclosedVariables = new LinkedHashSet<>();
 
     @Override
     public <T> T accept(AstVisitor<T> visitor) {
@@ -48,5 +52,9 @@ public class FunctionLit extends Literal {
 
     public void addLocalVariable(DeclProgCall declaration) {
         localVariables.add(declaration);
+    }
+
+    public void addEnclosedVariable(VariableDeclaration declaration) {
+        enclosedVariables.add(declaration);
     }
 }

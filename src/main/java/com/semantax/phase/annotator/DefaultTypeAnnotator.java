@@ -138,7 +138,18 @@ public class DefaultTypeAnnotator extends TraversalVisitor<Boolean> implements T
 
     @Override
     public Boolean visit(FunctionLit functionLit) {
-        super.visit(functionLit);
+
+        // the input types and output types may have already been annotated
+        if (!functionLit.getInput().hasType()) {
+            functionLit.getInput().accept(this);
+        }
+        functionLit.getOutput().ifPresent(output -> {
+            if (!output.hasType()) {
+                output.accept(this);
+            }
+        });
+        functionLit.getStatements().ifPresent(statements -> statements.accept(this));
+        functionLit.getReturnExpression().ifPresent(expression -> expression.accept(this));
 
         functionLit.setType(FuncType.builder()
                 .inputType(functionLit.getInput().getRepresentedType())

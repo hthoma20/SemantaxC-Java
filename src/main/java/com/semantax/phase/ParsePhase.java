@@ -95,14 +95,16 @@ public class ParsePhase extends TraversalVisitor<Void>
     @Override
     public Void visit(PatternDefinition patternDefinition) {
         patterns.peek().add(patternDefinition);
-        patternDefinition.getSemantics().getInput().accept(typeAnnotator);
-        patternDefinition.getSemantics().getOutput().ifPresent(output -> output.accept(typeAnnotator));
         super.visit(patternDefinition);
         return null;
     }
 
     @Override
     public Void visit(FunctionLit function) {
+
+        function.getInput().accept(typeAnnotator);
+        function.getOutput().ifPresent(output -> output.accept(typeAnnotator));
+
         pushNewSymbolTable();
 
         SymbolTable symbolTable = symbolTables.peek();

@@ -55,7 +55,7 @@ public class FunctionDefinitionCodeGenerator {
      * Generate variable declarations
      */
     private void generateFunctionHeader(CodeEmitter emitter,
-                                       GeneratedNameRegistry nameRegistry,
+                                        GeneratedNameRegistry nameRegistry,
                                         FunctionLit function) {
 
         String argType = nameRegistry.getTypeName(function.getInput()
