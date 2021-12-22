@@ -11,7 +11,8 @@ import java.util.Optional;
 @Builder(builderClassName = "Builder")
 public class SemantaxCArgs {
     @Singular
-    private List<String> inputFiles;
-    @lombok.Builder.Default
-    private String outputFile = "out.cpp";
+    private final List<String> inputFiles;
+    private final String outputFile;
+    private final Optional<String> astFile;
+    private final boolean enableBreadCrumbs;
 }

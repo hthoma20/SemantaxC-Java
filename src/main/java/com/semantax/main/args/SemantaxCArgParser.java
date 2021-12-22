@@ -1,17 +1,46 @@
 package com.semantax.main.args;
 
-import com.semantax.exception.InvalidArgumentsException;
-import lombok.NoArgsConstructor;
+import com.semantax.ast.util.FilePos;
+import com.semantax.error.ErrorType;
+import com.semantax.logger.ErrorLogger;
+import net.sourceforge.argparse4j.ArgumentParsers;
+import net.sourceforge.argparse4j.impl.Arguments;
+import net.sourceforge.argparse4j.inf.ArgumentParser;
+import net.sourceforge.argparse4j.inf.ArgumentParserException;
+import net.sourceforge.argparse4j.inf.Namespace;
 
 import javax.inject.Inject;
-import java.util.regex.Pattern;
+import java.util.Optional;
 
 public class SemantaxCArgParser {
 
-    private static final Pattern SEMANTAX_FILE_PATTERN = Pattern.compile("([\\w./\\\\]*[/\\\\])?\\p{Alpha}\\w*\\.smtx");
+    private final ErrorLogger errorLogger;
+    private final ArgumentParser argParser;
 
     @Inject
-    public SemantaxCArgParser() {
+    public SemantaxCArgParser(ErrorLogger errorLogger) {
+        this.errorLogger = errorLogger;
+
+        argParser = ArgumentParsers.newFor("SemantaxC").build()
+                .description("Compile Semantax files");
+
+        argParser.addArgument("inputFiles")
+                .nargs("+")
+                .help("list of Semantax (.smtx) files to compile");
+
+        argParser.addArgument("-c")
+                .dest("outputFile")
+                .setDefault("out.cpp")
+                .help("cpp file to write to");
+
+        argParser.addArgument("--ast")
+                .dest("astFile")
+                .help("file to write a snapshot of the AST");
+
+        argParser.addArgument("-a", "--annotations")
+                .dest("annotations")
+                .action(Arguments.storeTrue())
+                .help("Whether to include annotations in the generated cpp file");
     }
 
     /**
@@ -20,26 +49,31 @@ public class SemantaxCArgParser {
      *
      * @param args the command line arguments
      * @return the parsed args
-     * @throws InvalidArgumentsException if the args are invalid
      */
-    public SemantaxCArgs parse(String[] args) throws InvalidArgumentsException {
+    public Optional<SemantaxCArgs> parse(String[] args) {
 
-        SemantaxCArgs.Builder builder = SemantaxCArgs.builder();
+        Optional<Namespace> parsedArgs = parseArgs(args);
+        return parsedArgs.map(this::mapToArgs);
+    }
 
-        for (String arg : args) {
-            if (!isSemantaxFile(arg)) {
-                throw new InvalidArgumentsException(
-                        String.format("Illegal argument: '%s'. Expected semantax source file ending with .smtx", arg));
-            }
+    private Optional<Namespace> parseArgs(String[] args) {
 
-            builder.inputFile(arg);
+        try {
+            return Optional.of(argParser.parseArgs(args));
+        }
+        catch (ArgumentParserException exc) {
+            errorLogger.error(ErrorType.INVALID_ARGUMENTS, FilePos.none(), exc.getMessage());
         }
 
-        return builder.build();
+        return Optional.empty();
     }
 
-    private boolean isSemantaxFile(String arg) {
-        return SEMANTAX_FILE_PATTERN.matcher(arg).matches();
+    private SemantaxCArgs mapToArgs(Namespace namespace) {
+        return SemantaxCArgs.builder()
+                .inputFiles(namespace.getList("inputFiles"))
+                .outputFile(namespace.getString("outputFile"))
+                .astFile(Optional.ofNullable(namespace.getString("astFile")))
+                .enableBreadCrumbs(namespace.getBoolean("annotations"))
+                .build();
     }
-
 }

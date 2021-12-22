@@ -50,6 +50,13 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- https://argparse4j.github.io/ -->
+        <dependency>
+            <groupId>net.sourceforge.argparse4j</groupId>
+            <artifactId>argparse4j</artifactId>
+            <version>0.9.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>

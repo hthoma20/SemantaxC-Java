@@ -5,6 +5,8 @@ import com.semantax.main.args.SemantaxCArgParser;
 import com.semantax.main.args.SemantaxCArgs;
 import junit.framework.TestCase;
 
+import java.util.Optional;
+
 import static org.mockito.Mockito.*;
 
 public class RunnerTest extends TestCase {
@@ -20,7 +22,7 @@ public class RunnerTest extends TestCase {
         String[] args = {"some", "args"};
         SemantaxCArgs parsedArgs = SemantaxCArgs.builder().build();
 
-        when(argParserMock.parse(args)).thenReturn(parsedArgs);
+        when(argParserMock.parse(args)).thenReturn(Optional.of(parsedArgs));
 
         runner.run(args);
 

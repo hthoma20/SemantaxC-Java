@@ -8,6 +8,8 @@ public enum ErrorType {
     // Meant to be used in tests only
     TEST("TEST-0"),
 
+    INVALID_ARGUMENTS("ARG-0"),
+
     INVALID_FILE("FILE-0"),
     MISSING_INPUT_FILE("FILE-1"),
     TOO_MANY_INPUT_FILES("FILE-2"),

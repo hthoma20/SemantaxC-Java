@@ -1,11 +1,11 @@
 package com.semantax.main;
 
-import com.semantax.exception.InvalidArgumentsException;
 import com.semantax.logger.ErrorLogger;
 import com.semantax.main.args.SemantaxCArgParser;
 import com.semantax.main.args.SemantaxCArgs;
 
 import javax.inject.Inject;
+import java.util.Optional;
 
 public class Runner {
 
@@ -23,15 +23,14 @@ public class Runner {
     public void run(String[] args) {
 
         try {
-            SemantaxCArgs parsedArgs = argParser.parse(args);
-            semantaxC.execute(parsedArgs);
-        }
-        catch (InvalidArgumentsException exc) {
-            System.err.printf("Invalid arguments:%n%s%n", exc.getMessage());
+            Optional<SemantaxCArgs> parsedArgs = argParser.parse(args);
+            parsedArgs.ifPresent(semantaxC::execute);
         }
         catch (Exception exc) {
             System.err.printf("Error in the compiler:%n%s%n", exc.getMessage());
             exc.printStackTrace();
+        }
+        finally {
             errorLogger.flush();
         }
     }
