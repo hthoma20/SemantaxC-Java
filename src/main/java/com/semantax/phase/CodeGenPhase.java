@@ -52,7 +52,7 @@ public class CodeGenPhase implements Phase<CodeGenPhase.CodeGenArgs, Set<String>
 
     @Override
     public Optional<Set<String>> process(CodeGenArgs args) {
-        CodeEmitter codeEmitter = getCodeEmitter(args.outputPath);
+        CodeEmitter codeEmitter = getCodeEmitter(args);
 
         codeEmitter.emitLine("#include \"runtime.h\"");
         codeEmitter.emitLine("");
@@ -77,17 +77,20 @@ public class CodeGenPhase implements Phase<CodeGenPhase.CodeGenArgs, Set<String>
         return Optional.of(new HashSet<>(Collections.singleton(args.outputPath)));
     }
 
-    private CodeEmitter getCodeEmitter(String outputFile) {
+    private CodeEmitter getCodeEmitter(CodeGenArgs args) {
         try {
-            return new CodeEmitter(new PrintStream(outputFile));
+            CodeEmitter emitter = new CodeEmitter(new PrintStream(args.outputPath));
+            emitter.setAnnotateCaller(args.breadCrumbs);
+            return emitter;
         } catch (FileNotFoundException e) {
-            throw CompilerException.of("Couldn't construct PrintStream for %s", outputFile);
+            throw CompilerException.of("Couldn't construct PrintStream for %s", args.outputPath);
         }
     }
 
     @Builder(builderClassName = "Builder")
     public static class CodeGenArgs {
         private final String outputPath;
+        private final boolean breadCrumbs;
         private final Program program;
     }
 

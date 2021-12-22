@@ -96,13 +96,17 @@ public class SemantaxC {
         Optional<Set<String>> files = codeGenPhase.process(CodeGenPhase.CodeGenArgs.builder()
                         .program(program.get())
                         .outputPath(args.getOutputFile())
+                        .breadCrumbs(args.isEnableBreadCrumbs())
                         .build());
         if (!files.isPresent()) {
             errorLogger.flush();
             return;
         }
 
-        printer.visit(program.get());
+        if (args.getAstFile().isPresent()) {
+            // TODO: make this actually print to the correct file
+            printer.visit(program.get());
+        }
     }
 
     /**

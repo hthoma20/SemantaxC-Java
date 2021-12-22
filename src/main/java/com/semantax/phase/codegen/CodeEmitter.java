@@ -1,6 +1,7 @@
 package com.semantax.phase.codegen;
 
 import com.semantax.exception.CompilerException;
+import lombok.Setter;
 
 import java.io.PrintStream;
 
@@ -15,6 +16,7 @@ public class CodeEmitter {
     private int indentLevel = 0;
 
     private boolean annotationsEnabled = true;
+    @Setter
     private boolean annotateCaller = false;
 
 

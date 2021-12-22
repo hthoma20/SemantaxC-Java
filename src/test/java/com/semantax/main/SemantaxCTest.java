@@ -101,6 +101,7 @@ public class SemantaxCTest extends TestCase {
 
         semantaxC.execute(SemantaxCArgs.builder()
                 .inputFile(TEST_FILE)
+                .astFile(Optional.of("-"))
                 .build());
 
         verify(mockGrammarPhase).process(any());
