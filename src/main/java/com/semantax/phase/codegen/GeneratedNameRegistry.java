@@ -1,8 +1,8 @@
 package com.semantax.phase.codegen;
 
+import com.semantax.ast.node.VariableDeclaration;
 import com.semantax.ast.node.literal.FunctionLit;
-import com.semantax.ast.node.pattern.PatternDefinition;
-import com.semantax.ast.node.progcall.DeclProgCall;
+
 import com.semantax.ast.type.Type;
 import lombok.Builder;
 
@@ -20,8 +20,8 @@ public class GeneratedNameRegistry {
         return type.accept(typeRegistry);
     }
 
-    public String getVariableName(DeclProgCall declProgCall) {
-        return variableRegistry.getVariableName(declProgCall);
+    public String getVariableName(VariableDeclaration declaration) {
+        return variableRegistry.getVariableName(declaration);
     }
 
     public String getFunctionName(FunctionLit functionLit) {

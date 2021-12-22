@@ -2,9 +2,11 @@ package com.semantax.phase.codegen;
 
 import com.semantax.ast.node.Expression;
 import com.semantax.ast.node.Program;
-import com.semantax.ast.node.VariableDeclaration;
+
+import com.semantax.ast.node.VariableReference;
 import com.semantax.ast.node.list.StatementList;
 import com.semantax.ast.node.literal.FunctionLit;
+import com.semantax.ast.node.literal.type.NameTypeLitPair;
 import com.semantax.ast.node.progcall.DeclProgCall;
 import com.semantax.ast.visitor.TraversalVisitor;
 import lombok.RequiredArgsConstructor;
@@ -39,8 +41,8 @@ public class FunctionCodeGenerator {
             emitter.emitLine("struct %s : Collectable {", nameRegistry.getClosureName(functionLit));
             emitter.indent();
 
-            for (VariableDeclaration declaration : functionLit.getEnclosedVariables()) {
-                emitter.emitLine("Variable* %s;", declaration.getDeclName());
+            for (VariableReference variable : functionLit.getEnclosedVariables()) {
+                emitter.emitLine("Variable* %s;", variable.getDeclaration().getDeclName());
             }
 
             emitter.unIndent();
@@ -60,11 +62,12 @@ public class FunctionCodeGenerator {
                         closureName, closureName, closureName, closureSize);
 
                 // pop arguments in reverse order
-                VariableDeclaration[] enclosedVariables =
-                        function.getEnclosedVariables().toArray(new VariableDeclaration[0]);
+                VariableReference[] enclosedVariables =
+                        function.getEnclosedVariables().toArray(new VariableReference[0]);
                 for (int i = enclosedVariables.length - 1; i >= 0; i--) {
-                    VariableDeclaration enclosedVariable = enclosedVariables[i];
-                    emitter.emitLine("closure->%s = (Variable*) popRoot();", enclosedVariable.getDeclName());
+                    VariableReference enclosedVariable = enclosedVariables[i];
+                    emitter.emitLine("closure->%s = (Variable*) popRoot();",
+                            enclosedVariable.getDeclaration().getDeclName());
                 }
                 emitter.emitLine("pushRoot(closure);");
             }
@@ -111,6 +114,13 @@ public class FunctionCodeGenerator {
             emitter.emitLine("%s* arg = (%s*) getRoot(0);", argType, argType);
             emitter.emitLine("%s* closure = (%s*) getRoot(1);", closureType, closureType);
 
+            for (NameTypeLitPair parameter : function.getInput().getNameTypeLitPairs()) {
+                String argName = nameRegistry.getVariableName(parameter);
+                emitter.emitLine("new_Variable();");
+                emitter.emitLine("Variable* %s = (Variable*) getRoot(0);", argName);
+                emitter.emitLine("%s->val = arg->%s;", argName, parameter.getDeclName());
+            }
+
             for (DeclProgCall declaration : function.getLocalVariables()) {
                 emitter.emitLine("new_Variable();");
                 emitter.emitLine("Variable* %s = (Variable*) getRoot(0);", nameRegistry.getVariableName(declaration));
@@ -143,8 +153,9 @@ public class FunctionCodeGenerator {
             if (hasReturnValue) {
                 emitter.emitLine("Collectable* ret_val = popRoot();");
             }
-            // pop the variables, arg, and closure
-            int stackGrowth = function.getLocalVariables().size() + 2;
+            // pop the local variables, args, and closure
+            int stackGrowth = function.getLocalVariables().size() +
+                    function.getInput().getNameTypeLitPairs().size() + 2;
             emitter.emitLine("popRoots(%d);", stackGrowth);
 
             if (hasReturnValue) {

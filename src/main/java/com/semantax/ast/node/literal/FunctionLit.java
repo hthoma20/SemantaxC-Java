@@ -1,7 +1,7 @@
 package com.semantax.ast.node.literal;
 
 import com.semantax.ast.node.ParsableExpression;
-import com.semantax.ast.node.VariableDeclaration;
+import com.semantax.ast.node.VariableReference;
 import com.semantax.ast.node.list.StatementList;
 import com.semantax.ast.node.progcall.DeclProgCall;
 import com.semantax.ast.util.FilePos;
@@ -32,8 +32,10 @@ public class FunctionLit extends Literal {
 
     @Getter
     private final LinkedHashSet<DeclProgCall> localVariables = new LinkedHashSet<>();
+
+    // Enclosed variables in this function, from the perspective of the enclosing scope
     @Getter
-    private final LinkedHashSet<VariableDeclaration> enclosedVariables = new LinkedHashSet<>();
+    private final LinkedHashSet<VariableReference> enclosedVariables = new LinkedHashSet<>();
 
     @Override
     public <T> T accept(AstVisitor<T> visitor) {
@@ -54,7 +56,7 @@ public class FunctionLit extends Literal {
         localVariables.add(declaration);
     }
 
-    public void addEnclosedVariable(VariableDeclaration declaration) {
-        enclosedVariables.add(declaration);
+    public void addEnclosedVariable(VariableReference variable) {
+        enclosedVariables.add(variable);
     }
 }

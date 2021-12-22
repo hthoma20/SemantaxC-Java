@@ -6,6 +6,7 @@ import com.semantax.ast.node.VariableReference;
 import com.semantax.ast.node.literal.FunctionLit;
 import com.semantax.ast.node.literal.type.NameTypeLitPair;
 import com.semantax.ast.node.progcall.DeclProgCall;
+import com.semantax.ast.util.FilePos;
 import com.semantax.ast.visitor.TraversalVisitor;
 
 import javax.inject.Inject;
@@ -53,6 +54,11 @@ public class VariableScopeAnnotator {
             scopeStack.push(functionLit);
             super.visit(functionLit);
             scopeStack.pop();
+
+            for (VariableReference enclosedVariable : functionLit.getEnclosedVariables()) {
+                visit(enclosedVariable);
+            }
+
             return null;
         }
 
@@ -88,13 +94,18 @@ public class VariableScopeAnnotator {
             }
 
             if (isArgument(variableReference, currentFunction)) {
-                variableReference.setScope(VariableScope.ARGUMENT);
+                variableReference.setScope(VariableScope.LOCAL);
                 return null;
             }
 
             // if its not a global, locale, or argument, then it must be a closure
             variableReference.setScope(VariableScope.CLOSURE);
-            currentFunction.addEnclosedVariable(declaration);
+
+            // The variable reference is from the perspective of the enclosing scope
+            VariableReference reference = VariableReference.builder()
+                    .declaration(declaration)
+                    .buildWith(FilePos.none());
+            currentFunction.addEnclosedVariable(reference);
             return null;
         }
 

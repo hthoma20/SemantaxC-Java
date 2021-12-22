@@ -114,10 +114,7 @@ public class ExpressionCodeGenerator {
             switch (variableReference.getScope()) {
                 case LOCAL:
                 case GLOBAL:
-                    emitter.emitLine("pushRoot(%s->val);", nameRegistry.getVariableName((DeclProgCall) declaration));
-                    break;
-                case ARGUMENT:
-                    emitter.emitLine("pushRoot(arg->%s);", declaration.getDeclName());
+                    emitter.emitLine("pushRoot(%s->val);", nameRegistry.getVariableName(declaration));
                     break;
                 case CLOSURE:
                     emitter.emitLine("pushRoot(closure->%s->val);", declaration.getDeclName());
@@ -131,7 +128,29 @@ public class ExpressionCodeGenerator {
 
         @Override
         public Void visit(FunctionLit function) {
-            emitter.annotateLine("// Function lit on line %d", function.getFilePos().getLine());
+
+            emitter.annotateLine("{");
+            emitter.annotateIndent();
+
+            for (VariableReference enclosedVariable : function.getEnclosedVariables()) {
+                VariableDeclaration declaration = enclosedVariable.getDeclaration();
+                switch (enclosedVariable.getScope()) {
+                    case LOCAL:
+                    case GLOBAL:
+                        emitter.emitLine("pushRoot(%s);", nameRegistry.getVariableName(declaration));
+                        break;
+                    case CLOSURE:
+                        emitter.emitLine("pushRoot(closure->%s);", declaration.getDeclName());
+                        break;
+                    default:
+                        throw CompilerException.of("Unexpected variable reference scope");
+                }
+            }
+
+            emitter.annotateUnIndent();
+            emitter.annotateLine("}");
+
+            emitter.emitLine("new_%s();", nameRegistry.getFunctionName(function));
             return null;
         }
 

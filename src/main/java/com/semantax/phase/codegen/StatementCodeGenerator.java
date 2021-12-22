@@ -66,10 +66,7 @@ public class StatementCodeGenerator {
             switch (variableReference.getScope()) {
                 case LOCAL:
                 case GLOBAL:
-                    emitter.emitLine("%s->val = popRoot();", nameRegistry.getVariableName((DeclProgCall) declaration));
-                    break;
-                case ARGUMENT:
-                    emitter.emitLine("arg->%s = popRoot();", declaration.getDeclName());
+                    emitter.emitLine("%s->val = popRoot();", nameRegistry.getVariableName(declaration));
                     break;
                 case CLOSURE:
                     emitter.emitLine("closure->%s->val = popRoot();", declaration.getDeclName());
