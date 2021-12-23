@@ -44,6 +44,7 @@ public class GeneratedTypeAggregator {
             functionLit.getInput().getRepresentedType().accept(registry);
             functionLit.getOutput().ifPresent(outputType ->
                     outputType.getRepresentedType().accept(registry));
+            super.visit(functionLit);
             return null;
         }
     }

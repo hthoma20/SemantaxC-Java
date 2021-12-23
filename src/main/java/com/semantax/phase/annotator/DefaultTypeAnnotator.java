@@ -193,6 +193,11 @@ public class DefaultTypeAnnotator extends TraversalVisitor<Boolean> implements T
 
     @Override
     public Boolean visit(RecordTypeLit recordTypeLit) {
+
+        if (recordTypeLit == RecordTypeLit.EMPTY_RECORD) {
+            return true;
+        }
+
         super.visit(recordTypeLit);
 
         // check that all names are unique
