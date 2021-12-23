@@ -1,6 +1,7 @@
 package com.semantax.ast.node.literal;
 
 import com.semantax.ast.node.ParsableExpression;
+import com.semantax.ast.node.VariableDeclaration;
 import com.semantax.ast.node.VariableReference;
 import com.semantax.ast.node.list.StatementList;
 import com.semantax.ast.node.progcall.DeclProgCall;
@@ -12,8 +13,10 @@ import lombok.Builder;
 import lombok.Getter;
 
 
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Optional;
+import java.util.Set;
 
 
 @Builder(builderClassName = "Builder")
@@ -36,6 +39,7 @@ public class FunctionLit extends Literal {
     // Enclosed variables in this function, from the perspective of the enclosing scope
     @Getter
     private final LinkedHashSet<VariableReference> enclosedVariables = new LinkedHashSet<>();
+    private final Set<VariableDeclaration> enclosedDeclarations = new HashSet<>();
 
     @Override
     public <T> T accept(AstVisitor<T> visitor) {
@@ -56,7 +60,15 @@ public class FunctionLit extends Literal {
         localVariables.add(declaration);
     }
 
+    /**
+     * Mark that the given variable is enclosed by this function,
+     * only add the given reference if no other reference to the same declaration has been made
+     * @param variable the variable reference which denotes the enclosure
+     */
     public void addEnclosedVariable(VariableReference variable) {
-        enclosedVariables.add(variable);
+        if (!enclosedDeclarations.contains(variable.getDeclaration())) {
+            enclosedVariables.add(variable);
+            enclosedDeclarations.add(variable.getDeclaration());
+        }
     }
 }
