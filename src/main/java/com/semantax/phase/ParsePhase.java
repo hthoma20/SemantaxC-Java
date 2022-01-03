@@ -102,8 +102,8 @@ public class ParsePhase extends TraversalVisitor<Void>
     @Override
     public Void visit(FunctionLit function) {
 
-        function.getInput().accept(typeAnnotator);
-        function.getOutput().ifPresent(output -> output.accept(typeAnnotator));
+        annotateAndCheck(function.getInput());
+        function.getOutput().ifPresent(this::annotateAndCheck);
 
         pushNewSymbolTable();
 
@@ -123,7 +123,7 @@ public class ParsePhase extends TraversalVisitor<Void>
     public Void visit(ParsableExpression parsableExpression) {
 
         super.visit(parsableExpression);
-        typeAnnotator.visit(parsableExpression);
+        annotateAndCheck(parsableExpression);
 
         Phrase phrase = parsableExpression.getPhrase();
 
@@ -254,5 +254,17 @@ public class ParsePhase extends TraversalVisitor<Void>
         }
 
         return Optional.of(modules.get(0));
+    }
+
+    /**
+     * Call typeAnnotator.annotate and set failedParse to true if the annotation failed
+     *
+     * @param astNode the node to annotate
+     */
+    private void annotateAndCheck(AstNode astNode) {
+        boolean succeededAnnotation = typeAnnotator.annotate(astNode);
+        if (!succeededAnnotation) {
+            failedParse = true;
+        }
     }
 }

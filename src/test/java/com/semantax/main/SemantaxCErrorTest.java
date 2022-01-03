@@ -112,7 +112,8 @@ public class SemantaxCErrorTest extends TestCase {
                 testData("patternMismatchedBrackets.smtx", ErrorType.PROGRAM_PARSE_ERROR, new FilePos(2, 20)),
                 testData("threeArgBind.smtx", ErrorType.ILLEGAL_BIND),
                 testData("undeclaredBind.smtx", ErrorType.UNPARSABLE_PHRASE),
-                testData("noNameBind.smtx", ErrorType.ILLEGAL_BIND));
+                testData("noNameBind.smtx", ErrorType.ILLEGAL_BIND),
+                testData("invokeFunNotFunction.smtx", ErrorType.INVOKE_FUN_BAD_ARG));
     }
 
     private static ErrorTestData testData(String file, ErrorType errorType) {

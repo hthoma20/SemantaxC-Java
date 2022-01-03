@@ -53,6 +53,10 @@ public class ParsePhaseTest extends TestCase {
                 .thenReturn(Optional.of(onePlusTwoParse));
         when(mockPhraseParser.parse(eq(onePlusTwoPlusThreePhrase), any(), any()))
                 .thenReturn(Optional.of(onePlusTwoPlusThreeParse));
+        when(mockTypeAnnotator.annotate(onePlusTwoPlusThreeParsable))
+                .thenReturn(true);
+        when(mockTypeAnnotator.annotate(onePlusTwoParsable))
+                .thenReturn(true);
 
         // when
         Optional<Program> processedProgram = parsePhase.process(program);
@@ -69,7 +73,7 @@ public class ParsePhaseTest extends TestCase {
         // interactions
         verify(mockPhraseParser).parse(eq(onePlusTwoPhrase), any(), any());
         verify(mockPhraseParser).parse(eq(onePlusTwoPlusThreePhrase), any(), any());
-        verify(mockTypeAnnotator).visit(onePlusTwoPlusThreeParsable);
-        verify(mockTypeAnnotator).visit(onePlusTwoParsable);
+        verify(mockTypeAnnotator).annotate(onePlusTwoPlusThreeParsable);
+        verify(mockTypeAnnotator).annotate(onePlusTwoParsable);
     }
 }

@@ -1,5 +1,7 @@
 package com.semantax.phase.annotator;
 
+import com.semantax.ast.node.AstNode;
+import com.semantax.ast.node.Expression;
 import com.semantax.ast.node.ParsableExpression;
 import com.semantax.ast.node.list.NameTypePairList;
 import com.semantax.ast.node.literal.ArrayLit;
@@ -36,7 +38,7 @@ import com.semantax.logger.ErrorLogger;
 import javax.inject.Inject;
 import java.util.Set;
 
-public class DefaultTypeAnnotator extends TraversalVisitor<Boolean> implements TypeAnnotator  {
+public class DefaultTypeAnnotator implements TypeAnnotator  {
 
     private final TypeAssignabilityChecker typeAssignabilityChecker;
     private final RecordTypeUtil recordTypeUtil;
@@ -50,207 +52,241 @@ public class DefaultTypeAnnotator extends TraversalVisitor<Boolean> implements T
         this.errorLogger = errorLogger;
     }
 
-    @Override
-    public Boolean visit(ParsableExpression parsableExpression) {
-        // if we see a PE which is already parsed to an expression, then
-        // it has already been type annotated
-        if (!parsableExpression.hasExpression()) {
-            super.visit(parsableExpression);
-        }
-        return true;
+    public boolean annotate(AstNode node) {
+        TypeAnnotatingVisitor visitor = new TypeAnnotatingVisitor();
+        node.accept(visitor);
+        return !visitor.hasError;
     }
 
-    @Override
-    public Boolean visit(IntLit intLit) {
-        intLit.setType(IntType.INT_TYPE);
-        return true;
-    }
+    private class TypeAnnotatingVisitor extends TraversalVisitor<Void> {
 
-    @Override
-    public Boolean visit(BoolLit boolLit) {
-        boolLit.setType(BoolType.BOOL_TYPE);
-        return true;
-    }
+        private boolean hasError = false;
 
-    @Override
-    public Boolean visit(StringLit stringLit) {
-        stringLit.setType(StringType.STRING_TYPE);
-        return true;
-    }
-
-    @Override
-    public Boolean visit(ArrayLit arrayLit) {
-        super.visit(arrayLit);
-
-        if (arrayLit.getValues().isEmpty()) {
-            arrayLit.setType(ArrayType.EMPTY_TYPE);
-            return true;
-        }
-
-        ParsableExpression firstElement = arrayLit.getValues().get(0);
-        Type subType = firstElement.getExpression().getType();
-
-        for (ParsableExpression element : arrayLit.getValues()) {
-            if (!typeAssignabilityChecker.isAssignable(subType, element.getExpression().getType())) {
-                errorLogger.error(ErrorType.HETEROGENEOUS_ARRAY, arrayLit.getFilePos(),
-                        "Array does not have elements of the same type");
-                return false;
+        @Override
+        public Void visit(ParsableExpression parsableExpression) {
+            // if we see a PE which is already parsed to an expression, then
+            // it has already been type annotated
+            if (!parsableExpression.hasExpression()) {
+                super.visit(parsableExpression);
             }
+            return null;
         }
 
-        arrayLit.setType(ArrayType.builder()
-                .subType(subType)
-                .build());
-        return true;
-    }
-
-    @Override
-    public Boolean visit(RecordLit recordLit) {
-        super.visit(recordLit);
-
-        if (recordLit.getNameParsableExpressionPairs().isEmpty()) {
-            recordLit.setType(RecordType.EMPTY_TYPE);
-            return true;
+        @Override
+        public Void visit(IntLit intLit) {
+            intLit.setType(IntType.INT_TYPE);
+            return null;
         }
 
-        // check that all names are unique
-        Set<String> duplicateNames = recordTypeUtil.getDuplicateNames(recordLit);
-        if (!duplicateNames.isEmpty()) {
-            errorLogger.error(ErrorType.DUPLICATE_RECORD_NAME, recordLit.getFilePos(),
-                    "Record has duplicate name(s): %s",
-                    String.join(",", duplicateNames));
-            return false;
+        @Override
+        public Void visit(BoolLit boolLit) {
+            boolLit.setType(BoolType.BOOL_TYPE);
+            return null;
         }
 
-        NameTypePairList nameTypePairs = new NameTypePairList();
-        for (NameParsableExpressionPair nameExpressionPair : recordLit.getNameParsableExpressionPairs()) {
-            nameTypePairs.add(NameTypePair.builder()
-                    .name(nameExpressionPair.getName())
-                    .type(nameExpressionPair.getExpression().getExpression().getType())
-                    .build());
+        @Override
+        public Void visit(StringLit stringLit) {
+            stringLit.setType(StringType.STRING_TYPE);
+            return null;
         }
 
-        recordLit.setType(RecordType.builder()
-                .nameTypePairs(nameTypePairs)
-                .build());
-        return true;
-    }
+        @Override
+        public Void visit(ArrayLit arrayLit) {
+            super.visit(arrayLit);
 
-    @Override
-    public Boolean visit(FunctionLit functionLit) {
-
-        // the input types and output types may have already been annotated
-        if (!functionLit.getInput().hasType()) {
-            functionLit.getInput().accept(this);
-        }
-        functionLit.getOutput().ifPresent(output -> {
-            if (!output.hasType()) {
-                output.accept(this);
+            if (arrayLit.getValues().isEmpty()) {
+                arrayLit.setType(ArrayType.EMPTY_TYPE);
+                return null;
             }
-        });
-        functionLit.getStatements().ifPresent(statements -> statements.accept(this));
-        functionLit.getReturnExpression().ifPresent(expression -> expression.accept(this));
 
-        functionLit.setType(FuncType.builder()
-                .inputType(functionLit.getInput().getRepresentedType())
-                .outputType(functionLit.getOutput().map(TypeLit::getRepresentedType))
-                .build());
+            ParsableExpression firstElement = arrayLit.getValues().get(0);
+            Type subType = firstElement.getExpression().getType();
 
-        return true;
-    }
+            for (ParsableExpression element : arrayLit.getValues()) {
+                if (!typeAssignabilityChecker.isAssignable(subType, element.getExpression().getType())) {
+                    errorLogger.error(ErrorType.HETEROGENEOUS_ARRAY, arrayLit.getFilePos(),
+                            "Array does not have elements of the same type");
+                    hasError = true;
+                    return null;
+                }
+            }
 
-    @Override
-    public Boolean visit(IntTypeLit typeLit) {
-        typeLit.setType(TypeType.TYPE_TYPE);
-        typeLit.setRepresentedType(IntType.INT_TYPE);
-        return true;
-    }
-
-    @Override
-    public Boolean visit(BoolTypeLit typeLit) {
-        typeLit.setType(TypeType.TYPE_TYPE);
-        typeLit.setRepresentedType(BoolType.BOOL_TYPE);
-        return true;
-    }
-
-    @Override
-    public Boolean visit(StringTypeLit typeLit) {
-        typeLit.setType(TypeType.TYPE_TYPE);
-        typeLit.setRepresentedType(StringType.STRING_TYPE);
-        return true;
-    }
-
-    @Override
-    public Boolean visit(ArrayTypeLit arrayTypeLit) {
-        super.visit(arrayTypeLit);
-
-        arrayTypeLit.setType(TypeType.TYPE_TYPE);
-        arrayTypeLit.setRepresentedType(ArrayType.builder()
-            .subType(arrayTypeLit.getSubType().getRepresentedType())
-            .build());
-        return true;
-    }
-
-    @Override
-    public Boolean visit(RecordTypeLit recordTypeLit) {
-
-        if (recordTypeLit == RecordTypeLit.EMPTY_RECORD) {
-            return true;
-        }
-
-        super.visit(recordTypeLit);
-
-        // check that all names are unique
-        Set<String> duplicateNames = recordTypeUtil.getDuplicateNames(recordTypeLit);
-        if (!duplicateNames.isEmpty()) {
-            errorLogger.error(ErrorType.DUPLICATE_RECORD_TYPE_NAME, recordTypeLit.getFilePos(),
-                    "Record type has duplicate name(s): %s",
-                    String.join(",", duplicateNames));
-            return false;
-        }
-
-        recordTypeLit.setType(TypeType.TYPE_TYPE);
-
-        NameTypePairList nameTypePairs = new NameTypePairList();
-        for (NameTypeLitPair nameTypeLitPair : recordTypeLit.getNameTypeLitPairs()) {
-            nameTypePairs.add(NameTypePair.builder()
-                    .name(nameTypeLitPair.getName())
-                    .type(nameTypeLitPair.getType().getRepresentedType())
+            arrayLit.setType(ArrayType.builder()
+                    .subType(subType)
                     .build());
+            return null;
         }
 
-        recordTypeLit.setRepresentedType(RecordType.builder()
-                .nameTypePairs(nameTypePairs)
-                .build());
-        return true;
+        @Override
+        public Void visit(RecordLit recordLit) {
+            super.visit(recordLit);
+
+            if (recordLit.getNameParsableExpressionPairs().isEmpty()) {
+                recordLit.setType(RecordType.EMPTY_TYPE);
+                return null;
+            }
+
+            // check that all names are unique
+            Set<String> duplicateNames = recordTypeUtil.getDuplicateNames(recordLit);
+            if (!duplicateNames.isEmpty()) {
+                errorLogger.error(ErrorType.DUPLICATE_RECORD_NAME, recordLit.getFilePos(),
+                        "Record has duplicate name(s): %s",
+                        String.join(",", duplicateNames));
+                hasError = true;
+                return null;
+            }
+
+            NameTypePairList nameTypePairs = new NameTypePairList();
+            for (NameParsableExpressionPair nameExpressionPair : recordLit.getNameParsableExpressionPairs()) {
+                nameTypePairs.add(NameTypePair.builder()
+                        .name(nameExpressionPair.getName())
+                        .type(nameExpressionPair.getExpression().getExpression().getType())
+                        .build());
+            }
+
+            recordLit.setType(RecordType.builder()
+                    .nameTypePairs(nameTypePairs)
+                    .build());
+            return null;
+        }
+
+        @Override
+        public Void visit(FunctionLit functionLit) {
+
+            // the input types and output types may have already been annotated
+            if (!functionLit.getInput().hasType()) {
+                functionLit.getInput().accept(this);
+            }
+            functionLit.getOutput().ifPresent(output -> {
+                if (!output.hasType()) {
+                    output.accept(this);
+                }
+            });
+            functionLit.getStatements().ifPresent(statements -> statements.accept(this));
+            functionLit.getReturnExpression().ifPresent(expression -> expression.accept(this));
+
+            functionLit.setType(FuncType.builder()
+                    .inputType(functionLit.getInput().getRepresentedType())
+                    .outputType(functionLit.getOutput().map(TypeLit::getRepresentedType))
+                    .build());
+
+            return null;
+        }
+
+        @Override
+        public Void visit(IntTypeLit typeLit) {
+            typeLit.setType(TypeType.TYPE_TYPE);
+            typeLit.setRepresentedType(IntType.INT_TYPE);
+            return null;
+        }
+
+        @Override
+        public Void visit(BoolTypeLit typeLit) {
+            typeLit.setType(TypeType.TYPE_TYPE);
+            typeLit.setRepresentedType(BoolType.BOOL_TYPE);
+            return null;
+        }
+
+        @Override
+        public Void visit(StringTypeLit typeLit) {
+            typeLit.setType(TypeType.TYPE_TYPE);
+            typeLit.setRepresentedType(StringType.STRING_TYPE);
+            return null;
+        }
+
+        @Override
+        public Void visit(ArrayTypeLit arrayTypeLit) {
+            super.visit(arrayTypeLit);
+
+            arrayTypeLit.setType(TypeType.TYPE_TYPE);
+            arrayTypeLit.setRepresentedType(ArrayType.builder()
+                    .subType(arrayTypeLit.getSubType().getRepresentedType())
+                    .build());
+            return null;
+        }
+
+        @Override
+        public Void visit(RecordTypeLit recordTypeLit) {
+
+            if (recordTypeLit == RecordTypeLit.EMPTY_RECORD) {
+                return null;
+            }
+
+            super.visit(recordTypeLit);
+
+            // check that all names are unique
+            Set<String> duplicateNames = recordTypeUtil.getDuplicateNames(recordTypeLit);
+            if (!duplicateNames.isEmpty()) {
+                errorLogger.error(ErrorType.DUPLICATE_RECORD_TYPE_NAME, recordTypeLit.getFilePos(),
+                        "Record type has duplicate name(s): %s",
+                        String.join(",", duplicateNames));
+                hasError = true;
+                return null;
+            }
+
+            recordTypeLit.setType(TypeType.TYPE_TYPE);
+
+            NameTypePairList nameTypePairs = new NameTypePairList();
+            for (NameTypeLitPair nameTypeLitPair : recordTypeLit.getNameTypeLitPairs()) {
+                nameTypePairs.add(NameTypePair.builder()
+                        .name(nameTypeLitPair.getName())
+                        .type(nameTypeLitPair.getType().getRepresentedType())
+                        .build());
+            }
+
+            recordTypeLit.setRepresentedType(RecordType.builder()
+                    .nameTypePairs(nameTypePairs)
+                    .build());
+            return null;
+        }
+
+        @Override
+        public Void visit(FuncTypeLit funcTypeLit) {
+            super.visit(funcTypeLit);
+
+            funcTypeLit.setType(TypeType.TYPE_TYPE);
+
+            funcTypeLit.setRepresentedType(FuncType.builder()
+                    .inputType(funcTypeLit.getInputType().getRepresentedType())
+                    .outputType(funcTypeLit.getOutputType().map(TypeLit::getRepresentedType))
+                    .build());
+
+            return null;
+        }
+
+        @Override
+        public Void visit(DeclProgCall progCall) {
+            super.visit(progCall);
+            progCall.setType(VoidType.VOID_TYPE);
+            return null;
+        }
+
+        @Override
+        public Void visit(DynamicProgcall progCall) {
+            super.visit(progCall);
+
+            // TODO: fix this jankyness when generics are properly implemented
+            if (progCall.getName().equals("invokefun")) {
+                if(progCall.getSubExpressions().size() < 1) {
+                    errorLogger.error(ErrorType.INVOKE_FUN_BAD_ARG, progCall.getFilePos(), "@invokefun expects a function" +
+                            "and an argument");
+                    hasError = true;
+                    return null;
+                }
+                Expression first = progCall.getSubExpressions().get(0).getExpression();
+                if (!(first.getType() instanceof FuncType)) {
+                    errorLogger.error(ErrorType.INVOKE_FUN_BAD_ARG, progCall.getFilePos(), "@invokefun expects a function" +
+                            "and an argument");
+                    hasError = true;
+                    return null;
+                }
+                FuncType funcType = (FuncType) first.getType();
+                progCall.setType(funcType.getOutputType().orElse(VoidType.VOID_TYPE));
+            }
+            else {
+                progCall.setType(progCall.getReturnType().orElse(VoidType.VOID_TYPE));
+            }
+            return null;
+        }
     }
-
-    @Override
-    public Boolean visit(FuncTypeLit funcTypeLit) {
-        super.visit(funcTypeLit);
-
-        funcTypeLit.setType(TypeType.TYPE_TYPE);
-
-        funcTypeLit.setRepresentedType(FuncType.builder()
-                .inputType(funcTypeLit.getInputType().getRepresentedType())
-                .outputType(funcTypeLit.getOutputType().map(TypeLit::getRepresentedType))
-                .build());
-
-        return true;
-    }
-
-    @Override
-    public Boolean visit(DeclProgCall progCall) {
-        super.visit(progCall);
-        progCall.setType(VoidType.VOID_TYPE);
-        return true;
-    }
-
-    @Override
-    public Boolean visit(DynamicProgcall progCall) {
-        super.visit(progCall);
-        progCall.setType(progCall.getReturnType().orElse(VoidType.VOID_TYPE));
-        return true;
-    }
-
 }

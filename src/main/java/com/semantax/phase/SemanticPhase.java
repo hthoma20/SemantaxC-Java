@@ -58,6 +58,8 @@ public class SemanticPhase implements Phase<Program, Program> {
         @Override
         public Void visit(BindProgCall bindProgCall) {
 
+            super.visit(bindProgCall);
+
             if (bindProgCall.getSubExpressions().size() != 2) {
                 error(ErrorType.ILLEGAL_BIND, bindProgCall.getFilePos(),
                         "%s expects a name and value", bindProgCall.getName());

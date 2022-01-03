@@ -58,7 +58,7 @@ public class DefaultTypeAnnotatorTest extends TestCase {
     public void test_int() {
         IntLit intLit = new IntLit(5);
 
-        boolean result = typeAnnotator.visit(intLit);
+        boolean result = typeAnnotator.annotate(intLit);
 
         assertTrue(result);
         assertEquals(INT_TYPE, intLit.getType());
@@ -67,7 +67,7 @@ public class DefaultTypeAnnotatorTest extends TestCase {
     public void test_bool() {
         BoolLit boolLit = new BoolLit(true);
 
-        boolean result = typeAnnotator.visit(boolLit);
+        boolean result = typeAnnotator.annotate(boolLit);
 
         assertTrue(result);
         assertEquals(BOOL_TYPE, boolLit.getType());
@@ -76,7 +76,7 @@ public class DefaultTypeAnnotatorTest extends TestCase {
     public void test_string() {
         StringLit stringLit = new StringLit("hello");
 
-        boolean result = typeAnnotator.visit(stringLit);
+        boolean result = typeAnnotator.annotate(stringLit);
 
         assertTrue(result);
         assertEquals(STRING_TYPE, stringLit.getType());
@@ -93,7 +93,7 @@ public class DefaultTypeAnnotatorTest extends TestCase {
                 .build();
 
         // when
-        boolean result = typeAnnotator.visit(arrayLit);
+        boolean result = typeAnnotator.annotate(arrayLit);
 
         // then
         assertTrue(result);
@@ -114,7 +114,7 @@ public class DefaultTypeAnnotatorTest extends TestCase {
                 .buildWith(filePos);
 
         // when
-        boolean result = typeAnnotator.visit(arrayLit);
+        boolean result = typeAnnotator.annotate(arrayLit);
 
         // then
         assertFalse(result);
@@ -130,7 +130,7 @@ public class DefaultTypeAnnotatorTest extends TestCase {
                 .build();
 
         // when
-        boolean result = typeAnnotator.visit(recordLit);
+        boolean result = typeAnnotator.annotate(recordLit);
 
         // then
         assertTrue(result);
@@ -155,7 +155,7 @@ public class DefaultTypeAnnotatorTest extends TestCase {
                 .buildWith(filePos);
 
         // when
-        boolean result = typeAnnotator.visit(recordLit);
+        boolean result = typeAnnotator.annotate(recordLit);
 
         // then
         assertFalse(result);
@@ -174,7 +174,7 @@ public class DefaultTypeAnnotatorTest extends TestCase {
                 .build();
 
         // when
-        boolean result = typeAnnotator.visit(functionLit);
+        boolean result = typeAnnotator.annotate(functionLit);
 
         // then
         assertTrue(result);
@@ -200,7 +200,7 @@ public class DefaultTypeAnnotatorTest extends TestCase {
                 .build();
 
         // when
-        boolean result = typeAnnotator.visit(functionLit);
+        boolean result = typeAnnotator.annotate(functionLit);
 
         // then
         assertTrue(result);
@@ -218,7 +218,7 @@ public class DefaultTypeAnnotatorTest extends TestCase {
         IntTypeLit intTypeLit = new IntTypeLit();
 
         // when
-        boolean result = typeAnnotator.visit(intTypeLit);
+        boolean result = typeAnnotator.annotate(intTypeLit);
 
         // then
         assertTrue(result);
@@ -231,7 +231,7 @@ public class DefaultTypeAnnotatorTest extends TestCase {
         BoolTypeLit boolTypeLit = new BoolTypeLit();
 
         // when
-        boolean result = typeAnnotator.visit(boolTypeLit);
+        boolean result = typeAnnotator.annotate(boolTypeLit);
 
         // then
         assertTrue(result);
@@ -244,7 +244,7 @@ public class DefaultTypeAnnotatorTest extends TestCase {
         StringTypeLit stringTypeLit = new StringTypeLit();
 
         // when
-        boolean result = typeAnnotator.visit(stringTypeLit);
+        boolean result = typeAnnotator.annotate(stringTypeLit);
 
         // then
         assertTrue(result);
@@ -259,7 +259,7 @@ public class DefaultTypeAnnotatorTest extends TestCase {
                 .build();
 
         // when
-        boolean result = typeAnnotator.visit(arrayTypeLit);
+        boolean result = typeAnnotator.annotate(arrayTypeLit);
 
         // then
         assertTrue(result);
@@ -277,7 +277,7 @@ public class DefaultTypeAnnotatorTest extends TestCase {
                 .build();
 
         // when
-        boolean result = typeAnnotator.visit(recordTypeLit);
+        boolean result = typeAnnotator.annotate(recordTypeLit);
 
         // then
         assertTrue(result);
@@ -306,7 +306,7 @@ public class DefaultTypeAnnotatorTest extends TestCase {
                 .build();
 
         // when
-        boolean result = typeAnnotator.visit(funcTypeLit);
+        boolean result = typeAnnotator.annotate(funcTypeLit);
 
         // then
         assertTrue(result);
