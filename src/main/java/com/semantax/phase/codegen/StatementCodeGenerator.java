@@ -8,6 +8,7 @@ import com.semantax.ast.node.VariableReference;
 import com.semantax.ast.node.list.StatementList;
 import com.semantax.ast.node.progcall.BindProgCall;
 import com.semantax.ast.node.progcall.DeclProgCall;
+import com.semantax.ast.node.progcall.ReturnProgCall;
 import com.semantax.ast.node.progcall.StaticProgCall;
 import com.semantax.ast.type.VoidType;
 import com.semantax.ast.visitor.BaseAstVisitor;
@@ -77,5 +78,14 @@ public class StatementCodeGenerator {
 
             return null;
         }
+
+        @Override
+        public Void visit(ReturnProgCall returnProgCall) {
+            expressionCodeGenerator.generateExpression(emitter, nameRegistry, returnProgCall.getReturnExpression());
+            emitter.emitLine("goto %s;", FunctionCodeGenerator.RETURN_LABEL);
+
+            return null;
+        }
     }
+
 }

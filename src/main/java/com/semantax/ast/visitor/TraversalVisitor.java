@@ -10,6 +10,7 @@ import com.semantax.ast.node.progcall.BindProgCall;
 import com.semantax.ast.node.progcall.DeclProgCall;
 import com.semantax.ast.node.progcall.DynamicProgcall;
 import com.semantax.ast.node.progcall.ProgCall;
+import com.semantax.ast.node.progcall.ReturnProgCall;
 import com.semantax.ast.type.ArrayType;
 import com.semantax.ast.type.BoolType;
 import com.semantax.ast.type.FuncType;
@@ -74,6 +75,12 @@ public class TraversalVisitor<T> implements AstVisitor<T> {
 
     @Override
     public T visit(BindProgCall progCall) {
+        progCall.getSubExpressions().accept(this);
+        return null;
+    }
+
+    @Override
+    public T visit(ReturnProgCall progCall) {
         progCall.getSubExpressions().accept(this);
         return null;
     }

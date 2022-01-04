@@ -5,6 +5,7 @@ import com.semantax.ast.node.Program;
 import com.semantax.ast.node.VariableReference;
 import com.semantax.ast.node.progcall.BindProgCall;
 import com.semantax.ast.node.progcall.ProgCall;
+import com.semantax.ast.node.progcall.ReturnProgCall;
 import com.semantax.ast.util.FilePos;
 import com.semantax.ast.visitor.TraversalVisitor;
 import com.semantax.error.ErrorType;
@@ -55,14 +56,26 @@ public class SemanticPhase implements Phase<Program, Program> {
             hasError = true;
         }
 
+        /**
+         * Check the number of subexpressions and log an error if the expected number
+         * doesn't match
+         * @return true if the given progcall has the given expected subexpressions
+         */
+        private boolean checkSubexpressionCount(ProgCall progCall, int expectedSubexpressions, ErrorType errorType) {
+            int subExpressions = progCall.getSubExpressions().size();
+            if (subExpressions != expectedSubexpressions) {
+                error(errorType, progCall.getFilePos(), "%s expects %d arguments, %d were given",
+                        progCall.getName(), expectedSubexpressions, subExpressions);
+                return false;
+            }
+            return true;
+        }
+
         @Override
         public Void visit(BindProgCall bindProgCall) {
-
             super.visit(bindProgCall);
 
-            if (bindProgCall.getSubExpressions().size() != 2) {
-                error(ErrorType.ILLEGAL_BIND, bindProgCall.getFilePos(),
-                        "%s expects a name and value", bindProgCall.getName());
+            if (!checkSubexpressionCount(bindProgCall, 2, ErrorType.ILLEGAL_BIND)) {
                 return null;
             }
 
@@ -87,5 +100,26 @@ public class SemanticPhase implements Phase<Program, Program> {
 
             return null;
         }
+
+        @Override
+        public Void visit(ReturnProgCall returnProgCall) {
+            super.visit(returnProgCall);
+
+            if (!checkSubexpressionCount(returnProgCall, 1, ErrorType.ILLEGAL_BIND)) {
+                return null;
+            }
+
+            Optional<Expression> returnExpression = getSubexpression(returnProgCall, 0, Expression.class);
+            if (!returnExpression.isPresent()) {
+                error(ErrorType.ILLEGAL_RETURN, returnExpression.get().getFilePos(), "Missing return expression");
+                return null;
+            }
+
+            returnProgCall.setReturnExpression(returnExpression.get());
+
+            return null;
+        }
     }
+
+
 }

@@ -31,6 +31,7 @@ import com.semantax.ast.node.progcall.BindProgCall;
 import com.semantax.ast.node.progcall.DeclProgCall;
 import com.semantax.ast.node.progcall.DynamicProgcall;
 import com.semantax.ast.node.progcall.ProgCall;
+import com.semantax.ast.node.progcall.ReturnProgCall;
 import com.semantax.ast.type.ArrayType;
 import com.semantax.ast.type.BoolType;
 import com.semantax.ast.type.FuncType;
@@ -112,6 +113,11 @@ public class BaseAstVisitor<T> implements AstVisitor<T> {
 
     @Override
     public T visit(BindProgCall progCall) {
+        throw CompilerException.of(message);
+    }
+
+    @Override
+    public T visit(ReturnProgCall progCall) {
         throw CompilerException.of(message);
     }
 

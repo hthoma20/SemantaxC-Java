@@ -2,6 +2,7 @@ package com.semantax.phase.codegen;
 
 import com.semantax.ast.type.ArrayType;
 import com.semantax.ast.type.BoolType;
+import com.semantax.ast.type.FuncType;
 import com.semantax.ast.type.IntType;
 import com.semantax.ast.type.RecordType;
 import com.semantax.ast.type.StringType;
@@ -49,6 +50,10 @@ public class GeneratedTypeRegistry extends BaseAstVisitor<String> {
 
     public String visit(StringType stringType) {
         return "String";
+    }
+
+    public String visit(FuncType funcType) {
+        return "Func";
     }
 
 

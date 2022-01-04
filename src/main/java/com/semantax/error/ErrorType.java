@@ -26,7 +26,8 @@ public enum ErrorType {
     DUPLICATE_RECORD_TYPE_NAME("TYPEA-2"),
     INVOKE_FUN_BAD_ARG("TYPEA-3"),
 
-    ILLEGAL_BIND("SEM-0");
+    ILLEGAL_BIND("SEM-0"),
+    ILLEGAL_RETURN("SEM-1");
 
     @Getter
     private final String id;

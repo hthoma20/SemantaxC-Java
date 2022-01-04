@@ -10,6 +10,7 @@ import com.semantax.ast.node.progcall.BindProgCall;
 import com.semantax.ast.node.progcall.DeclProgCall;
 import com.semantax.ast.node.progcall.DynamicProgcall;
 import com.semantax.ast.node.progcall.ProgCall;
+import com.semantax.ast.node.progcall.ReturnProgCall;
 import com.semantax.ast.type.ArrayType;
 import com.semantax.ast.type.BoolType;
 import com.semantax.ast.type.FuncType;
@@ -35,6 +36,7 @@ public interface AstVisitor<T> {
     T visit(ProgCall progCall);
     T visit(DeclProgCall declProgCall);
     T visit(BindProgCall bindProgCall);
+    T visit(ReturnProgCall returnProgCall);
     T visit(DynamicProgcall dynamicProgcall);
 
     T visit(TypeTypeLit typeTypeLiteral);

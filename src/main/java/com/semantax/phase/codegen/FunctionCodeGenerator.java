@@ -15,7 +15,7 @@ import javax.inject.Inject;
 
 public class FunctionCodeGenerator {
 
-    private static final String RETURN_LABEL = "ret";
+    public static final String RETURN_LABEL = "ret";
 
     private final ExpressionCodeGenerator expressionCodeGenerator;
     private final StatementCodeGenerator statementCodeGenerator;

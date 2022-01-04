@@ -10,6 +10,7 @@ import com.semantax.ast.node.progcall.BindProgCall;
 import com.semantax.ast.node.progcall.DeclProgCall;
 import com.semantax.ast.node.progcall.DynamicProgcall;
 import com.semantax.ast.node.progcall.ProgCall;
+import com.semantax.ast.node.progcall.ReturnProgCall;
 import com.semantax.ast.type.ArrayType;
 import com.semantax.ast.type.BoolType;
 import com.semantax.ast.type.FuncType;
@@ -127,7 +128,12 @@ public class AstPrintingVisitor extends TraversalVisitor<Void> {
     @Override
     public Void visit(BindProgCall bindProgCall) {
         this.visit((ProgCall) bindProgCall);
+        return null;
+    }
 
+    @Override
+    public Void visit(ReturnProgCall returnProgCall) {
+        this.visit((ProgCall) returnProgCall);
         return null;
     }
 

@@ -5,6 +5,7 @@ import com.semantax.ast.node.list.ParsableExpressionList;
 import com.semantax.ast.node.progcall.BindProgCall;
 import com.semantax.ast.node.progcall.DeclProgCall;
 import com.semantax.ast.node.progcall.ProgCall;
+import com.semantax.ast.node.progcall.ReturnProgCall;
 import com.semantax.ast.util.FilePos;
 import com.semantax.exception.UnexpectedTokenException;
 import com.semantax.parser.generated.Token;
@@ -19,6 +20,7 @@ import static com.semantax.ast.node.progcall.ProgCallConstants.PRINT_INT;
 import static com.semantax.ast.node.progcall.ProgCallConstants.PRINT_INT_BUILDER;
 import static com.semantax.ast.node.progcall.ProgCallConstants.PRINT_STRING;
 import static com.semantax.ast.node.progcall.ProgCallConstants.PRINT_STRING_BUILDER;
+import static com.semantax.ast.node.progcall.ProgCallConstants.RETURN;
 import static com.semantax.parser.generated.SemantaxParserConstants.*;
 
 public class ProgCallFactory {
@@ -41,6 +43,8 @@ public class ProgCallFactory {
                 return DeclProgCall.builder();
             case BIND:
                 return BindProgCall.builder();
+            case RETURN:
+                return ReturnProgCall.builder();
             case PRINT_INT:
                 return PRINT_INT_BUILDER;
             case PRINT_STRING:
