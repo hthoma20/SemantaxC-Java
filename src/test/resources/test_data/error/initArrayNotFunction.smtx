@@ -1,0 +1,3 @@
+main module initArrayNotFunction {
+    @initarray(1, 2);
+}

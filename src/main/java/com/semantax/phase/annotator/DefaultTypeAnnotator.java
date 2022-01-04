@@ -297,6 +297,28 @@ public class DefaultTypeAnnotator implements TypeAnnotator  {
                 ArrayType arrayType = (ArrayType) first.getType();
                 progCall.setType(arrayType.getSubType());
             }
+            else if (progCall.getName().equals("initarray")) {
+                if(progCall.getSubExpressions().size() != 2) {
+                    error(ErrorType.INIT_ARRAY_BAD_ARG, progCall.getFilePos(),
+                            "@initarray expects an int and a function");
+                    return null;
+                }
+                Expression second = progCall.getSubExpressions().get(1).getExpression();
+                if (!(second.getType() instanceof FuncType)) {
+                    error(ErrorType.INIT_ARRAY_BAD_ARG, progCall.getFilePos(),
+                            "@initarray expects an int and a function");
+                    return null;
+                }
+                FuncType supplierType = (FuncType) second.getType();
+                if (!supplierType.getOutputType().isPresent()) {
+                    error(ErrorType.INIT_ARRAY_BAD_ARG, progCall.getFilePos(),
+                            "supplier for @initarray must return a value");
+                    return null;
+                }
+                progCall.setType(ArrayType.builder()
+                        .subType(supplierType.getOutputType().get())
+                        .build());
+            }
             else {
                 progCall.setType(progCall.getReturnType().orElse(VoidType.VOID_TYPE));
             }
