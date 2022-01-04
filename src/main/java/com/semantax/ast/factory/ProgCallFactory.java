@@ -14,6 +14,8 @@ import static com.semantax.ast.node.progcall.ProgCallConstants.ADD_INT;
 import static com.semantax.ast.node.progcall.ProgCallConstants.ADD_INT_BUILDER;
 import static com.semantax.ast.node.progcall.ProgCallConstants.ARRAY_GET;
 import static com.semantax.ast.node.progcall.ProgCallConstants.ARRAY_GET_BUILDER;
+import static com.semantax.ast.node.progcall.ProgCallConstants.ARRAY_LEN;
+import static com.semantax.ast.node.progcall.ProgCallConstants.ARRAY_LEN_BUILDER;
 import static com.semantax.ast.node.progcall.ProgCallConstants.ARRAY_SET;
 import static com.semantax.ast.node.progcall.ProgCallConstants.ARRAY_SET_BUILDER;
 import static com.semantax.ast.node.progcall.ProgCallConstants.BIND;
@@ -61,6 +63,8 @@ public class ProgCallFactory {
                 return ARRAY_GET_BUILDER;
             case ARRAY_SET:
                 return ARRAY_SET_BUILDER;
+            case ARRAY_LEN:
+                return ARRAY_LEN_BUILDER;
             default:
                 return ProgCall.builder();
         }

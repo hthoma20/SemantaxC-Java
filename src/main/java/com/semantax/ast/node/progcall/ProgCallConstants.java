@@ -17,6 +17,7 @@ public final class ProgCallConstants {
     public static final String INVOKE_FUN = "invokefun";
     public static final String ARRAY_GET = "arrayget";
     public static final String ARRAY_SET = "arrayset";
+    public static final String ARRAY_LEN = "arraylen";
 
     public static final ProgCall.Builder PRINT_INT_BUILDER = DynamicProgcall.builder()
             .parameterTypes(Arrays.asList(IntType.INT_TYPE))
@@ -36,4 +37,7 @@ public final class ProgCallConstants {
 
     public static final ProgCall.Builder ARRAY_SET_BUILDER = DynamicProgcall.builder()
             .returnType(Optional.empty());
+
+    public static final ProgCall.Builder ARRAY_LEN_BUILDER = DynamicProgcall.builder()
+            .returnType(Optional.of(IntType.INT_TYPE));
 }
