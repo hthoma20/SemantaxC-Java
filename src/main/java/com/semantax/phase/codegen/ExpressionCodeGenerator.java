@@ -5,6 +5,7 @@ import com.semantax.ast.node.Expression;
 import com.semantax.ast.node.ParsableExpression;
 import com.semantax.ast.node.VariableDeclaration;
 import com.semantax.ast.node.VariableReference;
+import com.semantax.ast.node.literal.ArrayLit;
 import com.semantax.ast.node.literal.BoolLit;
 import com.semantax.ast.node.literal.FunctionLit;
 import com.semantax.ast.node.literal.IntLit;
@@ -55,6 +56,13 @@ public class ExpressionCodeGenerator {
         @Override
         public Void visit(StringLit stringLit) {
             emitter.emitLine("new_String(\"%s\");", stringLit.getValue());
+            return null;
+        }
+
+        @Override
+        public Void visit(ArrayLit arrayLit) {
+            annotateIndentedVisit(arrayLit.getValues().iterator());
+            emitter.emitLine("new_Array(%d);", arrayLit.getValues().size());
             return null;
         }
 
