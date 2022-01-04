@@ -31,6 +31,7 @@ import com.semantax.ast.type.StringType;
 import com.semantax.ast.type.Type;
 import com.semantax.ast.type.TypeType;
 import com.semantax.ast.type.VoidType;
+import com.semantax.ast.util.FilePos;
 import com.semantax.ast.visitor.TraversalVisitor;
 import com.semantax.error.ErrorType;
 import com.semantax.logger.ErrorLogger;
@@ -61,6 +62,11 @@ public class DefaultTypeAnnotator implements TypeAnnotator  {
     private class TypeAnnotatingVisitor extends TraversalVisitor<Void> {
 
         private boolean hasError = false;
+
+        private void error(ErrorType errorType, FilePos filePos, String message, Object... args) {
+            hasError = true;
+            errorLogger.error(errorType, filePos, message, args);
+        }
 
         @Override
         public Void visit(ParsableExpression parsableExpression) {
@@ -104,9 +110,8 @@ public class DefaultTypeAnnotator implements TypeAnnotator  {
 
             for (ParsableExpression element : arrayLit.getValues()) {
                 if (!typeAssignabilityChecker.isAssignable(subType, element.getExpression().getType())) {
-                    errorLogger.error(ErrorType.HETEROGENEOUS_ARRAY, arrayLit.getFilePos(),
+                    error(ErrorType.HETEROGENEOUS_ARRAY, arrayLit.getFilePos(),
                             "Array does not have elements of the same type");
-                    hasError = true;
                     return null;
                 }
             }
@@ -129,10 +134,8 @@ public class DefaultTypeAnnotator implements TypeAnnotator  {
             // check that all names are unique
             Set<String> duplicateNames = recordTypeUtil.getDuplicateNames(recordLit);
             if (!duplicateNames.isEmpty()) {
-                errorLogger.error(ErrorType.DUPLICATE_RECORD_NAME, recordLit.getFilePos(),
-                        "Record has duplicate name(s): %s",
-                        String.join(",", duplicateNames));
-                hasError = true;
+                error(ErrorType.DUPLICATE_RECORD_NAME, recordLit.getFilePos(),
+                        "Record has duplicate name(s): %s", String.join(",", duplicateNames));
                 return null;
             }
 
@@ -217,10 +220,8 @@ public class DefaultTypeAnnotator implements TypeAnnotator  {
             // check that all names are unique
             Set<String> duplicateNames = recordTypeUtil.getDuplicateNames(recordTypeLit);
             if (!duplicateNames.isEmpty()) {
-                errorLogger.error(ErrorType.DUPLICATE_RECORD_TYPE_NAME, recordTypeLit.getFilePos(),
-                        "Record type has duplicate name(s): %s",
-                        String.join(",", duplicateNames));
-                hasError = true;
+                error(ErrorType.DUPLICATE_RECORD_TYPE_NAME, recordTypeLit.getFilePos(),
+                        "Record type has duplicate name(s): %s", String.join(",", duplicateNames));
                 return null;
             }
 
@@ -268,20 +269,33 @@ public class DefaultTypeAnnotator implements TypeAnnotator  {
             // TODO: fix this jankyness when generics are properly implemented
             if (progCall.getName().equals("invokefun")) {
                 if(progCall.getSubExpressions().size() < 1) {
-                    errorLogger.error(ErrorType.INVOKE_FUN_BAD_ARG, progCall.getFilePos(), "@invokefun expects a function" +
-                            "and an argument");
-                    hasError = true;
+                    error(ErrorType.INVOKE_FUN_BAD_ARG, progCall.getFilePos(),
+                            "@invokefun expects a function and an argument");
                     return null;
                 }
                 Expression first = progCall.getSubExpressions().get(0).getExpression();
                 if (!(first.getType() instanceof FuncType)) {
-                    errorLogger.error(ErrorType.INVOKE_FUN_BAD_ARG, progCall.getFilePos(), "@invokefun expects a function" +
-                            "and an argument");
-                    hasError = true;
+                    error(ErrorType.INVOKE_FUN_BAD_ARG, progCall.getFilePos(),
+                            "@invokefun expects a function and an argument");
                     return null;
                 }
                 FuncType funcType = (FuncType) first.getType();
                 progCall.setType(funcType.getOutputType().orElse(VoidType.VOID_TYPE));
+            }
+            else if (progCall.getName().equals("arrayget")) {
+                if(progCall.getSubExpressions().size() < 1) {
+                    error(ErrorType.ARRAY_GET_BAD_ARG, progCall.getFilePos(),
+                            "@arrayget expects an array and an index");
+                    return null;
+                }
+                Expression first = progCall.getSubExpressions().get(0).getExpression();
+                if (!(first.getType() instanceof ArrayType)) {
+                    error(ErrorType.ARRAY_GET_BAD_ARG, progCall.getFilePos(),
+                            "@arrayget expects an array and an index");
+                    return null;
+                }
+                ArrayType arrayType = (ArrayType) first.getType();
+                progCall.setType(arrayType.getSubType());
             }
             else {
                 progCall.setType(progCall.getReturnType().orElse(VoidType.VOID_TYPE));

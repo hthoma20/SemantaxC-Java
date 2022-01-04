@@ -12,6 +12,10 @@ import com.semantax.parser.generated.Token;
 
 import static com.semantax.ast.node.progcall.ProgCallConstants.ADD_INT;
 import static com.semantax.ast.node.progcall.ProgCallConstants.ADD_INT_BUILDER;
+import static com.semantax.ast.node.progcall.ProgCallConstants.ARRAY_GET;
+import static com.semantax.ast.node.progcall.ProgCallConstants.ARRAY_GET_BUILDER;
+import static com.semantax.ast.node.progcall.ProgCallConstants.ARRAY_SET;
+import static com.semantax.ast.node.progcall.ProgCallConstants.ARRAY_SET_BUILDER;
 import static com.semantax.ast.node.progcall.ProgCallConstants.BIND;
 import static com.semantax.ast.node.progcall.ProgCallConstants.DECL;
 import static com.semantax.ast.node.progcall.ProgCallConstants.INVOKE_FUN;
@@ -53,6 +57,10 @@ public class ProgCallFactory {
                 return ADD_INT_BUILDER;
             case INVOKE_FUN:
                 return INVOKE_FUN_BUILDER;
+            case ARRAY_GET:
+                return ARRAY_GET_BUILDER;
+            case ARRAY_SET:
+                return ARRAY_SET_BUILDER;
             default:
                 return ProgCall.builder();
         }

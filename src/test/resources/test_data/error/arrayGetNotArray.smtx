@@ -1,0 +1,3 @@
+main module arrayGetNotArray {
+    @arrayget(1, 2);
+}

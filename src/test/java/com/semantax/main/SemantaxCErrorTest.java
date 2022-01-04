@@ -113,7 +113,8 @@ public class SemantaxCErrorTest extends TestCase {
                 testData("threeArgBind.smtx", ErrorType.ILLEGAL_BIND),
                 testData("undeclaredBind.smtx", ErrorType.UNPARSABLE_PHRASE),
                 testData("noNameBind.smtx", ErrorType.ILLEGAL_BIND),
-                testData("invokeFunNotFunction.smtx", ErrorType.INVOKE_FUN_BAD_ARG));
+                testData("invokeFunNotFunction.smtx", ErrorType.INVOKE_FUN_BAD_ARG),
+                testData("arrayGetNotArray.smtx", ErrorType.ARRAY_GET_BAD_ARG));
     }
 
     private static ErrorTestData testData(String file, ErrorType errorType) {
