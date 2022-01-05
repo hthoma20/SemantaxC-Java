@@ -87,20 +87,20 @@ Program {
          }
          Statement { (10:5)
             Phrase: [ (10:5)
-               @not (10:5)
-                  ParsableExpressionList [ (10:10)
-                     Phrase: [ (10:10)
-                        BoolLit false (10:10)
+               @negatebool (10:5)
+                  ParsableExpressionList [ (10:17)
+                     Phrase: [ (10:17)
+                        BoolLit false (10:17)
                      ]
                   ]
             ]
          }
          Statement { (11:5)
             Phrase: [ (11:5)
-               @not (11:5)
-                  ParsableExpressionList [ (11:10)
-                     Phrase: [ (11:10)
-                        BoolLit true (11:10)
+               @negatebool (11:5)
+                  ParsableExpressionList [ (11:17)
+                     Phrase: [ (11:17)
+                        BoolLit true (11:17)
                      ]
                   ]
             ]

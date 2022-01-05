@@ -7,8 +7,8 @@ main module Main {
         @addint(3,4)
     );
 
-    @not(false);
-    @not(true);
+    @negatebool(false);
+    @negatebool(true);
 
     @addint(());
 
